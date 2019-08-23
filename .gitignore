@@ -21,3 +21,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/LexGen/nbproject/private/
+/LexGen/build/
+/ProyectoCompiladores/nbproject/private/
+/ProyectoCompiladores/build/
+/LexGen/dist/
+/UserInterface/nbproject/private/
+/UserInterface/build/
+/UserInterface/dist/
