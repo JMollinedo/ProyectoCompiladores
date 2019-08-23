@@ -29,3 +29,4 @@ hs_err_pid*
 /UserInterface/nbproject/private/
 /UserInterface/build/
 /UserInterface/dist/
+*.java~
