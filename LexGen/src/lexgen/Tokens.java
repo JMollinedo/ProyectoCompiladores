@@ -10,6 +10,8 @@ package lexgen;
  * @author jmoll
  */
 public enum Tokens {
+    MalComentario,
+    Comentario,
     TipoDato,
     Reservada,
     Operador,
