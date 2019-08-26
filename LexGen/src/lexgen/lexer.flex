@@ -12,6 +12,10 @@ ichar = [^\r\n]
 
 espacio = {nlinea} | [ \t\f]
 
+/* this is add when UserInterface to detect an unfinished multi-line comment*/
+comodin = \u0000
+ufcoment = "/*" ~ {comodin}
+
 mlcoment = "/*" ~"*/"
 ulcoment = "--" ({ichar}*) {nlinea}?
 coment = {mlcoment} | {ulcoment}
@@ -36,7 +40,9 @@ varchar = "'" [^\r\n\u0027]* "'"
 %}
 %%
 
-{coment} {/*Ignore*/}
+{ufcoment} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return MalComentario;}
+{coment} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Comentario;}
+{comodin} {/*Ignore*/}
 {espacio} {/*Ignore*/}
 
 {tipodato} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return TipoDato;}
