@@ -20,6 +20,7 @@ public enum Tokens {
     FlotanteError,
     Entero,
     Varchar,
+    VarcharError,
     ERROR,
     OVERFLOWIDENTIFIER
 }

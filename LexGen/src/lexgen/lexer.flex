@@ -30,6 +30,7 @@ flotan = {entero} "." ({numero}*) ((("E+" | "E-" | "E") {entero})?)
 flotanErr = {entero} "." {identificador}
 
 varchar = "'" [^\r\n\u0027]* "'"
+varcharErr = "'" [^\r\n]*
 %{
     public String lexeme;
     public int lin;
@@ -53,6 +54,7 @@ varchar = "'" [^\r\n\u0027]* "'"
 
 {flotanErr} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return FlotanteError;}
 {identificadorErr} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return IdentificadorError;}
+{varcharErr} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return VarcharError;}
 "/*"({ichar}*) {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return MalComentario;}
 
  . {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return ERROR;}
