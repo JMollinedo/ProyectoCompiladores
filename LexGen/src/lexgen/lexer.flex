@@ -12,10 +12,6 @@ ichar = [^\r\n]
 
 espacio = {nlinea} | [ \t\f]
 
-/* this is add when UserInterface to detect an unfinished multi-line comment*/
-comodin = \u0000
-ufcoment = "/*" ~ {comodin}
-
 mlcoment = "/*" ~"*/"
 ulcoment = "--" ({ichar}*) {nlinea}?
 coment = {mlcoment} | {ulcoment}
@@ -25,11 +21,13 @@ reservadas="ADD"|"ALL"|"ALTER"|"AND"|"ANY"|"AS"|"ASC"|"AUTHORIZATION"|"BACKUP"|"
 operadores="+"|"-"|"*"|"/"|"%"|"<"|"<="|">"|">="|"="|"=="|"!="|"&&"|"||"|"!"|";"|","|"."|"["|"]"|"("|")"|"{"|"}"|"[]"|"()"|"{}"|"@"|"#"|"##"
 
 identificador = [:letter:] (([:letter:] | [:digit:] | "_")*)
+identificadorErr = ([:digit:] | "_") (([:letter:] | [:digit:] | "_")*)
 
 numero = [0-9]
 
 entero = ({numero}+)
-flotan = {entero} "." ({numero}*) ((("E+" | "E-") {entero})?)
+flotan = {entero} "." ({numero}*) ((("E+" | "E-" | "E") {entero})?)
+flotanErr = {entero} "." {identificador}
 
 varchar = "'" [^\r\n\u0027]* "'"
 %{
@@ -40,11 +38,6 @@ varchar = "'" [^\r\n\u0027]* "'"
 %}
 %%
 
-{ufcoment} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return MalComentario;}
-{coment} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Comentario;}
-{comodin} {/*Ignore*/}
-{espacio} {/*Ignore*/}
-
 {tipodato} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return TipoDato;}
 {reservadas} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Reservada;}
 {operadores} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Operador;}
@@ -54,5 +47,12 @@ varchar = "'" [^\r\n\u0027]* "'"
 {flotan} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Flotante;}
 {entero} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Entero;}
 {varchar} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Varchar;}
+
+{coment} {/*Ignore*/}
+{espacio} {/*Ignore*/}
+
+{flotanErr} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return FlotanteError;}
+{identificadorErr} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return IdentificadorError;}
+"/*"({ichar}*) {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return MalComentario;}
 
  . {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return ERROR;}

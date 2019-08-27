@@ -24,20 +24,23 @@ public class UseJFlex {
         while (token != null) {
             JToken jt = new JToken();
             if(token == Tokens.Identificador && lex.lexeme.length() > 31){
+                jt.setJTID(tokens.size()+1);
                 jt.setEndColumn(lex.col + 30);
                 jt.setLine(lex.lin);
                 jt.setStartColumn(lex.col);
                 jt.setToken(token);
                 jt.setValue(lex.lexeme.substring(0, 31));
                 tokens.add(jt);
+                
                 jt = new JToken();
+                jt.setJTID(tokens.size()+1);
                 jt.setEndColumn(lex.len + lex.col - 1);
                 jt.setLine(lex.lin);
                 jt.setStartColumn(lex.col + 31);
                 jt.setToken(Tokens.OVERFLOWIDENTIFIER);
                 jt.setValue(lex.lexeme.substring(31));
-                
             }else{
+                jt.setJTID(tokens.size()+1);
                 jt.setEndColumn(lex.len + lex.col - 1);
                 jt.setLine(lex.lin);
                 jt.setStartColumn(lex.col);

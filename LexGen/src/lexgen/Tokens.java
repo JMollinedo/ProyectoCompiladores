@@ -11,12 +11,13 @@ package lexgen;
  */
 public enum Tokens {
     MalComentario,
-    Comentario,
     TipoDato,
     Reservada,
     Operador,
     Identificador,
+    IdentificadorError,
     Flotante,
+    FlotanteError,
     Entero,
     Varchar,
     ERROR,

@@ -11,12 +11,16 @@ import java.util.List;
  * @author jmoll
  */
 public class JToken {
+    private int jTID;
     private int line;
     private int startColumn;
     private int endColumn;
     private Tokens token;
     private String value;
     
+    public void setJTID(int id){
+        this.jTID = id;
+    }
     public void setLine(int line){
         this.line = line;
     }
@@ -31,6 +35,10 @@ public class JToken {
     }
     public void setValue(String value){
         this.value = value;
+    }
+    
+    public int getJTID(){
+        return jTID;
     }
     
     public int getLine(){
@@ -51,7 +59,7 @@ public class JToken {
     
     protected static String toCSVtable(List<JToken> list){
         StringBuilder builder = new StringBuilder();
-        builder = builder.append("line,startColumn,endColumn,token,value");
+        builder = builder.append("TID,line,startColumn,endColumn,token,value");
         for(JToken t : list){
             builder = builder.append("\n").append(t.toCSV());
         }
@@ -60,6 +68,7 @@ public class JToken {
     
     protected String toCSV(){
         return new StringBuilder()
+                .append('"').append(jTID).append('"').append(',')
                 .append('"').append(line).append('"').append(',')
                 .append('"').append(startColumn).append('"').append(',')
                 .append('"').append(endColumn).append('"').append(',')
@@ -71,11 +80,12 @@ public class JToken {
     protected static JToken fromCSV(String csv){
         JToken jt = new JToken();
         String data[] = csv.split(new StringBuilder().append('"').append(',').append('"').toString());
-        jt.line = Integer.parseInt(data[0]);
-        jt.startColumn = Integer.parseInt(data[1]);
-        jt.endColumn = Integer.parseInt(data[2]);
-        jt.token = getTokenByName(data[3]);
-        jt.value = data[4];
+        jt.jTID = Integer.parseInt(data[0]);
+        jt.line = Integer.parseInt(data[1]);
+        jt.startColumn = Integer.parseInt(data[2]);
+        jt.endColumn = Integer.parseInt(data[3]);
+        jt.token = getTokenByName(data[4]);
+        jt.value = data[5];
         return jt;
     }
     
