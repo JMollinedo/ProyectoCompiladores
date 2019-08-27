@@ -11,7 +11,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.nar
 *.ear
@@ -25,8 +25,9 @@ hs_err_pid*
 /LexGen/build/
 /ProyectoCompiladores/nbproject/private/
 /ProyectoCompiladores/build/
-/LexGen/dist/
+
 /UserInterface/nbproject/private/
 /UserInterface/build/
 /UserInterface/dist/
 *.java~
+LexGen/dist/README.TXT
