@@ -133,9 +133,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
 
     private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
         if(!txaContenido.getText().isEmpty()){
-            String content = new StringBuilder().append(txaContenido.getText()).append('\u0000').toString();
-            int i = txaContenido.getText().length();
-            int j = content.length();
+            String content = new StringBuilder().append(txaContenido.getText()).toString();
             String temporalFilePath = "C:\\Users\\Public\\Documents\\lexTemp.txt";
             try {
                 ReadnWrite.writeAllText(temporalFilePath, content);
@@ -162,7 +160,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 res = res.replaceAll(s, "\n" );
                 s = new StringBuilder().append('\n').append('\u0022').toString();
                 res = res.replaceAll(s, "\n" );
-                res = res.substring(0,res.length()- 2);
+                res = res.substring(0,res.length()- 1);
                 txaAnalisis.setText(res);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
