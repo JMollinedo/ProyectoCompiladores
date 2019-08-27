@@ -2,7 +2,7 @@
 URL - Compiladores - 2019
 
 ##¿Cómo empezar?
-**Debe tener NetBeans y JDK8 para poder compilar.**
+*Debe tener NetBeans y JDK8 para poder compilar.*
 1. Descargue el repositorio como *.zip* o haga *fork* de este. 
 2. Utilizando NetBeans, genere el programa *.jar* del proyecto **LexGen**. Este archivo *.jar* funciona como una librería que es utilizada para procesar archivos.
 3. En el proyecto de NetBeans de **MiniSQL**, verifique la referencia al archivo .jar generado en el paso anterior.
