@@ -26,11 +26,11 @@ identificadorErr = ([:digit:] | "_") (([:letter:] | [:digit:] | "_")*)
 numero = [0-9]
 
 entero = ({numero}+)
-flotan = {entero} "." ({numero}*) ((("E+" | "E-" | "E") {entero})?)
+flotan = {entero} "." ({numero}*) ((("E"|"e") (("+"|"-")?) {entero})?)
 flotanErr = {entero} "." {identificador}
 
 varchar = "'" [^\r\n\u0027]* "'"
-varcharErr = "'" [^\r\n]*
+varcharErr = "'" [^\r\n\u0027]*
 %{
     public String lexeme;
     public int lin;

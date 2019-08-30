@@ -20,7 +20,7 @@ public class ReadnWrite {
     public static String readAllText(String path){
         StringBuilder builder = new StringBuilder();
         try {
-            List<String> lines = Files.readAllLines(new File(path).toPath(),Charset.forName("UTF-8"));
+            List<String> lines = Files.readAllLines(new File(path).toPath(),Charset.forName("ISO-8859-1"));
             for(String s : lines){
                 builder = builder.append(s).append("\n");
             }
