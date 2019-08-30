@@ -28,3 +28,4 @@ hs_err_pid*
 /MiniSQL/nbproject/private/
 /MiniSQL/build/
 /MiniSQL/dist/
+MiniSQL/nbproject/private/private.xml
