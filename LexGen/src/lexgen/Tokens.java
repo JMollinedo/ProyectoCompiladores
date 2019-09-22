@@ -10,9 +10,19 @@ package lexgen;
  * @author jmoll
  */
 public enum Tokens {
-    MalComentario,
-    TipoDato,
+    //Tipo de Datos
+    TipoDatoOtro,
+    TipoDatoEntero,
+    TipoDatoBit,
+    TipoDatoDecimalExacto,
+    TipoDatoDecimalAprox,
+    TipoDatoFechaHora,
+    TipoDatoChars,
+    TipoDatoUnicode,
+    TipoDatoBin,
+    
     Reservada,
+    //Operadores
     OperadorOtro,
     OperadorLogico,
     OperadorAritmetico,
@@ -20,13 +30,19 @@ public enum Tokens {
     Punto,
     Coma,
     PYC,
+    
     Identificador,
-    IdentificadorError,
+    
     Flotante,
-    FlotanteError,
+    
     Entero,
     Varchar,
+    
+    //ERRORES
+    IdentificadorError,
+    FlotanteError,
     VarcharError,
+    MalComentario,
     ERROR,
     OVERFLOWIDENTIFIER
 }
