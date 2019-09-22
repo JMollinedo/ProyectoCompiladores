@@ -20,7 +20,7 @@ public enum Tokens {
     TipoDatoChars,
     TipoDatoUnicode,
     TipoDatoBin,
-    
+    //Palabras Reservadas
     Reservada,
     //Operadores
     OperadorOtro,
@@ -30,14 +30,12 @@ public enum Tokens {
     Punto,
     Coma,
     PYC,
-    
+    //IDs
     Identificador,
-    
+    //Defenicion de Datos
     Flotante,
-    
     Entero,
     Varchar,
-    
     //ERRORES
     IdentificadorError,
     FlotanteError,
