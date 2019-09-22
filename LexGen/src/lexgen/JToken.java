@@ -79,6 +79,7 @@ public class JToken {
     
     protected static JToken fromCSV(String csv){
         JToken jt = new JToken();
+        csv = csv.substring(1, csv.length()-1);
         String data[] = csv.split(new StringBuilder().append('"').append(',').append('"').toString());
         jt.jTID = Integer.parseInt(data[0]);
         jt.line = Integer.parseInt(data[1]);
