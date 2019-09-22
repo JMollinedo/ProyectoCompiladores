@@ -92,12 +92,37 @@ public class JToken {
     protected static Tokens getTokenByName(String name){
         Tokens token;
         switch(name){
-            case "TipoDato": token = Tokens.TipoDato; break;
+            //Tipo de Dato
+            case "TipoDatoOtro": token = Tokens.TipoDatoOtro; break;
+            case "TipoDatoEntero": token = Tokens.TipoDatoEntero; break;
+            case "TipoDatoBit": token = Tokens.TipoDatoBit; break;
+            case "TipoDatoDecimalExacto": token = Tokens.TipoDatoDecimalExacto; break;
+            case "TipoDatoDecimalAprox": token = Tokens.TipoDatoDecimalAprox; break;
+            case "TipoDatoFechaHora": token = Tokens.TipoDatoFechaHora; break;
+            case "TipoDatoChars": token = Tokens.TipoDatoChars; break;
+            case "TipoDatoUnicode": token = Tokens.TipoDatoUnicode; break;
+            case "TipoDatoBin": token = Tokens.TipoDatoBin; break;
+            //Palabras Reservadas
             case "Reservada": token = Tokens.Reservada; break;
-            case "Operador": token = Tokens.Operador; break;
+            //Operadores
+            case "OperadorOtro": token = Tokens.OperadorOtro; break;
+            case "OperadorLogico": token = Tokens.OperadorLogico; break;
+            case "OperadorAritmetico": token = Tokens.OperadorAritmetico; break;
+            case "OperadorAgrupador": token = Tokens.OperadorAgrupador; break;
+            case "Punto": token = Tokens.Punto; break;
+            case "Coma": token = Tokens.Coma; break;
+            case "PYC": token = Tokens.PYC; break;
+            //IDs
             case "Identificador": token = Tokens.Identificador; break;
-            case "Flotante": token = Tokens.Identificador; break;
-            case "Entero": token = Tokens.Identificador; break;
+            //Definicion de Datos
+            case "Flotante": token = Tokens.Flotante; break;
+            case "Entero": token = Tokens.Entero; break;
+            case "Varchar": token = Tokens.Varchar; break;
+            //ERRORES
+            case "IdentificadorError": token = Tokens.IdentificadorError; break;
+            case "FlotanteError": token = Tokens.FlotanteError; break;
+            case "VarcharError": token = Tokens.VarcharError; break;
+            case "MalComentario": token = Tokens.MalComentario; break;
             case "ERROR": token = Tokens.ERROR; break;
             default: token = null; break;
         }

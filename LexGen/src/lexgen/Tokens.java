@@ -32,7 +32,7 @@ public enum Tokens {
     PYC,
     //IDs
     Identificador,
-    //Defenicion de Datos
+    //Definicion de Datos
     Flotante,
     Entero,
     Varchar,
