@@ -57,6 +57,13 @@ public class JToken {
         return value;
     }
     
+    public JToken(){};
+    public JToken(Tokens token, String value){
+        this();
+        this.token = token;
+        this.value = value;
+    }
+    
     protected static String toCSVtable(List<JToken> list){
         StringBuilder builder = new StringBuilder();
         builder = builder.append("TID,line,startColumn,endColumn,token,value");
@@ -148,10 +155,13 @@ public class JToken {
     }
 
     public boolean TokenTypeNValueMatch(Tokens token, String value){
+        if(value == null){
+            return this.token == token;
+        }
         if(value.isEmpty()){
             return this.token == token;
         }
-        return this.token == token && this.value.equals(value);
+        return this.token == token && this.value.toUpperCase().equals(value.toUpperCase());
     }
     
     public boolean TokenTypeNValueMatch(JToken token){

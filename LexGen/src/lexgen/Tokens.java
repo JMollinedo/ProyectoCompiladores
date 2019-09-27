@@ -10,6 +10,8 @@ package lexgen;
  * @author jmoll
  */
 public enum Tokens {
+    //Fin de AnalisisSin
+    FinSintaxis,
     //Tipo de Datos
     TipoDatoOtro,
     TipoDatoEntero,

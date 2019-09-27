@@ -54,11 +54,15 @@ public class UseJFlex {
         return JToken.toCSVtable(tokens);
     }
     
-    public static List<JToken> GetTokens(String path) throws IOException{
+    public static List<JToken> GetTokensFromFile(String path) throws IOException{
         return JToken.fromCSVtable(
                 Files.readAllLines(
                         new File(path).toPath(),
                         Charset.forName("UTF-8")
                 ));
+    }
+    
+    public static List<JToken> GetTokensFromText(String text){
+        return JToken.fromCSVtable(text);
     }
 }

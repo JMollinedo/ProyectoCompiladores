@@ -42,8 +42,11 @@ public class JTError extends JToken {
     
     public String ErrorMessage(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Error in Parsing: \n");
-        sb.append(value);
+        sb.append("Error in Parsing:");
+        if(value != null){
+            sb.append("\n");
+            sb.append(value);
+        }
         sb.append("\n in line: ");
         sb.append(line);
         sb.append("\n from Column: ");
@@ -54,8 +57,12 @@ public class JTError extends JToken {
         sb.append(token);
         sb.append("\n Exepcted:");
         for(int i = 0; i < expectedTokens.size(); i++){
-            sb.append("\n\tToken");
+            sb.append("\n\t");
             sb.append(expectedTokens.get(i).token);
+            if(expectedTokens.get(i).value != null){
+                sb.append("\t");
+                sb.append(expectedTokens.get(i).value);
+            }
         }
         return sb.toString();
     }
