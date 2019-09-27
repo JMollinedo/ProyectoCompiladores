@@ -11,12 +11,12 @@ import java.util.List;
  * @author jmoll
  */
 public class JToken {
-    private int jTID;
-    private int line;
-    private int startColumn;
-    private int endColumn;
-    private Tokens token;
-    private String value;
+    protected int jTID;
+    protected int line;
+    protected int startColumn;
+    protected int endColumn;
+    protected Tokens token;
+    protected String value;
     
     public void setJTID(int id){
         this.jTID = id;
@@ -146,5 +146,8 @@ public class JToken {
         }
         return tk;
     }
-    
+
+    public boolean TokenTypeNValueMatch(JToken token){
+        return this.token == token.token && this.value.equals(token.value);
+    }
 }

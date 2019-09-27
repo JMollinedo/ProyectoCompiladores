@@ -40,6 +40,12 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
         txaContenido = new javax.swing.JTextArea();
         btnAnalizar = new javax.swing.JButton();
         chbGenerarArchivo = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        chbGenerarArchivoX = new javax.swing.JCheckBox();
+        btnAnalizarX = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txaAnalisisX = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -75,6 +81,23 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
 
         chbGenerarArchivo.setText("Generar Archivo");
 
+        jLabel1.setText("ANALIZADOR LEXICO");
+
+        jLabel2.setText("ANALIZADOR SINTACTICO");
+
+        chbGenerarArchivoX.setText("Generar Archivo");
+
+        btnAnalizarX.setText("Analizar");
+        btnAnalizarX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnalizarXActionPerformed(evt);
+            }
+        });
+
+        txaAnalisisX.setColumns(20);
+        txaAnalisisX.setRows(5);
+        jScrollPane3.setViewportView(txaAnalisisX);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,26 +113,52 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 55, Short.MAX_VALUE)
                         .addComponent(chbGenerarArchivo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAnalizar))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(chbGenerarArchivoX)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAnalizarX)
+                        .addGap(0, 75, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCargarArchivo)
-                    .addComponent(btnBorrarContenido)
-                    .addComponent(btnAnalizar)
-                    .addComponent(chbGenerarArchivo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(chbGenerarArchivoX)
+                            .addComponent(btnAnalizarX))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(chbGenerarArchivo)
+                            .addComponent(btnAnalizar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCargarArchivo)
+                            .addComponent(btnBorrarContenido))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2)))
                 .addContainerGap())
         );
 
@@ -170,6 +219,10 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAnalizarActionPerformed
 
+    private void btnAnalizarXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarXActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAnalizarXActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -211,12 +264,18 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizar;
+    private javax.swing.JButton btnAnalizarX;
     private javax.swing.JButton btnBorrarContenido;
     private javax.swing.JButton btnCargarArchivo;
     private javax.swing.JCheckBox chbGenerarArchivo;
+    private javax.swing.JCheckBox chbGenerarArchivoX;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea txaAnalisis;
+    private javax.swing.JTextArea txaAnalisisX;
     private javax.swing.JTextArea txaContenido;
     // End of variables declaration//GEN-END:variables
 }
