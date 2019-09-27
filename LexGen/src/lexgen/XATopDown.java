@@ -49,7 +49,6 @@ public class XATopDown {
         }
         return sb.toString();
     }
-    
     public static String analizeCSVText(String csvText){
         List<JToken> BET = new ArrayList();
         BET.add(new JToken(Tokens.Reservada,"GO"));
@@ -97,13 +96,11 @@ public class XATopDown {
         }
         return Expressions;
     }
-    
     private void ExcAnalisys(){
         CTP = 0;
         CurrentToken = TokensList.get(CTP);
         INICIAL();
     }
-    
     private XATopDown(List<JToken> tokens){
         TokensList = new ArrayList();
         TokensList.addAll(tokens);
@@ -124,12 +121,8 @@ public class XATopDown {
             Error.SetET(expectedTokens);
         }
     }
-    
     private void ERRORTHROW() {
         Error = new JTError(CurrentToken);
-    }
-    private void ERRORANUL(){
-        Error = null;
     }
     
     //Empiezan los Recursivos
@@ -137,23 +130,6 @@ public class XATopDown {
         INICIALA();
         if(Error == null) FINAL();
     }
-    
-    void FINAL(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.PYC,null)){
-            ReadNextToken(Tokens.PYC, null);
-        }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada ,"GO")){
-            ReadNextToken(Tokens.Reservada ,"GO");
-        }
-        else{
-            ERRORTHROW();
-            List<JToken> expectedTokens = new ArrayList();
-            expectedTokens.add(new JToken(Tokens.PYC,null));
-            expectedTokens.add(new JToken(Tokens.Reservada ,"GO"));
-            Error.SetET(expectedTokens);
-        }
-    }
-    
     void INICIALA(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"ALTER")){
             //Alter();
@@ -171,7 +147,7 @@ public class XATopDown {
             //Alter();
         }
         else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"SELECT")){
-            Select();
+            //Select();
         }
         else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"TRUNCATE")){
             //Alter();
@@ -193,6 +169,21 @@ public class XATopDown {
         }
         
     }
+    void FINAL(){
+        if(CurrentToken.TokenTypeNValueMatch(Tokens.PYC,null)){
+            ReadNextToken(Tokens.PYC, null);
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada ,"GO")){
+            ReadNextToken(Tokens.Reservada ,"GO");
+        }
+        else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.PYC,null));
+            expectedTokens.add(new JToken(Tokens.Reservada ,"GO"));
+            Error.SetET(expectedTokens);
+        }
+    }
     
     void ID(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Identificador, null)){
@@ -210,31 +201,26 @@ public class XATopDown {
             Error.SetET(expectedTokens);
         }
     }
-    
     void Object2(){
         ID();
         if(Error == null) Object2a();
     }
-    
     void Object2a(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Punto,null)){
             ReadNextToken(Tokens.Punto, null);
             if(Error == null) ID();
         }
     }
-    
     void Object3(){
         ID();
         Object3a();
     }
-    
     void Object3a(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Punto,null)){
             ReadNextToken(Tokens.Punto, null);
             if(Error == null) Object2();
         }
     }
-    
     void IFE(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "IF")){
             ReadNextToken(Tokens.Reservada, "IF");
@@ -242,11 +228,74 @@ public class XATopDown {
         }
     }
     
+    //TIPO DE DATO
+    void TIPO_DATO(){
+        TIPO_DATOA();
+        TIPO_DATOB();
+    }
+    void TIPO_DATOA(){
+        if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoBin, null)){
+            ReadNextToken(Tokens.TipoDatoBin, null);
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoBit, null)){
+            ReadNextToken(Tokens.TipoDatoBit, null);
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoChars, null)){
+            ReadNextToken(Tokens.TipoDatoChars, null);
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoDecimalAprox, null)){
+            ReadNextToken(Tokens.TipoDatoDecimalAprox, null);
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoDecimalExacto, null)){
+            ReadNextToken(Tokens.TipoDatoDecimalExacto, null);
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoEntero, null)){
+            ReadNextToken(Tokens.TipoDatoEntero, null);
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoFechaHora, null)){
+            ReadNextToken(Tokens.TipoDatoFechaHora, null);
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoOtro, null)){
+            ReadNextToken(Tokens.TipoDatoOtro, null);
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoUnicode, null)){
+            ReadNextToken(Tokens.TipoDatoUnicode, null);
+        }
+        else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.TipoDatoBin, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoBit, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoChars, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoDecimalAprox, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoDecimalExacto, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoEntero, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoFechaHora, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoOtro, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoUnicode, null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void TIPO_DATOB(){
+        if(CurrentToken.TokenTypeNValueMatch(Tokens.OperadorAgrupador, "(")){
+            ReadNextToken(Tokens.OperadorAgrupador, "(");
+            if(Error == null) ReadNextToken(Tokens.Entero, null);
+            if(Error == null) TIPO_DATOC();
+            if(Error == null) ReadNextToken(Tokens.OperadorAgrupador, ")");
+        }
+    }
+    void TIPO_DATOC(){
+        if(CurrentToken.TokenTypeNValueMatch(Tokens.Coma, null)){
+            ReadNextToken(Tokens.Coma,null);
+            if(Error == null) ReadNextToken(Tokens.Entero, null);
+        }
+    }
+    
+    //DROP
     void Drop(){
         ReadNextToken(Tokens.Reservada, "DROP");
         if(Error == null) DropA();
     }
-    
     void DropA(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "TABLE")){
             DropTable();
@@ -274,7 +323,6 @@ public class XATopDown {
             Error.SetET(expectedTokens);
         }
     }
-    
     //DROP TABLE
     void DropTable(){
         ReadNextToken(Tokens.Reservada, "TABLE");
@@ -346,72 +394,6 @@ public class XATopDown {
             if(Error == null) DropIndexA();
             if(Error == null) Object3();
             if(Error == null) DropIndexB();
-        }
-    }
-    
-    
-    void Select(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "SELECT")){
-            ReadNextToken(Tokens.Reservada, "SELECT");
-            SelectA();
-        }
-        else{
-            ERRORTHROW();
-            List<JToken> expectedTokens = new ArrayList();
-            expectedTokens.add(new JToken(Tokens.Reservada, "SELECT"));
-            Error.SetET(expectedTokens);
-        }
-    }
-    
-    void SelectA(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.OperadorAritmetico, "*")){
-            ReadNextToken(Tokens.OperadorAgrupador, "*");
-        }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "DISTINCT")){
-            ReadNextToken(Tokens.OperadorAgrupador, "DISTINCT");
-        }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "TOP")){
-            TOP();
-        }
-        else if(
-            CurrentToken.TokenTypeNValueMatch(Tokens.Identificador, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.OperadorAgrupador, "[" )
-          ){
-            Object3();
-        }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "ALL")){
-            ReadNextToken(Tokens.OperadorAgrupador, "ALL");
-        }
-        
-        else{
-            ERRORTHROW();
-            List<JToken> expectedTokens = new ArrayList();
-            
-            Error.SetET(expectedTokens);
-        }
-    }
-    
-    void TOP(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"TOP")){
-            ReadNextToken(Tokens.Reservada, "TOP");
-            if(Error == null){
-                ReadNextToken(Tokens.OperadorAgrupador, "(");
-            }
-            if(Error == null){
-                ReadNextToken(Tokens.Entero, null);
-            }
-            if(Error == null){
-                ReadNextToken(Tokens.OperadorAgrupador, ")");
-            }
-            if(Error == null){
-                TopA();
-            }
-        }
-    }
-    
-    void TopA(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"PERCENT")){
-            ReadNextToken(Tokens.Reservada, "PERCENT");
         }
     }
 }
