@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class XATopDown {
     public List<JToken> TokensList;
+    private int CTP;
     private JToken CurrentToken;
     private JTError Error;
     
@@ -42,10 +43,24 @@ public class XATopDown {
         TokensList = new ArrayList();
         TokensList.addAll(tokens);
         CurrentToken = null;
+        CTP = -1;
         Error = null;
+    }
+    
+    private void ReadNextToken(JToken expected){
+        if(CurrentToken.TokenTypeNValueMatch(expected)){
+            CTP++;
+            if(CTP < TokensList.size())
+                CurrentToken = TokensList.get(CTP);
+        }else{
+            ERRORTHROW();
+        }
     }
     
     private void ERRORTHROW() {
         Error = new JTError(CurrentToken);
+    }
+    private void ERRORANUL(){
+        Error = null;
     }
 }

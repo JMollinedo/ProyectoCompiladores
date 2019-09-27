@@ -5,12 +5,25 @@
  */
 package lexgen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author jmoll
  */
 public class JTError extends JToken {
-    public JTError(JToken token){
+    private List<JToken> expectedTokens;
+    
+    public List<JToken> GetET(){
+        return expectedTokens;
+    }
+    public void SetET(List<JToken> expectedTokens){
+        this.expectedTokens = new ArrayList();
+        this.expectedTokens.addAll(expectedTokens);
+    }
+    
+    public JTError(JToken token, List<JToken> expectedTokens){
         jTID = token.jTID;
         value = token.value;
         line = token.line;
@@ -18,6 +31,13 @@ public class JTError extends JToken {
         endColumn = token.endColumn;
         this.token = token.token;
         value = token.value;
+        this.expectedTokens = new ArrayList();
+        if(expectedTokens != null)
+            this.expectedTokens.addAll(expectedTokens);
+    }
+    
+    public JTError(JToken token){
+        this(token,null);
     }
     
     public String ErrorMessage(){
@@ -32,6 +52,11 @@ public class JTError extends JToken {
         sb.append(endColumn);
         sb.append("\n Token Type: ");
         sb.append(token);
+        sb.append("\n Exepcted:");
+        for(int i = 0; i < expectedTokens.size(); i++){
+            sb.append("\n\tToken");
+            sb.append(expectedTokens.get(i).token);
+        }
         return sb.toString();
     }
 }

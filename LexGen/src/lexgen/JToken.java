@@ -147,7 +147,14 @@ public class JToken {
         return tk;
     }
 
+    public boolean TokenTypeNValueMatch(Tokens token, String value){
+        if(value.isEmpty()){
+            return this.token == token;
+        }
+        return this.token == token && this.value.equals(value);
+    }
+    
     public boolean TokenTypeNValueMatch(JToken token){
-        return this.token == token.token && this.value.equals(token.value);
+        return TokenTypeNValueMatch(token.token, token.value);
     }
 }
