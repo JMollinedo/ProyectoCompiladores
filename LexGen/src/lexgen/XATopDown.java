@@ -99,7 +99,7 @@ public class XATopDown {
     private void ExcAnalisys(){
         CTP = 0;
         CurrentToken = TokensList.get(CTP);
-        INICIAL();
+        Inicial();
     }
     private XATopDown(List<JToken> tokens){
         TokensList = new ArrayList();
@@ -126,11 +126,11 @@ public class XATopDown {
     }
     
     //Empiezan los Recursivos
-    void INICIAL(){
-        INICIALA();
-        if(Error == null) FINAL();
+    void Inicial(){
+        InicialA();
+        if(Error == null) Final();
     }
-    void INICIALA(){
+    void InicialA(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"ALTER")){
             //Alter();
         }
@@ -150,7 +150,7 @@ public class XATopDown {
             //Select();
         }
         else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"TRUNCATE")){
-            //Alter();
+            Truncate();
         }
         else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"UPDATE")){
             //Alter();
@@ -169,7 +169,7 @@ public class XATopDown {
         }
         
     }
-    void FINAL(){
+    void Final(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.PYC,null)){
             ReadNextToken(Tokens.PYC, null);
         }
@@ -203,9 +203,9 @@ public class XATopDown {
     }
     void Object2(){
         ID();
-        if(Error == null) Object2a();
+        if(Error == null) Object2A();
     }
-    void Object2a(){
+    void Object2A(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Punto,null)){
             ReadNextToken(Tokens.Punto, null);
             if(Error == null) ID();
@@ -213,9 +213,9 @@ public class XATopDown {
     }
     void Object3(){
         ID();
-        Object3a();
+        Object3A();
     }
-    void Object3a(){
+    void Object3A(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Punto,null)){
             ReadNextToken(Tokens.Punto, null);
             if(Error == null) Object2();
@@ -229,11 +229,46 @@ public class XATopDown {
     }
     
     //TIPO DE DATO
-    void TIPO_DATO(){
-        TIPO_DATOA();
-        TIPO_DATOB();
+    void Tipo_dato(){
+        Tipo_datoD();
+        Tipo_datoB();
     }
-    void TIPO_DATOA(){
+    void Tipo_datoD(){
+        if(
+            CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoBin, null)
+            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoBit, null)
+            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoChars, null)
+            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoDecimalAprox, null)
+            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoDecimalExacto, null)
+            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoEntero, null)
+            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoFechaHora, null)
+            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoOtro, null)
+            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoUnicode, null)
+          ){
+            Tipo_datoA();
+        }
+        else if(CurrentToken.TokenTypeNValueMatch(Tokens.OperadorAgrupador, "[" )){
+            ReadNextToken(Tokens.OperadorAgrupador, "[" );
+            if(Error == null) Tipo_datoA();
+            if(Error == null) ReadNextToken(Tokens.OperadorAgrupador, "]" );
+        }
+        else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.TipoDatoBin, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoBit, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoChars, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoDecimalAprox, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoDecimalExacto, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoEntero, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoFechaHora, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoOtro, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoUnicode, null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador, "["));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void Tipo_datoA(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoBin, null)){
             ReadNextToken(Tokens.TipoDatoBin, null);
         }
@@ -276,15 +311,15 @@ public class XATopDown {
             Error.SetET(expectedTokens);
         }
     }
-    void TIPO_DATOB(){
+    void Tipo_datoB(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.OperadorAgrupador, "(")){
             ReadNextToken(Tokens.OperadorAgrupador, "(");
             if(Error == null) ReadNextToken(Tokens.Entero, null);
-            if(Error == null) TIPO_DATOC();
+            if(Error == null) Tipo_datoC();
             if(Error == null) ReadNextToken(Tokens.OperadorAgrupador, ")");
         }
     }
-    void TIPO_DATOC(){
+    void Tipo_datoC(){
         if(CurrentToken.TokenTypeNValueMatch(Tokens.Coma, null)){
             ReadNextToken(Tokens.Coma,null);
             if(Error == null) ReadNextToken(Tokens.Entero, null);
@@ -301,7 +336,7 @@ public class XATopDown {
             DropTable();
         }
         else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "USER")){
-            DropLogin();
+            DropUser();
         }
         else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "DATABASE")){
             DropDatabase();
@@ -337,8 +372,8 @@ public class XATopDown {
             if(Error == null) DropTableA();
         }
     }
-    //DROP LOGIN
-    void DropLogin(){
+    //DROP USER
+    void DropUser(){
         ReadNextToken(Tokens.Reservada, "USER");
         if(Error == null) IFE();
         if(Error == null) ReadNextToken(Tokens.Identificador, null);
@@ -395,5 +430,12 @@ public class XATopDown {
             if(Error == null) Object3();
             if(Error == null) DropIndexB();
         }
+    }
+    
+    //TRUNCATE
+    void Truncate(){
+        ReadNextToken(Tokens.Reservada, "TRUNCATE");
+        if(Error == null) ReadNextToken(Tokens.Reservada, "TABLE");
+        if(Error == null) Object3();
     }
 }
