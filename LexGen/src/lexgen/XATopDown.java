@@ -16,7 +16,7 @@ import java.util.List;
 public class XATopDown {
     public List<JToken> TokensList;
     private int CTP;
-    private JToken CurrentToken;
+    private JToken CTok;
     private JTError Error;
     
     private static JToken Ending(JToken prev){
@@ -27,6 +27,10 @@ public class XATopDown {
         t.token = Tokens.FinSintaxis;
         t.value = null;
         return t;
+    }
+    private void ResetPosition(int resetPos){
+        CTP = resetPos;
+        CTok = TokensList.get(CTP);
     }
     
     public static String analizeCSVfile(String path) throws IOException{
@@ -98,22 +102,22 @@ public class XATopDown {
     }
     private void ExcAnalisys(){
         CTP = 0;
-        CurrentToken = TokensList.get(CTP);
+        CTok = TokensList.get(CTP);
         Inicial();
     }
     private XATopDown(List<JToken> tokens){
         TokensList = new ArrayList();
         TokensList.addAll(tokens);
-        CurrentToken = null;
+        CTok = null;
         CTP = -1;
         Error = null;
     }
     
-    private void ReadNextToken(Tokens expected, String value){
-        if(CurrentToken.TokenTypeNValueMatch(expected, value)){
+    private void ReadNext(Tokens expected, String value){
+        if(CTok.TNVMatch(expected, value)){
             CTP++;
             if(CTP < TokensList.size())
-                CurrentToken = TokensList.get(CTP);
+                CTok = TokensList.get(CTP);
         }else{
             ERRORTHROW();
             List<JToken> expectedTokens = new ArrayList();
@@ -122,7 +126,14 @@ public class XATopDown {
         }
     }
     private void ERRORTHROW() {
-        Error = new JTError(CurrentToken);
+        Error = new JTError(CTok);
+    }
+    
+    //De uso comun
+    boolean IDfirst(){
+        return
+                CTok.TNVMatch(Tokens.Identificador, null)
+                || CTok.TNVMatch(Tokens.OperadorAgrupador, "[" );
     }
     
     //Empiezan los Recursivos
@@ -131,28 +142,28 @@ public class XATopDown {
         if(Error == null) Final();
     }
     void InicialA(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"ALTER")){
+        if(CTok.TNVMatch(Tokens.Reservada,"ALTER")){
             //Alter();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"CREATE")){
+        else if(CTok.TNVMatch(Tokens.Reservada,"CREATE")){
             //Alter();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"DELETE")){
+        else if(CTok.TNVMatch(Tokens.Reservada,"DELETE")){
             //Alter();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"DROP")){
+        else if(CTok.TNVMatch(Tokens.Reservada,"DROP")){
             Drop();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"INSERT")){
+        else if(CTok.TNVMatch(Tokens.Reservada,"INSERT")){
             //Alter();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"SELECT")){
+        else if(CTok.TNVMatch(Tokens.Reservada,"SELECT")){
             //Select();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"TRUNCATE")){
+        else if(CTok.TNVMatch(Tokens.Reservada,"TRUNCATE")){
             Truncate();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada,"UPDATE")){
+        else if(CTok.TNVMatch(Tokens.Reservada,"UPDATE")){
             //Alter();
         }else{
             ERRORTHROW();
@@ -170,11 +181,11 @@ public class XATopDown {
         
     }
     void Final(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.PYC,null)){
-            ReadNextToken(Tokens.PYC, null);
+        if(CTok.TNVMatch(Tokens.PYC,null)){
+            ReadNext(Tokens.PYC, null);
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada ,"GO")){
-            ReadNextToken(Tokens.Reservada ,"GO");
+        else if(CTok.TNVMatch(Tokens.Reservada ,"GO")){
+            ReadNext(Tokens.Reservada ,"GO");
         }
         else{
             ERRORTHROW();
@@ -186,12 +197,12 @@ public class XATopDown {
     }
     
     void ID(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Identificador, null)){
-            ReadNextToken(Tokens.Identificador, null);
-        }else if(CurrentToken.TokenTypeNValueMatch(Tokens.OperadorAgrupador, "[" )){
-            ReadNextToken(Tokens.OperadorAgrupador, "[");
-            if(Error == null) ReadNextToken(Tokens.Identificador, null);
-            if(Error == null) ReadNextToken(Tokens.OperadorAgrupador, "]");
+        if(CTok.TNVMatch(Tokens.Identificador, null)){
+            ReadNext(Tokens.Identificador, null);
+        }else if(CTok.TNVMatch(Tokens.OperadorAgrupador, "[" )){
+            ReadNext(Tokens.OperadorAgrupador, "[");
+            if(Error == null) ReadNext(Tokens.Identificador, null);
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador, "]");
         }
         else{
             ERRORTHROW();
@@ -206,8 +217,8 @@ public class XATopDown {
         if(Error == null) Object2A();
     }
     void Object2A(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Punto,null)){
-            ReadNextToken(Tokens.Punto, null);
+        if(CTok.TNVMatch(Tokens.Punto,null)){
+            ReadNext(Tokens.Punto, null);
             if(Error == null) ID();
         }
     }
@@ -216,15 +227,15 @@ public class XATopDown {
         Object3A();
     }
     void Object3A(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Punto,null)){
-            ReadNextToken(Tokens.Punto, null);
+        if(CTok.TNVMatch(Tokens.Punto,null)){
+            ReadNext(Tokens.Punto, null);
             if(Error == null) Object2();
         }
     }
     void IFE(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "IF")){
-            ReadNextToken(Tokens.Reservada, "IF");
-            if(Error == null) ReadNextToken(Tokens.Reservada, "EXISTS");
+        if(CTok.TNVMatch(Tokens.Reservada, "IF")){
+            ReadNext(Tokens.Reservada, "IF");
+            if(Error == null) ReadNext(Tokens.Reservada, "EXISTS");
         }
     }
     
@@ -235,22 +246,22 @@ public class XATopDown {
     }
     void Tipo_datoD(){
         if(
-            CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoBin, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoBit, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoChars, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoDecimalAprox, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoDecimalExacto, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoEntero, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoFechaHora, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoOtro, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoUnicode, null)
+            CTok.TNVMatch(Tokens.TipoDatoBin, null)
+            || CTok.TNVMatch(Tokens.TipoDatoBit, null)
+            || CTok.TNVMatch(Tokens.TipoDatoChars, null)
+            || CTok.TNVMatch(Tokens.TipoDatoDecimalAprox, null)
+            || CTok.TNVMatch(Tokens.TipoDatoDecimalExacto, null)
+            || CTok.TNVMatch(Tokens.TipoDatoEntero, null)
+            || CTok.TNVMatch(Tokens.TipoDatoFechaHora, null)
+            || CTok.TNVMatch(Tokens.TipoDatoOtro, null)
+            || CTok.TNVMatch(Tokens.TipoDatoUnicode, null)
           ){
             Tipo_datoA();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.OperadorAgrupador, "[" )){
-            ReadNextToken(Tokens.OperadorAgrupador, "[" );
+        else if(CTok.TNVMatch(Tokens.OperadorAgrupador, "[" )){
+            ReadNext(Tokens.OperadorAgrupador, "[" );
             if(Error == null) Tipo_datoA();
-            if(Error == null) ReadNextToken(Tokens.OperadorAgrupador, "]" );
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador, "]" );
         }
         else{
             ERRORTHROW();
@@ -269,32 +280,32 @@ public class XATopDown {
         }
     }
     void Tipo_datoA(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoBin, null)){
-            ReadNextToken(Tokens.TipoDatoBin, null);
+        if(CTok.TNVMatch(Tokens.TipoDatoBin, null)){
+            ReadNext(Tokens.TipoDatoBin, null);
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoBit, null)){
-            ReadNextToken(Tokens.TipoDatoBit, null);
+        else if(CTok.TNVMatch(Tokens.TipoDatoBit, null)){
+            ReadNext(Tokens.TipoDatoBit, null);
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoChars, null)){
-            ReadNextToken(Tokens.TipoDatoChars, null);
+        else if(CTok.TNVMatch(Tokens.TipoDatoChars, null)){
+            ReadNext(Tokens.TipoDatoChars, null);
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoDecimalAprox, null)){
-            ReadNextToken(Tokens.TipoDatoDecimalAprox, null);
+        else if(CTok.TNVMatch(Tokens.TipoDatoDecimalAprox, null)){
+            ReadNext(Tokens.TipoDatoDecimalAprox, null);
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoDecimalExacto, null)){
-            ReadNextToken(Tokens.TipoDatoDecimalExacto, null);
+        else if(CTok.TNVMatch(Tokens.TipoDatoDecimalExacto, null)){
+            ReadNext(Tokens.TipoDatoDecimalExacto, null);
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoEntero, null)){
-            ReadNextToken(Tokens.TipoDatoEntero, null);
+        else if(CTok.TNVMatch(Tokens.TipoDatoEntero, null)){
+            ReadNext(Tokens.TipoDatoEntero, null);
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoFechaHora, null)){
-            ReadNextToken(Tokens.TipoDatoFechaHora, null);
+        else if(CTok.TNVMatch(Tokens.TipoDatoFechaHora, null)){
+            ReadNext(Tokens.TipoDatoFechaHora, null);
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoOtro, null)){
-            ReadNextToken(Tokens.TipoDatoOtro, null);
+        else if(CTok.TNVMatch(Tokens.TipoDatoOtro, null)){
+            ReadNext(Tokens.TipoDatoOtro, null);
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.TipoDatoUnicode, null)){
-            ReadNextToken(Tokens.TipoDatoUnicode, null);
+        else if(CTok.TNVMatch(Tokens.TipoDatoUnicode, null)){
+            ReadNext(Tokens.TipoDatoUnicode, null);
         }
         else{
             ERRORTHROW();
@@ -312,39 +323,39 @@ public class XATopDown {
         }
     }
     void Tipo_datoB(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.OperadorAgrupador, "(")){
-            ReadNextToken(Tokens.OperadorAgrupador, "(");
-            if(Error == null) ReadNextToken(Tokens.Entero, null);
+        if(CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
+            ReadNext(Tokens.OperadorAgrupador, "(");
+            if(Error == null) ReadNext(Tokens.Entero, null);
             if(Error == null) Tipo_datoC();
-            if(Error == null) ReadNextToken(Tokens.OperadorAgrupador, ")");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador, ")");
         }
     }
     void Tipo_datoC(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Coma, null)){
-            ReadNextToken(Tokens.Coma,null);
-            if(Error == null) ReadNextToken(Tokens.Entero, null);
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null) ReadNext(Tokens.Entero, null);
         }
     }
     
     //DROP
     void Drop(){
-        ReadNextToken(Tokens.Reservada, "DROP");
+        ReadNext(Tokens.Reservada, "DROP");
         if(Error == null) DropA();
     }
     void DropA(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "TABLE")){
+        if(CTok.TNVMatch(Tokens.Reservada, "TABLE")){
             DropTable();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "USER")){
+        else if(CTok.TNVMatch(Tokens.Reservada, "USER")){
             DropUser();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "DATABASE")){
+        else if(CTok.TNVMatch(Tokens.Reservada, "DATABASE")){
             DropDatabase();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "VIEW")){
+        else if(CTok.TNVMatch(Tokens.Reservada, "VIEW")){
             DropView();
         }
-        else if(CurrentToken.TokenTypeNValueMatch(Tokens.Reservada, "INDEX")){
+        else if(CTok.TNVMatch(Tokens.Reservada, "INDEX")){
             DropIndex();
         }
         else{
@@ -360,72 +371,69 @@ public class XATopDown {
     }
     //DROP TABLE
     void DropTable(){
-        ReadNextToken(Tokens.Reservada, "TABLE");
+        ReadNext(Tokens.Reservada, "TABLE");
         if(Error == null) IFE();
         if(Error == null) Object3();
         if(Error == null) DropTableA();
     }
     void DropTableA(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Coma, null)){
-            ReadNextToken(Tokens.Coma,null);
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
             if(Error == null) Object3();
             if(Error == null) DropTableA();
         }
     }
     //DROP USER
     void DropUser(){
-        ReadNextToken(Tokens.Reservada, "USER");
+        ReadNext(Tokens.Reservada, "USER");
         if(Error == null) IFE();
-        if(Error == null) ReadNextToken(Tokens.Identificador, null);
+        if(Error == null) ReadNext(Tokens.Identificador, null);
     }
     //DROP DATABASE
     void DropDatabase(){
-        ReadNextToken(Tokens.Reservada, "DATABASE");
+        ReadNext(Tokens.Reservada, "DATABASE");
         if(Error == null) IFE();
         if(Error == null) ID();
         if(Error == null) DropDatabaseA();
     }
     void DropDatabaseA(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Coma, null)){
-            ReadNextToken(Tokens.Coma,null);
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
             if(Error == null) ID();
             if(Error == null) DropDatabaseA();
         }
     }
     //DROP VIEW
     void DropView(){
-        ReadNextToken(Tokens.Reservada, "VIEW");
+        ReadNext(Tokens.Reservada, "VIEW");
         if(Error == null) IFE();
         if(Error == null) Object2();
         if(Error == null) DropViewA();
     }
     void DropViewA(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Coma, null)){
-            ReadNextToken(Tokens.Coma,null);
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
             if(Error == null) Object2();
             if(Error == null) DropViewA();
         }
     }
     //DROP INDEX
     void DropIndex(){
-        ReadNextToken(Tokens.Reservada, "INDEX");
+        ReadNext(Tokens.Reservada, "INDEX");
         if(Error == null) IFE();
         if(Error == null) DropIndexA();
         if(Error == null) Object3();
         if(Error == null) DropIndexB();
     }
     void DropIndexA(){
-        if(
-            CurrentToken.TokenTypeNValueMatch(Tokens.Identificador, null)
-            || CurrentToken.TokenTypeNValueMatch(Tokens.OperadorAgrupador, "[" )
-          ){
+        if(IDfirst()){
             ID();
-            if(Error == null) ReadNextToken(Tokens.Reservada, "ON");
+            if(Error == null) ReadNext(Tokens.Reservada, "ON");
         }
     }
     void DropIndexB(){
-        if(CurrentToken.TokenTypeNValueMatch(Tokens.Coma, null)){
-            ReadNextToken(Tokens.Coma,null);
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
             if(Error == null) DropIndexA();
             if(Error == null) Object3();
             if(Error == null) DropIndexB();
@@ -434,8 +442,354 @@ public class XATopDown {
     
     //TRUNCATE
     void Truncate(){
-        ReadNextToken(Tokens.Reservada, "TRUNCATE");
-        if(Error == null) ReadNextToken(Tokens.Reservada, "TABLE");
+        ReadNext(Tokens.Reservada, "TRUNCATE");
+        if(Error == null) ReadNext(Tokens.Reservada, "TABLE");
         if(Error == null) Object3();
+    }
+    
+    //ALIAS
+    void Alias(){
+        if(CTok.TNVMatch(Tokens.Reservada,"AS")){
+            AliasA();
+        }else if(IDfirst()){
+            AliasA();
+        }
+    }
+    void AliasA(){
+        if(IDfirst()){
+            ID();
+        }else if(CTok.TNVMatch(Tokens.Varchar,null)){
+            ReadNext(Tokens.Varchar, null);
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Varchar,null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    
+    //EXPRESION
+    void Expresion(){
+        ExpresionB();
+        if(Error == null) ExpresionA();
+    }
+    void ExpresionA(){
+        if(CTok.TNVMatch(Tokens.OperadorAritmetico, "+")){
+            ReadNext(Tokens.OperadorAritmetico,"+");
+            if(Error == null) ExpresionB();
+            if(Error == null) ExpresionA();
+        }else if(CTok.TNVMatch(Tokens.OperadorAritmetico, "-")){
+            ReadNext(Tokens.OperadorAritmetico,"-");
+            if(Error == null) ExpresionB();
+            if(Error == null) ExpresionA();
+        }
+    }
+    void ExpresionB(){
+        ExpresionD();
+        if(Error == null) ExpresionC();
+    }
+    void ExpresionC(){
+        if(CTok.TNVMatch(Tokens.OperadorAritmetico, "*")){
+            ReadNext(Tokens.OperadorAritmetico,"*");
+            if(Error == null) ExpresionD();
+            if(Error == null) ExpresionC();
+        }else if(CTok.TNVMatch(Tokens.OperadorAritmetico, "/")){
+            ReadNext(Tokens.OperadorAritmetico,"/");
+            if(Error == null) ExpresionD();
+            if(Error == null) ExpresionC();
+        }
+    }
+    void ExpresionD(){
+        if(CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
+            ReadNext(Tokens.OperadorAritmetico,"(");
+            if(Error == null) Expresion();
+            if(Error == null) ReadNext(Tokens.OperadorAritmetico,")");
+        }else if(
+                IDfirst()
+                || CTok.TNVMatch(Tokens.Entero, null)
+                || CTok.TNVMatch(Tokens.Flotante , null)
+                || CTok.TNVMatch(Tokens.Varchar, null)
+                ){
+            ExpresionE();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"("));
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Varchar,null));
+            expectedTokens.add(new JToken(Tokens.Entero,null));
+            expectedTokens.add(new JToken(Tokens.Flotante,null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void ExpresionE(){
+        if(IDfirst()){
+            Object2();
+        }else if(CTok.TNVMatch(Tokens.Entero, null)){
+            ReadNext(Tokens.Entero,null);
+        }else if(CTok.TNVMatch(Tokens.Flotante, null)){
+            ReadNext(Tokens.Flotante,null);
+        }else if(CTok.TNVMatch(Tokens.Varchar, null)){
+            ReadNext(Tokens.Varchar,null);
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Varchar,null));
+            expectedTokens.add(new JToken(Tokens.Entero,null));
+            expectedTokens.add(new JToken(Tokens.Flotante,null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void Expresiones(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma, null);
+            if(Error == null) Expresion();
+            if(Error == null) Expresiones();
+        }
+    }
+    
+    //NOT()
+    void Not(){
+        if(CTok.TNVMatch(Tokens.Reservada, "NOT")){
+            ReadNext(Tokens.Reservada, "NOT");
+        }
+    }
+    
+    //Search Condition
+    void SearchCondition(){
+        if(
+                CTok.TNVMatch(Tokens.Reservada, "NOT")
+                ||IDfirst()
+                || CTok.TNVMatch(Tokens.Entero, null)
+                || CTok.TNVMatch(Tokens.Flotante , null)
+                || CTok.TNVMatch(Tokens.Varchar, null)
+                ){
+            Not();
+            if(Error == null) Predicado();
+            if(Error == null) SearchConditionA();
+        }
+        else if(CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
+            int index = CTP;
+            
+            Predicado();
+            if(Error == null) SearchConditionA();
+            
+            else{
+                JTError tmp = null;
+                Error.copyTo(tmp);
+                
+                Error = null;
+                ResetPosition(index);
+                
+                CTok.TNVMatch(Tokens.OperadorAgrupador, "(");
+                if(Error == null) SearchCondition();
+                if(Error == null) CTok.TNVMatch(Tokens.OperadorAgrupador, ")");
+                if(Error == null) SearchConditionA();
+            }
+        }else{
+            
+        }
+    }
+    void SearchConditionA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "AND")){
+            ReadNext(Tokens.Reservada, "AND");
+            if (Error == null) SearchCondition();
+            if (Error == null) SearchConditionA();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "OR")){
+            ReadNext(Tokens.Reservada, "OR");
+            if (Error == null) SearchCondition();
+            if (Error == null) SearchConditionA();
+        }
+    }
+    void Predicado(){
+        Expresion();
+        if (Error == null) PredicadoA();
+    }
+    void PredicadoA(){
+        if(CTok.TNVMatch(Tokens.OperadorLogico, null)){
+            ReadNext(Tokens.OperadorLogico, null);
+            if(Error == null) Expresion();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "IS")){
+            ReadNext(Tokens.Reservada, "IS");
+            if(Error == null) Not();
+            if(Error == null) ReadNext(Tokens.Reservada , "NULL");
+        }else if(
+                CTok.TNVMatch(Tokens.Reservada, "NOT")
+                || CTok.TNVMatch(Tokens.Reservada, "IN")
+                || CTok.TNVMatch(Tokens.Reservada, "BETWEEN")
+                || CTok.TNVMatch(Tokens.Reservada, "LIKE")
+                ){
+            Not();
+            if(Error == null) PredicadoC();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.OperadorLogico, null));
+            expectedTokens.add(new JToken(Tokens.Reservada, "IS"));
+            expectedTokens.add(new JToken(Tokens.Reservada, "NOT"));
+            expectedTokens.add(new JToken(Tokens.Reservada, "IN"));
+            expectedTokens.add(new JToken(Tokens.Reservada, "BETWEEN"));
+            expectedTokens.add(new JToken(Tokens.Reservada, "LIKE"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void PredicadoC(){
+        if(CTok.TNVMatch(Tokens.Reservada, "IN")){
+            ReadNext(Tokens.Reservada, "IN");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador, "(");
+            if(Error == null) Expresion();
+            if(Error == null) Expresiones();
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador, ")");
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "BETWEEN")){
+            ReadNext(Tokens.Reservada, "BETWEEN");
+            if(Error == null) Expresion();
+            if(Error == null) ReadNext(Tokens.Reservada , "AND");
+            if(Error == null) Expresion();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "LIKE")){
+            ReadNext(Tokens.Reservada, "LIKE");
+            if(Error == null) Expresion();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada, "LIKE"));
+            expectedTokens.add(new JToken(Tokens.Reservada, "IN"));
+            expectedTokens.add(new JToken(Tokens.Reservada, "BETWEEN"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    
+    //Where
+    void Where(){
+        ReadNext(Tokens.Reservada,"WHERE");
+        if(Error == null) SearchCondition();
+    }
+    
+    //Expresion con Agregacion
+    void ExpresionAgregacion(){
+        ExpresionAgregacionB();
+        if(Error == null) ExpresionAgregacionA();
+    }
+    void ExpresionAgregacionA(){
+        if(CTok.TNVMatch(Tokens.OperadorAritmetico, "+")){
+            ReadNext(Tokens.OperadorAritmetico,"+");
+            if(Error == null) ExpresionAgregacionB();
+            if(Error == null) ExpresionAgregacionA();
+        }else if(CTok.TNVMatch(Tokens.OperadorAritmetico, "-")){
+            ReadNext(Tokens.OperadorAritmetico,"-");
+            if(Error == null) ExpresionAgregacionB();
+            if(Error == null) ExpresionAgregacionA();
+        }
+    }
+    void ExpresionAgregacionB(){
+        ExpresionAgregacionD();
+        if(Error == null) ExpresionAgregacionC();
+    }
+    void ExpresionAgregacionC(){
+        if(CTok.TNVMatch(Tokens.OperadorAritmetico, "*")){
+            ReadNext(Tokens.OperadorAritmetico,"*");
+            if(Error == null) ExpresionAgregacionD();
+            if(Error == null) ExpresionAgregacionC();
+        }else if(CTok.TNVMatch(Tokens.OperadorAritmetico, "/")){
+            ReadNext(Tokens.OperadorAritmetico,"/");
+            if(Error == null) ExpresionAgregacionD();
+            if(Error == null) ExpresionAgregacionC();
+        }
+    }
+    void ExpresionAgregacionD(){
+        if(CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
+            ReadNext(Tokens.OperadorAritmetico,"(");
+            if(Error == null) ExpresionAgregacion();
+            if(Error == null) ReadNext(Tokens.OperadorAritmetico,")");
+        }else if(
+                IDfirst()
+                || CTok.TNVMatch(Tokens.Entero, null)
+                || CTok.TNVMatch(Tokens.Flotante , null)
+                || CTok.TNVMatch(Tokens.Varchar, null)
+                ){
+            ExpresionAgregacionE();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"("));
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Varchar,null));
+            expectedTokens.add(new JToken(Tokens.Entero,null));
+            expectedTokens.add(new JToken(Tokens.Flotante,null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void ExpresionAgregacionE(){
+        if(
+                IDfirst()
+                || CTok.TNVMatch(Tokens.Entero, null)
+                || CTok.TNVMatch(Tokens.Flotante , null)
+                || CTok.TNVMatch(Tokens.Varchar, null)
+                ){
+            ExpresionE();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "SUM")){
+            CTok.TNVMatch(Tokens.Reservada, "SUM");
+            if(Error == null) CTok.TNVMatch(Tokens.OperadorAgrupador, "(");
+            if(Error == null) ExpresionAgregacionF();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "AVG")){
+            CTok.TNVMatch(Tokens.Reservada, "AVG");
+            if(Error == null) CTok.TNVMatch(Tokens.OperadorAgrupador, "(");
+            if(Error == null) ExpresionAgregacionF();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "MIN")){
+            CTok.TNVMatch(Tokens.Reservada, "MIN");
+            if(Error == null) CTok.TNVMatch(Tokens.OperadorAgrupador, "(");
+            if(Error == null) ExpresionAgregacionF();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "MAX")){
+            CTok.TNVMatch(Tokens.Reservada, "MAX");
+            if(Error == null) CTok.TNVMatch(Tokens.OperadorAgrupador, "(");
+            if(Error == null) ExpresionAgregacionF();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Varchar,null));
+            expectedTokens.add(new JToken(Tokens.Entero,null));
+            expectedTokens.add(new JToken(Tokens.Flotante,null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void ExpresionAgregacionF(){
+        if(IDfirst()){
+            Object2();
+            if(Error == null) CTok.TNVMatch(Tokens.OperadorAgrupador, ")");
+        }else if(CTok.TNVMatch(Tokens.Entero, null)){
+            CTok.TNVMatch(Tokens.Entero, null);
+            if(Error == null) CTok.TNVMatch(Tokens.OperadorAgrupador, ")");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Entero,null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    
+    //Select Columns
+    void SelectColumns(){
+        ExpresionAgregacion();
+        if(Error == null) Alias();
+        if(Error == null) SelectColumnsA();
+    }
+    void SelectColumnsA(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma, null);
+            if(Error == null) ExpresionAgregacion();
+            if(Error == null) Alias();
+            if(Error == null) SelectColumnsA();
+        }
     }
 }

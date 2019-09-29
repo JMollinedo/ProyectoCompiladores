@@ -154,7 +154,7 @@ public class JToken {
         return tk;
     }
 
-    public boolean TokenTypeNValueMatch(Tokens token, String value){
+    public boolean TNVMatch(Tokens token, String value){
         if(value == null){
             return this.token == token;
         }
@@ -165,6 +165,6 @@ public class JToken {
     }
     
     public boolean TokenTypeNValueMatch(JToken token){
-        return TokenTypeNValueMatch(token.token, token.value);
+        return TNVMatch(token.token, token.value);
     }
 }

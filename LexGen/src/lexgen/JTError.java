@@ -40,6 +40,17 @@ public class JTError extends JToken {
         this(token,null);
     }
     
+    public void copyTo(JTError jte){
+        JToken a = new JToken();
+        a.endColumn = this.endColumn;
+        a.jTID = this.jTID;
+        a.line = this.line;
+        a.startColumn = this.startColumn;
+        a.token = this.token;
+        a.value = this.value;
+        jte = new JTError(a,this.expectedTokens);
+    }
+    
     public String ErrorMessage(){
         StringBuilder sb = new StringBuilder();
         sb.append("Error in Parsing:");
