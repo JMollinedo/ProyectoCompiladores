@@ -163,21 +163,21 @@ public class XATopDown {
     }
     void InicialA(){
         if(CTok.TNVMatch(Tokens.Reservada,"SELECT")){
-            //Select();
+            Select();
         }else if(CTok.TNVMatch(Tokens.Reservada,"INSERT")){
-            //Insert();
+            Insert();
         }else if(CTok.TNVMatch(Tokens.Reservada,"DELETE")){
-            //Delete();
+            Delete();
         }else if(CTok.TNVMatch(Tokens.Reservada,"UPDATE")){
-            //Update();
+            Update();
         }else if(CTok.TNVMatch(Tokens.Reservada,"CREATE")){
-            //Create();
+            Create();
         }else if(CTok.TNVMatch(Tokens.Reservada,"ALTER")){
-            //After();
+            After();
         }else if(CTok.TNVMatch(Tokens.Reservada,"DROP")){
-            //Drop();
+            Drop();
         }else if(CTok.TNVMatch(Tokens.Reservada,"TRUNCATE")){
-            //Truncate();
+            Truncate();
         }else{
             ERRORTHROW();
             List<JToken> expectedTokens = new ArrayList();
