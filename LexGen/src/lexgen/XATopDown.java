@@ -1007,4 +1007,54 @@ public class XATopDown {
         }
     }
     //</editor-fold>
+    
+    //Update
+    //<editor-fold>
+    void Update(){
+        ReadNext(Tokens.Reservada,"UPDATE");
+        if(Error == null) Top();
+        if(Error == null) Object3();
+        if(Error == null) ReadNext(Tokens.Reservada,"SET");
+        if(Error == null) UpdateA();
+        if(Error == null) DeleteB();
+        if(Error == null) Where();
+    }
+    void UpdateA(){
+        ID();
+        if(Error == null) ReadNext(Tokens.OperadorLogico,"=");
+        if(Error == null) UpdateB();
+        if(Error == null) UpdateC();
+    }
+    void UpdateB(){
+        if(CTok.TNVMatch(Tokens.Reservada, "DEFAULT")){
+            ReadNext(Tokens.Reservada,"DEFAULT");
+        }else if(ExpresionFirst()){
+            Expresion();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"("));
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Varchar,null));
+            expectedTokens.add(new JToken(Tokens.Entero,null));
+            expectedTokens.add(new JToken(Tokens.Flotante,null));
+            expectedTokens.add(new JToken(Tokens.Reservada,"NULL"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"SUM"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"AVG"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"MIN"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"MAX"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"COUNT"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"DEFAULT"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void UpdateC(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null) UpdateA();
+            if(Error == null) UpdateC();
+        }
+    }
+    //</editor-fold>
 }
