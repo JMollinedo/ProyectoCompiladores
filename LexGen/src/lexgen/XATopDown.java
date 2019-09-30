@@ -1117,6 +1117,8 @@ public class XATopDown {
     }
     //</editor-fold>
     
+    ///Create
+    //<editor-fold>
     void Create(){
         ReadNext(Tokens.Reservada,"CREATE");
         if(Error == null) CreateA();
@@ -1154,13 +1156,13 @@ public class XATopDown {
     }
     void CreateDB(){
         ReadNext(Tokens.Reservada,"DATABASE");
-        if(Error == null) ReadNext(Tokens.Identificador,null);
+        if(Error == null) ID();
         if(Error == null) CreateDBA();
     }
     void CreateDBA(){
         if(CTok.TNVMatch(Tokens.Reservada, "COLLATE")){
             ReadNext(Tokens.Reservada,"COLLATE");
-            if(Error == null) ReadNext(Tokens.Identificador,null);
+            if(Error == null) ID();
         }
     }
     void CreateView(){
@@ -1172,7 +1174,333 @@ public class XATopDown {
     void CreateIndex(){
         
     }
+    //CreateTable
+    //<editor-fold>
     void CreateTable(){
-        
+        ReadNext(Tokens.Reservada,"TABLE");
+        if(Error == null) Object3();
+        if(Error == null) ReadNext(Tokens.OperadorAgrupador,"(");
+        if(Error == null) CNC();
+        if(Error == null) CNCA();
+        if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
     }
+    void NFR(){
+        if(CTok.TNVMatch(Tokens.Reservada, "NOT")){
+            ReadNext(Tokens.Reservada,"NOT");
+            if(Error == null) ReadNext(Tokens.Reservada,"FOR");
+            if(Error == null) ReadNext(Tokens.Reservada,"REPLICATION");
+        }
+    }
+    void CNC(){
+        if(IDFirst()){
+            ColumnDef();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "CONSTRAINT")
+                || CTok.TNVMatch(Tokens.Reservada, "PRIMARY")
+                || CTok.TNVMatch(Tokens.Reservada, "UNIQUE")
+                || CTok.TNVMatch(Tokens.Reservada, "FOREIGN")
+                || CTok.TNVMatch(Tokens.Reservada, "CHECK")
+                ){
+            TableConstr();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "INDEX")){
+            TableIndex();
+        }
+        else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            expectedTokens.add(new JToken(Tokens.Reservada,"CONSTRAINT"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"PRIMARY"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"UNIQUE"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"FOREIGN"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"CHECK"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"INDEX"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void CNCA(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null) CNC();
+            if(Error == null) CNCA();
+        }
+    }
+    //ColumnDef
+    //<editor-fold>
+    void ColumnDef(){
+        ID();
+        if(Error == null) Tipo_dato();
+        if(Error == null) ColumnDefA();
+        if(Error == null) ColumnDefB();
+        if(Error == null) ColumnDefE();
+        if(Error == null) NFR();
+        if(Error == null) ColumnDefG();
+        if(Error == null) ColumnDefH();
+        if(Error == null) ColumnConstr();
+    }
+    void ColumnDefA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "COLLATE")){
+            ReadNext(Tokens.Reservada,"COLLATE");
+            if(Error == null) ID();
+        }
+    }
+    void ColumnDefB(){
+        if(CTok.TNVMatch(Tokens.Reservada, "CONSTRAINT")){
+            ReadNext(Tokens.Reservada,"CONSTRAINT");
+            if(Error == null) ID();
+            if(Error == null) ColumnDefC();
+        }
+    }
+    void ColumnDefC(){
+        if(CTok.TNVMatch(Tokens.Reservada, "DEFAULT")){
+            ReadNext(Tokens.Reservada,"DEFAULT");
+            if(Error == null) ColumnDefD();
+        }
+    }
+    void ColumnDefD(){
+        if(CTok.TNVMatch(Tokens.Entero, null)){
+            ReadNext(Tokens.Entero, null);
+        }else if(CTok.TNVMatch(Tokens.Flotante, null)){
+            ReadNext(Tokens.Flotante, null);
+        }else if(CTok.TNVMatch(Tokens.Varchar, null)){
+            ReadNext(Tokens.Varchar, null);
+        }else if(CTok.TNVMatch(Tokens.Reservada , "NULL")){
+            ReadNext(Tokens.Reservada, "NULL");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Entero,null));
+            expectedTokens.add(new JToken(Tokens.Flotante,null));
+            expectedTokens.add(new JToken(Tokens.Varchar,null));
+            expectedTokens.add(new JToken(Tokens.Reservada,"NULL"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void ColumnDefE(){
+        if(CTok.TNVMatch(Tokens.Reservada, "IDENTITY")){
+            ReadNext(Tokens.Reservada,"IDENTITY");
+            if(Error == null) ColumnDefF();
+        }
+    }
+    void ColumnDefF(){
+        if(CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
+            ReadNext(Tokens.OperadorAgrupador,"(");
+            if(Error == null) ReadNext(Tokens.Entero,null);
+            if(Error == null) ReadNext(Tokens.Coma,null);
+            if(Error == null) ReadNext(Tokens.Entero,null);
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
+        }
+    }
+    void ColumnDefG(){
+        if(CTok.TNVMatch(Tokens.Reservada , "NULL")){
+            ReadNext(Tokens.Reservada , "NULL");
+        }else if(CTok.TNVMatch(Tokens.Reservada, "NOT")){
+            ReadNext(Tokens.Reservada , "NOT");
+            if(Error == null) ReadNext(Tokens.Reservada , "NULL");
+        }
+    }
+    void ColumnDefH(){
+        if(CTok.TNVMatch(Tokens.Reservada, "ROWGUIDCOL")){
+            ReadNext(Tokens.Reservada,"ROWGUIDCOL");
+        }
+    }
+    //</editor-fold>
+    //ColumnConstr
+    //<editor-fold>
+    void ColumnConstr(){
+        if(CTok.TNVMatch(Tokens.Reservada, "CONSTRAINT")
+                || CTok.TNVMatch(Tokens.Reservada, "PRIMARY")
+                || CTok.TNVMatch(Tokens.Reservada, "UNIQUE")
+                || CTok.TNVMatch(Tokens.Reservada, "FOREIGN")
+                || CTok.TNVMatch(Tokens.Reservada, "REFERENCES")
+                || CTok.TNVMatch(Tokens.Reservada, "CHECK")
+                ){
+            ColumnConstrA();
+            if(Error == null) ColumnConstrB();
+            if(Error == null) ColumnConstr();
+        }   
+    }
+    void ColumnConstrA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "CONSTRAINT")){
+            ReadNext(Tokens.Reservada,"CONSTRAINT");
+            if(Error == null) ID();
+        }
+    }
+    void ColumnConstrB(){
+        if(CTok.TNVMatch(Tokens.Reservada, "PRIMARY")){
+            ReadNext(Tokens.Reservada,"PRIMARY");
+            if(Error == null) ReadNext(Tokens.Reservada,"KEY");
+            if(Error == null) ColumnConstrC();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "UNIQUE")){
+            ReadNext(Tokens.Reservada,"UNIQUE");
+            if(Error == null) ColumnConstrC();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "FOREIGN")
+                || CTok.TNVMatch(Tokens.Reservada, "REFERENCES")
+                ){
+            ColumnConstrD();
+            if(Error == null) ReadNext(Tokens.Reservada,"REFERENCES");
+            if(Error == null) Object2();
+            if(Error == null) ColumnConstrE();
+            if(Error == null) ColumnConstrF();
+            if(Error == null) ColumnConstrG();
+            if(Error == null) NFR();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "CHECK")){
+            ReadNext(Tokens.Reservada,"CHECK");
+            if(Error == null) NFR();
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,"(");
+            if(Error == null) SearchCondition();
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"PRIMARY"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"UNIQUE"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"FOREIGN"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"REFERENCES"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"CHECH"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void ColumnConstrC(){
+        if(CTok.TNVMatch(Tokens.Reservada, "CLUSTERED")){
+            ReadNext(Tokens.Reservada, "CLUSTERED");
+        }else if(CTok.TNVMatch(Tokens.Reservada, "NONCLUSTERED")){
+            ReadNext(Tokens.Reservada, "NONCLUSTERED");
+        }
+    }
+    void ColumnConstrD(){
+        if(CTok.TNVMatch(Tokens.Reservada, "FOREIGN")){
+            ReadNext(Tokens.Reservada, "FOREIGN");
+            if(Error == null) ReadNext(Tokens.Reservada, "KEY");
+        }
+    }
+    void ColumnConstrE(){
+        if(CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
+            ReadNext(Tokens.OperadorAgrupador, "(");
+            if(Error == null) ID();
+            ReadNext(Tokens.OperadorAgrupador, ")");
+        }
+    }
+    void ColumnConstrF(){
+        if(CTok.TNVMatch(Tokens.Reservada, "ON")){
+            ReadNext(Tokens.Reservada, "ON");
+            if(Error == null) ReadNext(Tokens.Reservada, "DELETE");
+            if(Error == null) ColumnConstrI();
+        }
+    }
+    void ColumnConstrG(){
+        if(CTok.TNVMatch(Tokens.Reservada, "ON")){
+            ReadNext(Tokens.Reservada, "ON");
+            if(Error == null) ReadNext(Tokens.Reservada, "UPDATE");
+            if(Error == null) ColumnConstrI();
+        }
+    }
+    void ColumnConstrH(){
+        if(CTok.TNVMatch(Tokens.Reservada, "NULL")){
+            ReadNext(Tokens.Reservada, "NULL");;
+        }else if(CTok.TNVMatch(Tokens.Reservada, "DEFAULT")){
+            ReadNext(Tokens.Reservada, "DEFAULT");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"NULL"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"DEFAULT"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void ColumnConstrI(){
+        if(CTok.TNVMatch(Tokens.Reservada, "CASCADE")){
+            ReadNext(Tokens.Reservada, "CASCADE");;
+        }else if(CTok.TNVMatch(Tokens.Reservada, "SET")){
+            ReadNext(Tokens.Reservada, "SET");
+            if(Error == null) ColumnConstrH();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"CASCADE"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"SET"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    //</editor-fold>
+    //TableConstr
+    //<editor-fold>
+    void TableConstr(){
+        ColumnConstrA();
+        if(Error == null) TableConstrA();
+    }
+    void TableConstrA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "PRIMARY")){
+            ReadNext(Tokens.Reservada,"PRIMARY");
+            if(Error == null) ReadNext(Tokens.Reservada,"KEY");
+            if(Error == null) ColumnConstrC();
+            if(Error == null) TableConstrB();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "UNIQUE")){
+            ReadNext(Tokens.Reservada,"UNIQUE");
+            if(Error == null) ColumnConstrC();
+            if(Error == null) TableConstrB();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "FOREIGN")){
+            ReadNext(Tokens.Reservada,"FOREIGN");
+            if(Error == null) ReadNext(Tokens.Reservada,"KEY");
+            if(Error == null) TableConstrD();
+            if(Error == null) ReadNext(Tokens.Reservada,"REFERENCES");
+            if(Error == null) Object2();
+            if(Error == null) ColumnConstrE();
+            if(Error == null) ColumnConstrF();
+            if(Error == null) ColumnConstrG();
+            if(Error == null) NFR();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "CHECK")){
+            ReadNext(Tokens.Reservada,"CHECK");
+            if(Error == null) NFR();
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,"(");
+            if(Error == null) SearchCondition();
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"PRIMARY"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"UNIQUE"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"FOREIGN"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"CHECH"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void TableConstrB(){
+        ReadNext(Tokens.OperadorAgrupador,"(");
+        if(Error == null) ID();
+        if(Error == null) OrderB();
+        if(Error == null) TableConstrC();
+        if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
+    }
+    void TableConstrC(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null) ID();
+            if(Error == null) OrderB();
+            if(Error == null) TableConstrC();
+        }
+    }
+    void TableConstrD(){
+        ReadNext(Tokens.OperadorAgrupador,"(");
+        if(Error == null) ID();
+        if(Error == null) TableConstrE();
+        if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
+    }
+    void TableConstrE(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null) ID();
+            if(Error == null) TableConstrE();
+        }
+    }
+    //</editor-fold>
+    void TableIndex(){
+        ReadNext(Tokens.Reservada,"INDEX");
+        if(Error == null) ID();
+        if(Error == null) ColumnConstrC();
+        if(Error == null) TableConstrB();
+    }
+    //</editor-fold>
+    //</editor-fold>
 }
