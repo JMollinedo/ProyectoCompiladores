@@ -863,5 +863,100 @@ public class XATopDown {
             if(Error == null) OrderB();
         }
     }
+    void Group(){
+        if(CTok.TNVMatch(Tokens.Reservada, "GROUP")){
+            ReadNext(Tokens.Reservada,"GROUP");
+            if(Error == null) ReadNext(Tokens.Reservada,"BY");
+            if(Error == null) ExpresionE();
+            if(Error == null) GroupA();
+        }
+    }
+    void GroupA(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null) ExpresionE();
+            if(Error == null) GroupA();
+        }
+    }
     //</editor-fold>
+    
+    //Insert
+    //<editor-fold>
+    void Insert(){
+        ReadNext(Tokens.Reservada,"INSERT");
+        if(Error == null) Top();
+        if(Error == null) InsertInto();
+        if(Error == null) Object3();
+        if(Error == null) InsertColumnsList();
+        if(Error == null) InsertValores();
+    }
+    void InsertInto(){
+        if(CTok.TNVMatch(Tokens.Reservada,"INTO")){
+            ReadNext(Tokens.Reservada,"INTO");
+        }
+    }
+    void InsertColumnsList(){
+        if(CTok.TNVMatch(Tokens.OperadorAgrupador,"(")){
+            ColumnList();
+        }
+    }
+    void InsertExpresion(){
+        InsertExpresionA();
+        if(Error == null) InsertExpresionB();
+    }
+    void InsertExpresionA(){
+        if(CTok.TNVMatch(Tokens.Reservada , "DEFAULT")){
+            ReadNext(Tokens.Reservada , "DEFAULT");
+        }else if(CTok.TNVMatch(Tokens.Entero , null)){
+            ReadNext(Tokens.Entero , null);
+        }else if(CTok.TNVMatch(Tokens.Flotante  , null)){
+            ReadNext(Tokens.Flotante , null);
+        }else if(CTok.TNVMatch(Tokens.Varchar , null)){
+            ReadNext(Tokens.Varchar , null);
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"DEFAULT"));
+            expectedTokens.add(new JToken(Tokens.Entero,null));
+            expectedTokens.add(new JToken(Tokens.Flotante,null));
+            expectedTokens.add(new JToken(Tokens.Varchar,null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void InsertExpresionB(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null) InsertExpresionA();
+            if(Error == null) InsertExpresionB();
+        }
+    }
+    void InsertValores(){
+        if(CTok.TNVMatch(Tokens.Reservada,"VALUES")){
+            ReadNext(Tokens.Reservada,"VALUES");
+            if(Error == null ) ReadNext(Tokens.Reservada,"(");
+            if(Error == null ) InsertExpresion();
+            if(Error == null ) ReadNext(Tokens.Reservada,")");
+            if(Error == null ) InsertValoresA();
+        }else if(CTok.TNVMatch(Tokens.Reservada,"DEFAULT")){
+            ReadNext(Tokens.Reservada,"VALUES");
+            if(Error == null) ReadNext(Tokens.Reservada,"DEFAULT");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"VALUES"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"DEFAULT"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void InsertValoresA(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null ) ReadNext(Tokens.Reservada,"(");
+            if(Error == null ) InsertExpresion();
+            if(Error == null ) ReadNext(Tokens.Reservada,")");
+            if(Error == null ) InsertValoresA();
+        }
+    }
+    //</editor-fold>
+    
 }
