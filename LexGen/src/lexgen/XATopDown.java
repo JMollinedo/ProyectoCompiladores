@@ -959,4 +959,52 @@ public class XATopDown {
     }
     //</editor-fold>
     
+    //Delete
+    //<editor-fold>
+    void Delete(){
+        ReadNext(Tokens.Reservada,"DELETE");
+        if(Error == null) Top();
+        if(Error == null) FromDelete();
+        if(Error == null) DeleteA();
+    }
+    void fromDelete(){
+        if(CTok.TNVMatch(Tokens.Reservada, "From")){
+            ReadNext(Tokens.Reservada,"FROM");
+        }
+    }
+    void DeleteA(){
+        if(CTok.TNVMatch(Tokens.Reservada,"OPENQUERY")){
+            ReadNext(Tokens.Reservada,"OPENQUERY");
+            //Server
+            if(Error == null ) ReadNext(Tokens.OperadorAgrupador,"(");
+            if(Error == null ) ID();
+            if(Error == null ) ReadNext(Tokens.Coma,null);
+            if(Error == null ) ReadNext(Tokens.Varchar,null);
+            if(Error == null ) ReadNext(Tokens.OperadorAgrupador,")");
+        }else if(IDFirst()){
+            Object3();
+            if(Error == null) DeleteB();
+            if(Error == null) Where();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"OPENQUERY"));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void DeleteB(){
+        ReadNext(Tokens.Reservada,"FROM");
+        if(Error == null) Object3();
+        if(Error == null) DeleteC();
+    }
+    void DeleteC(){
+        if(CTok.TNVMatch(Tokens.OperadorAgrupador,",")){
+            ReadNext(Tokens.OperadorAgrupador,",");
+            if(Error == null) Object3();
+            if(Error == null) DeleteC();
+        }
+    }
+    //</editor-fold>
 }
