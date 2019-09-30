@@ -80,15 +80,19 @@ public class XATopDown {
         List<XATopDown> Expressions = new ArrayList();
         List<JToken> extra = new ArrayList();
         for (JToken token : tokens) {
-            extra.add(token);
+            if(!token.TNVMatch(Tokens.OVERFLOWIDENTIFIER, null)){
+                extra.add(token);
+            }
             for (JToken beToken : BatchEndToken) {
                 if(token.TokenTypeNValueMatch(beToken)){
                     int li = extra.size()-1;
                     extra.add(Ending(extra.get(li)));
-                    XATopDown n = new XATopDown(extra);
-                    n.ExcAnalisys();
-                    Expressions.add(n);
-                    extra.clear();
+                    if(!JTError.HasErrors(extra)){
+                        XATopDown n = new XATopDown(extra);
+                        n.ExcAnalisys();
+                        Expressions.add(n);
+                        extra.clear();
+                    }
                 }
             }
         }
@@ -1416,7 +1420,7 @@ public class XATopDown {
     }
     void ColumnConstrH(){
         if(CTok.TNVMatch(Tokens.Reservada, "NULL")){
-            ReadNext(Tokens.Reservada, "NULL");;
+            ReadNext(Tokens.Reservada, "NULL");
         }else if(CTok.TNVMatch(Tokens.Reservada, "DEFAULT")){
             ReadNext(Tokens.Reservada, "DEFAULT");
         }else{
@@ -1429,7 +1433,7 @@ public class XATopDown {
     }
     void ColumnConstrI(){
         if(CTok.TNVMatch(Tokens.Reservada, "CASCADE")){
-            ReadNext(Tokens.Reservada, "CASCADE");;
+            ReadNext(Tokens.Reservada, "CASCADE");
         }else if(CTok.TNVMatch(Tokens.Reservada, "SET")){
             ReadNext(Tokens.Reservada, "SET");
             if(Error == null) ColumnConstrH();

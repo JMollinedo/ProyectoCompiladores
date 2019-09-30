@@ -36,6 +36,27 @@ public class JTError extends JToken {
             this.expectedTokens.addAll(expectedTokens);
     }
     
+    public static boolean HasErrors(List<JToken> list){
+        for (JToken t : list) {
+            if(t.TNVMatch(Tokens.IdentificadorError, null)){
+                return true;
+            }
+            if(t.TNVMatch(Tokens.FlotanteError, null)){
+                return true;
+            }
+            if(t.TNVMatch(Tokens.VarcharError, null)){
+                return true;
+            }
+            if(t.TNVMatch(Tokens.MalComentario, null)){
+                return true;
+            }
+            if(t.TNVMatch(Tokens.ERROR, null)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public JTError(JToken token){
         this(token,null);
     }
