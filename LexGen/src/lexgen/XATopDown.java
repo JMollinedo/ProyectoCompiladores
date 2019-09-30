@@ -773,120 +773,6 @@ public class XATopDown {
             if(Error == null) SearchCondition();
         }
     }
-    
-    //Expresion con Agregacion
-    //<editor-fold>
-    void ExpresionAgregacion(){
-        ExpresionAgregacionB();
-        if(Error == null) ExpresionAgregacionA();
-    }
-    void ExpresionAgregacionA(){
-        if(CTok.TNVMatch(Tokens.OperadorAritmetico, "+")){
-            ReadNext(Tokens.OperadorAritmetico,"+");
-            if(Error == null) ExpresionAgregacionB();
-            if(Error == null) ExpresionAgregacionA();
-        }else if(CTok.TNVMatch(Tokens.OperadorAritmetico, "-")){
-            ReadNext(Tokens.OperadorAritmetico,"-");
-            if(Error == null) ExpresionAgregacionB();
-            if(Error == null) ExpresionAgregacionA();
-        }
-    }
-    void ExpresionAgregacionB(){
-        ExpresionAgregacionD();
-        if(Error == null) ExpresionAgregacionC();
-    }
-    void ExpresionAgregacionC(){
-        if(CTok.TNVMatch(Tokens.OperadorAritmetico, "*")){
-            ReadNext(Tokens.OperadorAritmetico,"*");
-            if(Error == null) ExpresionAgregacionD();
-            if(Error == null) ExpresionAgregacionC();
-        }else if(CTok.TNVMatch(Tokens.OperadorAritmetico, "/")){
-            ReadNext(Tokens.OperadorAritmetico,"/");
-            if(Error == null) ExpresionAgregacionD();
-            if(Error == null) ExpresionAgregacionC();
-        }
-    }
-    void ExpresionAgregacionD(){
-        if(CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
-            ReadNext(Tokens.OperadorAritmetico,"(");
-            if(Error == null) ExpresionAgregacion();
-            if(Error == null) ReadNext(Tokens.OperadorAritmetico,")");
-        }else if(
-                IDFirst()
-                || CTok.TNVMatch(Tokens.Entero, null)
-                || CTok.TNVMatch(Tokens.Flotante , null)
-                || CTok.TNVMatch(Tokens.Varchar, null)
-                || CTok.TNVMatch(Tokens.Reservada, "SUM")
-                || CTok.TNVMatch(Tokens.Reservada, "AVG")
-                || CTok.TNVMatch(Tokens.Reservada, "MIN")
-                || CTok.TNVMatch(Tokens.Reservada, "MAX")
-                ){
-            ExpresionAgregacionE();
-        }else{
-            ERRORTHROW();
-            List<JToken> expectedTokens = new ArrayList();
-            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"("));
-            expectedTokens.add(new JToken(Tokens.Identificador,null));
-            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
-            expectedTokens.add(new JToken(Tokens.Varchar,null));
-            expectedTokens.add(new JToken(Tokens.Entero,null));
-            expectedTokens.add(new JToken(Tokens.Flotante,null));
-            Error.SetET(expectedTokens);
-        }
-    }
-    void ExpresionAgregacionE(){
-        if(
-                IDFirst()
-                || CTok.TNVMatch(Tokens.Entero, null)
-                || CTok.TNVMatch(Tokens.Flotante , null)
-                || CTok.TNVMatch(Tokens.Varchar, null)
-                || CTok.TNVMatch(Tokens.Reservada,"NULL")
-                ){
-            ExpresionE();
-        }else if(CTok.TNVMatch(Tokens.Reservada, "SUM")){
-            ReadNext(Tokens.Reservada, "SUM");
-            if(Error == null) ReadNext(Tokens.OperadorAgrupador, "(");
-            if(Error == null) ExpresionAgregacionF();
-        }else if(CTok.TNVMatch(Tokens.Reservada, "AVG")){
-            ReadNext(Tokens.Reservada, "AVG");
-            if(Error == null) ReadNext(Tokens.OperadorAgrupador, "(");
-            if(Error == null) ExpresionAgregacionF();
-        }else if(CTok.TNVMatch(Tokens.Reservada, "MIN")){
-            ReadNext(Tokens.Reservada, "MIN");
-            if(Error == null) ReadNext(Tokens.OperadorAgrupador, "(");
-            if(Error == null) ExpresionAgregacionF();
-        }else if(CTok.TNVMatch(Tokens.Reservada, "MAX")){
-            ReadNext(Tokens.Reservada, "MAX");
-            if(Error == null) ReadNext(Tokens.OperadorAgrupador, "(");
-            if(Error == null) ExpresionAgregacionF();
-        }else{
-            ERRORTHROW();
-            List<JToken> expectedTokens = new ArrayList();
-            expectedTokens.add(new JToken(Tokens.Identificador,null));
-            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
-            expectedTokens.add(new JToken(Tokens.Varchar,null));
-            expectedTokens.add(new JToken(Tokens.Entero,null));
-            expectedTokens.add(new JToken(Tokens.Flotante,null));
-            Error.SetET(expectedTokens);
-        }
-    }
-    void ExpresionAgregacionF(){
-        if(IDFirst()){
-            Object4();
-            if(Error == null) CTok.TNVMatch(Tokens.OperadorAgrupador, ")");
-        }else if(CTok.TNVMatch(Tokens.Entero, null)){
-            CTok.TNVMatch(Tokens.Entero, null);
-            if(Error == null) CTok.TNVMatch(Tokens.OperadorAgrupador, ")");
-        }else{
-            ERRORTHROW();
-            List<JToken> expectedTokens = new ArrayList();
-            expectedTokens.add(new JToken(Tokens.Identificador,null));
-            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
-            expectedTokens.add(new JToken(Tokens.Entero,null));
-            Error.SetET(expectedTokens);
-        }
-    }
-    //</editor-fold>
         
     //Select Columns
     void SelectColumns(){
@@ -897,7 +783,7 @@ public class XATopDown {
     void SelectColumnsA(){
         if(CTok.TNVMatch(Tokens.Coma, null)){
             ReadNext(Tokens.Coma, null);
-            if(Error == null) ExpresionAgregacion();
+            if(Error == null) Expresion();
             if(Error == null) Alias();
             if(Error == null) SelectColumnsA();
         }
@@ -920,4 +806,62 @@ public class XATopDown {
             if(Error == null) ColumnListB();
         }
     }
+    
+    //Select
+    //<editor-fold>
+    void Select(){
+        ReadNext(Tokens.Reservada,"SELECT");
+        if(Error == null) SelectA();
+        if(Error == null) Top();
+        if(Error == null) SelectColumns();
+        if(Error == null) FromSelect();
+        if(Error == null) Where();
+        if(Error == null) Group();
+        if(Error == null) Having();
+        if(Error == null) Order();
+    }
+    void SelectA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "ALL")){
+            ReadNext(Tokens.Reservada,"ALL");
+        }else if(CTok.TNVMatch(Tokens.Reservada, "DISTINCT")){
+            ReadNext(Tokens.Reservada,"DISTINCT");
+        }
+    }
+    void Having(){
+        if(CTok.TNVMatch(Tokens.Reservada, "HAVING")){
+            ReadNext(Tokens.Reservada,"HAVING");
+            if(Error == null) SearchCondition();
+        }
+    }
+    void Order(){
+        if(CTok.TNVMatch(Tokens.Reservada, "ORDER")){
+            ReadNext(Tokens.Reservada,"ORDER");
+            if(Error == null) ReadNext(Tokens.Reservada,"BY");
+            if(Error == null) ExpresionE();
+            if(Error == null) OrderA();
+            if(Error == null) OrderB();
+            if(Error == null) OrderC();
+        }
+    }
+    void OrderA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "COLLATE")){
+            ReadNext(Tokens.Reservada,"COLLATE");
+            if(Error == null) ID();
+        }
+    }
+    void OrderB(){
+        if(CTok.TNVMatch(Tokens.Reservada, "ASC")){
+            ReadNext(Tokens.Reservada,"ASC");
+        }else if(CTok.TNVMatch(Tokens.Reservada, "DESC")){
+            ReadNext(Tokens.Reservada,"DESC");
+        }
+    }
+    void OrderC(){
+        if(ExpresionFirst() && !CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
+            ExpresionE();
+            if(Error == null) OrderA();
+            if(Error == null) OrderB();
+        }
+    }
+    //</editor-fold>
 }
