@@ -1116,4 +1116,63 @@ public class XATopDown {
         }
     }
     //</editor-fold>
+    
+    void Create(){
+        ReadNext(Tokens.Reservada,"CREATE");
+        if(Error == null) CreateA();
+    }
+    void CreateA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "TABLE")){
+            CreateTable();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "USER")){
+            CreateUser();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "DATABASE")){
+            CreateDB();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "VIEW")){
+            CreateView();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "INDEX")){
+            CreateIndex();
+        }
+        else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"TABLE"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"USER"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"DATABASE"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"VIEW"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"INDEX"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void CreateUser(){
+        ReadNext(Tokens.Reservada,"USER");
+        if(Error == null) ReadNext(Tokens.Identificador,null);
+    }
+    void CreateDB(){
+        ReadNext(Tokens.Reservada,"DATABASE");
+        if(Error == null) ReadNext(Tokens.Identificador,null);
+        if(Error == null) CreateDBA();
+    }
+    void CreateDBA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "COLLATE")){
+            ReadNext(Tokens.Reservada,"COLLATE");
+            if(Error == null) ReadNext(Tokens.Identificador,null);
+        }
+    }
+    void CreateView(){
+        ReadNext(Tokens.Reservada,"VIEW");
+        if(Error == null) Object2();
+        if(Error == null) ReadNext(Tokens.Reservada,"AS");
+        if(Error == null) Select();
+    }
+    void CreateIndex(){
+        
+    }
+    void CreateTable(){
+        
+    }
 }
