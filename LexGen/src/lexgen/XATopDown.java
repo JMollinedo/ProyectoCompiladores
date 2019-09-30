@@ -1117,7 +1117,7 @@ public class XATopDown {
     }
     //</editor-fold>
     
-    ///Create
+    //Create
     //<editor-fold>
     void Create(){
         ReadNext(Tokens.Reservada,"CREATE");
@@ -1520,5 +1520,213 @@ public class XATopDown {
         if(Error == null) TableConstrB();
     }
     //</editor-fold>
+    //</editor-fold>
+    
+    //Alter
+    //<editor-fold>
+    void Alter(){
+        ReadNext(Tokens.Reservada,"ALTER");
+        if(Error == null) AlterA();
+    }
+    void AlterA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "TABLE")){
+            AlterTable();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "USER")){
+            AlterUser();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "DATABASE")){
+            AlterDB();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "VIEW")){
+            AlterView();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"TABLE"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"USER"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"DATABASE"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"VIEW"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void AlterDB(){
+        ReadNext(Tokens.Reservada,"DATABASE");
+        if(Error == null) AlterDBA();
+    }
+    void AlterDBA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "CURRENT")){
+            ReadNext(Tokens.Reservada,"CURRENT");
+        }else if(IDFirst()){
+            ID();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"CURRENT"));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void AlterDBB(){
+        if(CTok.TNVMatch(Tokens.Reservada, "COLLATE")){
+            ReadNext(Tokens.Reservada,"COLLATE");
+            if(Error == null) ID();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "SET")){
+            ReadNext(Tokens.Reservada,"SET");
+            if(Error == null) ReadNext(Tokens.Reservada,"ROLLBACK");
+            if(Error == null) ReadNext(Tokens.Reservada,"IMMEDIATE");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"COLLATE"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"SET"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void AlterUser(){
+        ReadNext(Tokens.Reservada,"USER");
+        ID();
+    }
+    void AlterView(){
+        ReadNext(Tokens.Reservada,"VIEW");
+        if(Error == null) Object2();
+        if(Error == null) ColumnList();
+        if(Error == null) ReadNext(Tokens.Reservada,"AS");
+        if(Error == null) Select();
+    }
+    void AlterTable(){
+        ReadNext(Tokens.Reservada,"TABLE");
+        if(Error == null) Object3();
+        if(Error == null) AlterTableA();
+    }
+    void AlterTableA(){
+        if(CTok.TNVMatch(Tokens.Reservada,"ALTER")){
+            AlterColumn();
+        }else if(CTok.TNVMatch(Tokens.Reservada,"ADD")){
+            ReadNext(Tokens.Reservada,"ADD");
+            if(Error == null) CNC();
+            if(Error == null) CNCA();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "DROP")){
+            AlterTableDrop();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"ALTER"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"ADD"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"DROP"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void AlterColumn(){
+        ReadNext(Tokens.Reservada,"ALTER");
+        if(Error == null) ReadNext(Tokens.Reservada,"COLUMN");
+        if(Error == null) ID();
+        if(Error == null) AlterColumnC();
+    }
+    void AlterColumnC(){
+        if(CTok.TNVMatch(Tokens.TipoDatoBin, null)
+                ||CTok.TNVMatch(Tokens.TipoDatoBit, null)
+                ||CTok.TNVMatch(Tokens.TipoDatoChars, null)
+                ||CTok.TNVMatch(Tokens.TipoDatoDecimalAprox, null)
+                ||CTok.TNVMatch(Tokens.TipoDatoDecimalExacto, null)
+                ||CTok.TNVMatch(Tokens.TipoDatoEntero, null)
+                ||CTok.TNVMatch(Tokens.TipoDatoFechaHora, null)
+                ||CTok.TNVMatch(Tokens.TipoDatoOtro, null)
+                ||CTok.TNVMatch(Tokens.TipoDatoUnicode, null)
+                ||CTok.TNVMatch(Tokens.OperadorAgrupador, "[")
+                ){
+            AlterColumnA();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "ADD")
+                ||CTok.TNVMatch(Tokens.Reservada, "DROP")
+                ){
+            AlterColumnD();
+        }
+        else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"ADD"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"DROP"));
+            expectedTokens.add(new JToken(Tokens.TipoDatoBin, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoBit, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoChars, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoDecimalAprox, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoDecimalExacto, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoEntero, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoFechaHora, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoOtro, null));
+            expectedTokens.add(new JToken(Tokens.TipoDatoUnicode, null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador, "["));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void AlterColumnA(){
+        Tipo_dato();
+        if(Error == null) ColumnDefA();
+        if(Error == null) ColumnDefG();
+    }
+    void AlterColumnD(){
+        if(CTok.TNVMatch(Tokens.Reservada, "ADD")){
+            ReadNext(Tokens.Reservada,"ADD");
+        }else if(CTok.TNVMatch(Tokens.Reservada, "DROP")){
+            ReadNext(Tokens.Reservada,"DROP");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"ADD"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"DROP"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void AlterColumnE(){
+        if(CTok.TNVMatch(Tokens.Reservada, "ROWGUIDCOL")){
+            ReadNext(Tokens.Reservada,"ROWGUIDCOL");
+        }else if(CTok.TNVMatch(Tokens.Reservada, "NOT")){
+            ReadNext(Tokens.Reservada,"NOT");
+            if(Error == null) ReadNext(Tokens.Reservada,"FOR");
+            if(Error == null) ReadNext(Tokens.Reservada,"REPLICATION");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"ROWGUIDCOL"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"NOT"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void AlterTableDrop(){
+        ReadNext(Tokens.Reservada,"DROP");
+        if(Error == null) AlterTableDropC();
+        if(Error == null) IFE();
+        if(Error == null) ColumnListA();
+        if(Error == null) AlterTableDropA();
+    }
+    void AlterTableDropA(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null) AlterTableDropC();
+            if(Error == null) IFE();
+            if(Error == null) ColumnListA();
+            if(Error == null) AlterTableDropA();
+        }
+    }
+    void AlterTableDropC(){
+        if(CTok.TNVMatch(Tokens.Reservada, "CONSTRAINT")){
+            AlterTableDropD();
+        }else if(CTok.TNVMatch(Tokens.Reservada, "COLUMN")){
+            ReadNext(Tokens.Reservada,"COLUMN");
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.Reservada,"CONSTRAINT"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"COLUMN"));
+            Error.SetET(expectedTokens);
+        }
+    }
+    void AlterTableDropD(){
+        if(CTok.TNVMatch(Tokens.Reservada, "CONSTRAINT")){
+            ReadNext(Tokens.Reservada,"CONSTRAINT");
+        }
+    }
     //</editor-fold>
 }
