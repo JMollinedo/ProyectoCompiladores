@@ -967,7 +967,7 @@ public class XATopDown {
         if(Error == null) FromDelete();
         if(Error == null) DeleteA();
     }
-    void fromDelete(){
+    void FromDelete(){
         if(CTok.TNVMatch(Tokens.Reservada, "From")){
             ReadNext(Tokens.Reservada,"FROM");
         }
@@ -1054,6 +1054,65 @@ public class XATopDown {
             ReadNext(Tokens.Coma,null);
             if(Error == null) UpdateA();
             if(Error == null) UpdateC();
+        }
+    }
+    //</editor-fold>
+    
+    //FromSelect
+    //<editor-fold>
+    void FromSelect(){
+        if(CTok.TNVMatch(Tokens.Reservada, "FROM")){
+            ReadNext(Tokens.Reservada,"FROM");
+            if(Error == null) Object3();
+            if(Error == null) Join();
+            if(Error == null) FromSelectA();
+        }
+    }
+    void FromSelectA(){
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            ReadNext(Tokens.Coma,null);
+            if(Error == null) Object3();
+            if(Error == null) Alias();
+            if(Error == null) Join();
+            
+        }
+    }
+    void Join(){
+        if(CTok.TNVMatch(Tokens.Reservada, "INNER")
+                || CTok.TNVMatch(Tokens.Reservada, "RIGHT")
+                || CTok.TNVMatch(Tokens.Reservada, "LEFT")
+                || CTok.TNVMatch(Tokens.Reservada, "FULL")
+                || CTok.TNVMatch(Tokens.Reservada, "JOIN")
+                ){
+            Type();
+            if(Error == null) ReadNext(Tokens.Reservada, "JOIN");
+            if(Error == null) Object3();
+            if(Error == null) Alias();
+            if(Error == null) ReadNext(Tokens.Reservada, "ON");
+            if(Error == null) SearchCondition();
+            if(Error == null) Join();
+        }
+    }
+    void Type(){
+        if(CTok.TNVMatch(Tokens.Reservada, "RIGHT")){
+            ReadNext(Tokens.Reservada,"RIGHT");
+            Outer();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "LEFT")){
+            ReadNext(Tokens.Reservada,"LEFT");
+            Outer();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "FULL")){
+            ReadNext(Tokens.Reservada,"FULL");
+            Outer();
+        }
+        else if(CTok.TNVMatch(Tokens.Reservada, "INNER")){
+            ReadNext(Tokens.Reservada,"INNER");
+        }
+    }
+    void Outer(){
+        if(CTok.TNVMatch(Tokens.Reservada, "OUTER")){
+            ReadNext(Tokens.Reservada,"OUTER");
         }
     }
     //</editor-fold>
