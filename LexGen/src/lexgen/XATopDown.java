@@ -1172,7 +1172,25 @@ public class XATopDown {
         if(Error == null) Select();
     }
     void CreateIndex(){
-        
+        CreateIndexA();
+        if(Error == null)ColumnConstrC();
+        if(Error == null) ReadNext(Tokens.Reservada,"INDEX");
+        if(Error == null) ID();
+        if(Error == null) ReadNext(Tokens.Reservada,"ON");
+        if(Error == null) Object3();
+        if(Error == null) TableConstrB();
+        if(Error == null) IncludeIndex();
+        if(Error == null) Where();
+    }
+    void CreateIndexA(){
+        if(CTok.TNVMatch(Tokens.Reservada, "UNIQUE")){
+            ReadNext(Tokens.Reservada,"UNIQUE");
+        }
+    }
+    void IncludeIndex(){
+        if(CTok.TNVMatch(Tokens.Reservada, "INCLUDE")){
+            ReadNext(Tokens.Reservada,"INCLUDE");
+        }
     }
     //CreateTable
     //<editor-fold>
