@@ -65,22 +65,31 @@ public class XATopDown {
         BET.add(new JToken(Tokens.PYC,null));
         List<XATopDown> Expressions = new ArrayList();
         List<JToken> extra = new ArrayList();
-        for (JToken token : tokens) {
+        for(int i = 0; i < tokens.size(); i++){
+            JToken token = tokens.get(i);
             if(!token.TNVMatch(Tokens.OVERFLOWIDENTIFIER, null)){
                 extra.add(token);
             }
-            for (JToken beToken : BET) {
-                if(token.TokenTypeNValueMatch(beToken)){
-                    int li = extra.size()-1;
-                    extra.add(Ending(extra.get(li)));
-                    if(!JTError.HasErrors(extra)){
-                        XATopDown n = new XATopDown(extra);
-                        n.ExcAnalisys();
-                        Expressions.add(n);
-                        extra.clear();
-                    }else{
-                        extra.clear();
+            if(token.TNVMatch(Tokens.PYC, null)){
+                try{
+                    JToken aux = tokens.get(i+1);
+                    if(aux.TNVMatch(Tokens.Reservada, "GO")){
+                        i++;
+                        extra.add(aux);
                     }
+                }catch(Exception e){}
+            }
+            if(token.TNVMatch(Tokens.Reservada, "GO")
+                    || token.TNVMatch(Tokens.PYC, null)){
+                int li = extra.size()-1;
+                extra.add(Ending(extra.get(li)));
+                if(!JTError.HasErrors(extra)){
+                    XATopDown n = new XATopDown(extra);
+                    n.ExcAnalisys();
+                    Expressions.add(n);
+                    extra.clear();
+                }else{
+                    extra.clear();
                 }
             }
         }
@@ -184,6 +193,9 @@ public class XATopDown {
     void Final(){
         if(CTok.TNVMatch(Tokens.PYC,null)){
             ReadNext(Tokens.PYC, null);
+            if(CTok.TNVMatch(Tokens.Reservada, "GO")){
+                ReadNext(Tokens.Reservada ,"GO");
+            }
         }
         else if(CTok.TNVMatch(Tokens.Reservada ,"GO")){
             ReadNext(Tokens.Reservada ,"GO");
