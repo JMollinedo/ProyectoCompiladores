@@ -36,30 +36,13 @@ public class XATopDown {
     }
     
     public static String analizeCSVfile(String path) throws IOException{
-        List<JToken> BET = new ArrayList();
-        BET.add(new JToken(Tokens.Reservada,"GO"));
-        BET.add(new JToken(Tokens.PYC,null));
-        List<XATopDown> result = analize(UseJFlex.GetTokensFromFile(path),BET);
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < result.size(); i++){
-            sb.append("Batch ");
-            sb.append(i);
-            sb.append(":\t");
-            if(result.get(i).Error == null){
-                sb.append("OK");
-            }else{
-                sb.append("ERROR\n");
-                sb.append(result.get(i).Error.ErrorMessage());
-            }
-            sb.append("\n\n");
-        }
-        return sb.toString();
+        return analizeRes(UseJFlex.GetTokensFromFile(path));
     }
     public static String analizeCSVText(String csvText){
-        List<JToken> BET = new ArrayList();
-        BET.add(new JToken(Tokens.Reservada,"GO"));
-        BET.add(new JToken(Tokens.PYC,null));
-        List<XATopDown> result = analize(UseJFlex.GetTokensFromText(csvText),BET);
+        return analizeRes(UseJFlex.GetTokensFromText(csvText));
+    }
+    private static String analizeRes(List<JToken> TokList){
+        List<XATopDown> result = analize(TokList);
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < result.size(); i++){
             sb.append("Batch ");
@@ -76,14 +59,17 @@ public class XATopDown {
         return sb.toString();
     }
     
-    private static List<XATopDown> analize(List<JToken> tokens, List<JToken> BatchEndToken){
+    private static List<XATopDown> analize(List<JToken> tokens){
+        List<JToken> BET = new ArrayList();
+        BET.add(new JToken(Tokens.Reservada,"GO"));
+        BET.add(new JToken(Tokens.PYC,null));
         List<XATopDown> Expressions = new ArrayList();
         List<JToken> extra = new ArrayList();
         for (JToken token : tokens) {
             if(!token.TNVMatch(Tokens.OVERFLOWIDENTIFIER, null)){
                 extra.add(token);
             }
-            for (JToken beToken : BatchEndToken) {
+            for (JToken beToken : BET) {
                 if(token.TokenTypeNValueMatch(beToken)){
                     int li = extra.size()-1;
                     extra.add(Ending(extra.get(li)));
