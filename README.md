@@ -19,5 +19,11 @@ Utiliza *jFlex* en el proyecto **LexGen** para generar un autómata que pueda va
 * Identifica [Palabras Reservadas](https://docs.microsoft.com/en-us/sql/t-sql/language-elements/reserved-keywords-transact-sql?view=sql-server-2017)
 * Identifica Declaración del valor de constantes numéricas.
 * Identifica Operadores
+## Manejo de Errores
+La clase *XATopDown* permite analizar síntacticamente los tokens obtenidos en el analizador léxico mediante el método *TopDown*. Las sentencias estan separadas por medio de las secuencias de tokens:
+* *GO*
+* *;*
+* *;GO*
+Una vez identificado el fin de la sentencia (*BATCH*) valida que esta no existan tokens de error, si los tiene, no realiza el análisis sintáctico. Realiza el análisis de la sentencia mediante un parseo recursivo. Si encuentra un error sintático, devuelve un mensaje de error. Si no encuentra un error sintáctico, devuelve el mensaje *OK*. Realiza el mismo procedimiento hasta que todos los tokens encontrados hayan sido procesadas.
 ## Autor
 * Javier Mollinedo
