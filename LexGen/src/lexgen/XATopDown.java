@@ -92,6 +92,8 @@ public class XATopDown {
                         n.ExcAnalisys();
                         Expressions.add(n);
                         extra.clear();
+                    }else{
+                        extra.clear();
                     }
                 }
             }
@@ -532,9 +534,9 @@ public class XATopDown {
     }
     void ExpresionD(){
         if(CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
-            ReadNext(Tokens.OperadorAritmetico,"(");
+            ReadNext(Tokens.OperadorAgrupador,"(");
             if(Error == null) Expresion();
-            if(Error == null) ReadNext(Tokens.OperadorAritmetico,")");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
         }else if(
                 IDFirst()
                 || CTok.TNVMatch(Tokens.Entero, null)
@@ -972,9 +974,9 @@ public class XATopDown {
     void InsertValores(){
         if(CTok.TNVMatch(Tokens.Reservada,"VALUES")){
             ReadNext(Tokens.Reservada,"VALUES");
-            if(Error == null ) ReadNext(Tokens.Reservada,"(");
+            if(Error == null ) ReadNext(Tokens.OperadorAgrupador,"(");
             if(Error == null ) InsertExpresion();
-            if(Error == null ) ReadNext(Tokens.Reservada,")");
+            if(Error == null ) ReadNext(Tokens.OperadorAgrupador,")");
             if(Error == null ) InsertValoresA();
         }else if(CTok.TNVMatch(Tokens.Reservada,"DEFAULT")){
             ReadNext(Tokens.Reservada,"VALUES");
@@ -990,9 +992,9 @@ public class XATopDown {
     void InsertValoresA(){
         if(CTok.TNVMatch(Tokens.Coma, null)){
             ReadNext(Tokens.Coma,null);
-            if(Error == null ) ReadNext(Tokens.Reservada,"(");
+            if(Error == null ) ReadNext(Tokens.OperadorAgrupador,"(");
             if(Error == null ) InsertExpresion();
-            if(Error == null ) ReadNext(Tokens.Reservada,")");
+            if(Error == null ) ReadNext(Tokens.OperadorAgrupador,")");
             if(Error == null ) InsertValoresA();
         }
     }
@@ -1039,8 +1041,8 @@ public class XATopDown {
         if(Error == null) DeleteC();
     }
     void DeleteC(){
-        if(CTok.TNVMatch(Tokens.OperadorAgrupador,",")){
-            ReadNext(Tokens.OperadorAgrupador,",");
+        if(CTok.TNVMatch(Tokens.Coma,null)){
+            ReadNext(Tokens.Coma,null);
             if(Error == null) Object3();
             if(Error == null) DeleteC();
         }
@@ -1055,7 +1057,7 @@ public class XATopDown {
         if(Error == null) Object3();
         if(Error == null) ReadNext(Tokens.Reservada,"SET");
         if(Error == null) UpdateA();
-        if(Error == null) DeleteB();
+        if(Error == null) FromUpdate();
         if(Error == null) Where();
     }
     void UpdateA(){
@@ -1093,6 +1095,11 @@ public class XATopDown {
             ReadNext(Tokens.Coma,null);
             if(Error == null) UpdateA();
             if(Error == null) UpdateC();
+        }
+    }
+    void FromUpdate(){
+        if(CTok.TNVMatch(Tokens.Reservada, "FROM")){
+            DeleteB();
         }
     }
     //</editor-fold>
