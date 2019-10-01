@@ -24,6 +24,8 @@ La clase *XATopDown* permite analizar síntacticamente los tokens obtenidos en e
 * *GO*
 * *;*
 * *;GO*
+
+
 Una vez identificado el fin de la sentencia (*BATCH*) valida que esta no existan tokens de error, si los tiene, no realiza el análisis sintáctico. Realiza el análisis de la sentencia mediante un parseo recursivo. Si encuentra un error sintático, devuelve un mensaje de error. Si no encuentra un error sintáctico, devuelve el mensaje *OK*. Realiza el mismo procedimiento hasta que todos los tokens encontrados hayan sido procesadas.
 ## Autor
 * Javier Mollinedo
