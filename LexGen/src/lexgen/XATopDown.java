@@ -173,7 +173,7 @@ public class XATopDown {
         }else if(CTok.TNVMatch(Tokens.Reservada,"CREATE")){
             Create();
         }else if(CTok.TNVMatch(Tokens.Reservada,"ALTER")){
-            After();
+            Alter();
         }else if(CTok.TNVMatch(Tokens.Reservada,"DROP")){
             Drop();
         }else if(CTok.TNVMatch(Tokens.Reservada,"TRUNCATE")){
@@ -541,6 +541,11 @@ public class XATopDown {
                 || CTok.TNVMatch(Tokens.Flotante , null)
                 || CTok.TNVMatch(Tokens.Varchar, null)
                 || CTok.TNVMatch(Tokens.Reservada, "NULL")
+                || CTok.TNVMatch(Tokens.Reservada, "SUM")
+                || CTok.TNVMatch(Tokens.Reservada, "AVG")
+                || CTok.TNVMatch(Tokens.Reservada, "MAX")
+                || CTok.TNVMatch(Tokens.Reservada, "MIN")
+                || CTok.TNVMatch(Tokens.Reservada, "COUNT")
                 ){
             ExpresionE();
         }else{
@@ -553,6 +558,11 @@ public class XATopDown {
             expectedTokens.add(new JToken(Tokens.Entero,null));
             expectedTokens.add(new JToken(Tokens.Flotante,null));
             expectedTokens.add(new JToken(Tokens.Reservada,"NULL"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"SUM"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"AVG"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"MIN"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"MAX"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"COUNT"));
             Error.SetET(expectedTokens);
         }
     }
@@ -569,23 +579,23 @@ public class XATopDown {
             ReadNext(Tokens.Reservada,"NULL");
         }else if(CTok.TNVMatch(Tokens.Reservada,"SUM")){
             ReadNext(Tokens.Reservada,"SUM");
-            if(Error == null) ReadNext(Tokens.Reservada,"(");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,"(");
             if(Error == null) ExpresionF();
         }else if(CTok.TNVMatch(Tokens.Reservada,"AVG")){
             ReadNext(Tokens.Reservada,"AVG");
-            if(Error == null) ReadNext(Tokens.Reservada,"(");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,"(");
             if(Error == null) ExpresionF();
         }else if(CTok.TNVMatch(Tokens.Reservada,"MIN")){
             ReadNext(Tokens.Reservada,"MIN");
-            if(Error == null) ReadNext(Tokens.Reservada,"(");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,"(");
             if(Error == null) ExpresionF();
         }else if(CTok.TNVMatch(Tokens.Reservada,"MAX")){
             ReadNext(Tokens.Reservada,"MAX");
-            if(Error == null) ReadNext(Tokens.Reservada,"(");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,"(");
             if(Error == null) ExpresionF();
         }else if(CTok.TNVMatch(Tokens.Reservada,"COUNT")){
             ReadNext(Tokens.Reservada,"COUNT");
-            if(Error == null) ReadNext(Tokens.Reservada,"(");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,"(");
             if(Error == null) ExpresionF();
         }else{
             ERRORTHROW();
@@ -607,15 +617,19 @@ public class XATopDown {
     void ExpresionF(){
         if(IDFirst()){
             Object4();
-            if(Error == null) ReadNext(Tokens.Reservada,")");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
         }else if(CTok.TNVMatch(Tokens.Entero, null)){
             ReadNext(Tokens.Entero,null);
-            if(Error == null) ReadNext(Tokens.Reservada,")");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
+        }else if(CTok.TNVMatch(Tokens.OperadorAritmetico, "*")){
+            ReadNext(Tokens.OperadorAritmetico,"*");
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
         }else{
             ERRORTHROW();
             List<JToken> expectedTokens = new ArrayList();
             expectedTokens.add(new JToken(Tokens.Identificador,null));
             expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.OperadorAritmetico,"*"));
             expectedTokens.add(new JToken(Tokens.Entero,null));
             Error.SetET(expectedTokens);
         }
@@ -655,7 +669,10 @@ public class XATopDown {
     //Search Condition
     //<editor-fold>
     void SearchCondition(){
-        if(
+        Not();
+        if(Error == null) Predicado();
+        if(Error == null) SearchConditionA();
+        /*if(
                 CTok.TNVMatch(Tokens.Reservada, "NOT")
                 ||(ExpresionFirst() && !CTok.TNVMatch(Tokens.OperadorAgrupador, "(") )
                 ){
@@ -697,7 +714,7 @@ public class XATopDown {
             expectedTokens.add(new JToken(Tokens.Reservada,"MAX"));
             expectedTokens.add(new JToken(Tokens.Reservada,"COUNT"));
             Error.SetET(expectedTokens);
-        }
+        }*/
     }
     void SearchConditionA(){
         if(CTok.TNVMatch(Tokens.Reservada, "AND")){
@@ -780,9 +797,27 @@ public class XATopDown {
         
     //Select Columns
     void SelectColumns(){
-        Expresion();
-        if(Error == null) Alias();
-        if(Error == null) SelectColumnsA();
+        if(ExpresionFirst()){
+            Expresion();
+            if(Error == null) Alias();
+            if(Error == null) SelectColumnsA();
+        }else if(CTok.TNVMatch(Tokens.OperadorAritmetico, "*")){
+            ReadNext(Tokens.OperadorAritmetico, "*");
+            if(Error == null) SelectColumnsA();
+        }else{
+            ERRORTHROW();
+            List<JToken> expectedTokens = new ArrayList();
+            expectedTokens.add(new JToken(Tokens.OperadorAritmetico,"*"));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"("));
+            expectedTokens.add(new JToken(Tokens.Identificador,null));
+            expectedTokens.add(new JToken(Tokens.OperadorAgrupador,"["));
+            expectedTokens.add(new JToken(Tokens.Varchar,null));
+            expectedTokens.add(new JToken(Tokens.Entero,null));
+            expectedTokens.add(new JToken(Tokens.Flotante,null));
+            expectedTokens.add(new JToken(Tokens.Reservada,"NULL"));
+            Error.SetET(expectedTokens);
+        }
+        
     }
     void SelectColumnsA(){
         if(CTok.TNVMatch(Tokens.Coma, null)){
@@ -841,7 +876,7 @@ public class XATopDown {
         if(CTok.TNVMatch(Tokens.Reservada, "ORDER")){
             ReadNext(Tokens.Reservada,"ORDER");
             if(Error == null) ReadNext(Tokens.Reservada,"BY");
-            if(Error == null) ExpresionE();
+            if(Error == null) Expresion();
             if(Error == null) OrderA();
             if(Error == null) OrderB();
             if(Error == null) OrderC();
@@ -862,7 +897,7 @@ public class XATopDown {
     }
     void OrderC(){
         if(ExpresionFirst() && !CTok.TNVMatch(Tokens.OperadorAgrupador, "(")){
-            ExpresionE();
+            Expresion();
             if(Error == null) OrderA();
             if(Error == null) OrderB();
         }
@@ -871,14 +906,14 @@ public class XATopDown {
         if(CTok.TNVMatch(Tokens.Reservada, "GROUP")){
             ReadNext(Tokens.Reservada,"GROUP");
             if(Error == null) ReadNext(Tokens.Reservada,"BY");
-            if(Error == null) ExpresionE();
+            if(Error == null) Expresion();
             if(Error == null) GroupA();
         }
     }
     void GroupA(){
         if(CTok.TNVMatch(Tokens.Coma, null)){
             ReadNext(Tokens.Coma,null);
-            if(Error == null) ExpresionE();
+            if(Error == null) Expresion();
             if(Error == null) GroupA();
         }
     }
@@ -1068,6 +1103,7 @@ public class XATopDown {
         if(CTok.TNVMatch(Tokens.Reservada, "FROM")){
             ReadNext(Tokens.Reservada,"FROM");
             if(Error == null) Object3();
+            if(Error == null) Alias();
             if(Error == null) Join();
             if(Error == null) FromSelectA();
         }
@@ -1140,7 +1176,11 @@ public class XATopDown {
         else if(CTok.TNVMatch(Tokens.Reservada, "VIEW")){
             CreateView();
         }
-        else if(CTok.TNVMatch(Tokens.Reservada, "INDEX")){
+        else if(CTok.TNVMatch(Tokens.Reservada, "INDEX")
+                || CTok.TNVMatch(Tokens.Reservada, "CLUSTERED")
+                || CTok.TNVMatch(Tokens.Reservada, "NONCLUSTERED")
+                || CTok.TNVMatch(Tokens.Reservada, "UNIQUE")
+                ){
             CreateIndex();
         }
         else{
@@ -1151,12 +1191,15 @@ public class XATopDown {
             expectedTokens.add(new JToken(Tokens.Reservada,"DATABASE"));
             expectedTokens.add(new JToken(Tokens.Reservada,"VIEW"));
             expectedTokens.add(new JToken(Tokens.Reservada,"INDEX"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"CLUSTERED"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"NONCLUSTERED"));
+            expectedTokens.add(new JToken(Tokens.Reservada,"UNIQUE"));
             Error.SetET(expectedTokens);
         }
     }
     void CreateUser(){
         ReadNext(Tokens.Reservada,"USER");
-        if(Error == null) ReadNext(Tokens.Identificador,null);
+        if(Error == null) ID();
     }
     void CreateDB(){
         ReadNext(Tokens.Reservada,"DATABASE");
@@ -1185,6 +1228,7 @@ public class XATopDown {
         if(Error == null) TableConstrB();
         if(Error == null) IncludeIndex();
         if(Error == null) Where();
+        if(Error == null) OptionalOn();
     }
     void CreateIndexA(){
         if(CTok.TNVMatch(Tokens.Reservada, "UNIQUE")){
@@ -1194,6 +1238,16 @@ public class XATopDown {
     void IncludeIndex(){
         if(CTok.TNVMatch(Tokens.Reservada, "INCLUDE")){
             ReadNext(Tokens.Reservada,"INCLUDE");
+            if(Error == null) ColumnList();
+        }
+    }
+    void OptionalOn(){
+        if(CTok.TNVMatch(Tokens.Reservada, "ON")){
+            ReadNext(Tokens.Reservada,"ON");
+            if(Error == null) ID();
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,"(");
+            if(Error == null) ID();
+            if(Error == null) ReadNext(Tokens.OperadorAgrupador,")");
         }
     }
     //CreateTable
@@ -1256,7 +1310,19 @@ public class XATopDown {
         if(Error == null) ColumnDefA();
         if(Error == null) ColumnDefB();
         if(Error == null) ColumnDefE();
-        if(Error == null) NFR();
+        //if(Error == null) NFR();
+        if(Error == null){
+            int i = CTP;
+            if(CTok.TNVMatch(Tokens.Reservada, "NOT")){
+                ReadNext(Tokens.Reservada, "NOT");
+                if(CTok.TNVMatch(Tokens.Reservada, "FOR")){
+                    ResetPosition(i);
+                    NFR();
+                }else{
+                    ResetPosition(i);
+                }
+            }
+        }
         if(Error == null) ColumnDefG();
         if(Error == null) ColumnDefH();
         if(Error == null) ColumnConstr();
@@ -1557,6 +1623,7 @@ public class XATopDown {
     void AlterDB(){
         ReadNext(Tokens.Reservada,"DATABASE");
         if(Error == null) AlterDBA();
+        if(Error == null) AlterDBB();
     }
     void AlterDBA(){
         if(CTok.TNVMatch(Tokens.Reservada, "CURRENT")){
@@ -1595,9 +1662,14 @@ public class XATopDown {
     void AlterView(){
         ReadNext(Tokens.Reservada,"VIEW");
         if(Error == null) Object2();
-        if(Error == null) ColumnList();
+        if(Error == null) AlterViewA();
         if(Error == null) ReadNext(Tokens.Reservada,"AS");
         if(Error == null) Select();
+    }
+    void AlterViewA(){
+        if(CTok.TNVMatch(Tokens.OperadorAgrupador,"(")){
+            ColumnList();
+        }
     }
     void AlterTable(){
         ReadNext(Tokens.Reservada,"TABLE");
@@ -1646,6 +1718,7 @@ public class XATopDown {
                 ||CTok.TNVMatch(Tokens.Reservada, "DROP")
                 ){
             AlterColumnD();
+            AlterColumnE();
         }
         else{
             ERRORTHROW();
@@ -1700,36 +1773,45 @@ public class XATopDown {
     }
     void AlterTableDrop(){
         ReadNext(Tokens.Reservada,"DROP");
-        if(Error == null) AlterTableDropC();
-        if(Error == null) IFE();
-        if(Error == null) ColumnListA();
         if(Error == null) AlterTableDropA();
+        if(Error == null) AlterTableDropD();
+        /*
+        S-> "DROP" A D
+        D-> , A D|e
+        A-> B IFE ID TableConstrE
+        B-> CONSTRAINT|COLUMNS|e
+        */
     }
-    void AlterTableDropA(){
+    void AlterTableDropD(){
         if(CTok.TNVMatch(Tokens.Coma, null)){
             ReadNext(Tokens.Coma,null);
-            if(Error == null) AlterTableDropC();
-            if(Error == null) IFE();
-            if(Error == null) ColumnListA();
             if(Error == null) AlterTableDropA();
+            if(Error == null) AlterTableDropD();
+        }
+    }
+    void AlterTableDropA(){
+        AlterTableDropB();
+        if(Error == null) IFE();
+        if(Error == null) ID();
+        if(Error == null) AlterTableDropC();
+    }
+    void AlterTableDropB(){
+        if(CTok.TNVMatch(Tokens.Reservada, "CONSTRAINT")){
+            ReadNext(Tokens.Reservada,"CONSTRAINT");
+        }else if(CTok.TNVMatch(Tokens.Reservada, "COLUMN")){
+            ReadNext(Tokens.Reservada,"COLUMN");
         }
     }
     void AlterTableDropC(){
-        if(CTok.TNVMatch(Tokens.Reservada, "CONSTRAINT")){
-            AlterTableDropD();
-        }else if(CTok.TNVMatch(Tokens.Reservada, "COLUMN")){
-            ReadNext(Tokens.Reservada,"COLUMN");
-        }else{
-            ERRORTHROW();
-            List<JToken> expectedTokens = new ArrayList();
-            expectedTokens.add(new JToken(Tokens.Reservada,"CONSTRAINT"));
-            expectedTokens.add(new JToken(Tokens.Reservada,"COLUMN"));
-            Error.SetET(expectedTokens);
-        }
-    }
-    void AlterTableDropD(){
-        if(CTok.TNVMatch(Tokens.Reservada, "CONSTRAINT")){
-            ReadNext(Tokens.Reservada,"CONSTRAINT");
+        if(CTok.TNVMatch(Tokens.Coma, null)){
+            int i = CTP;
+            ReadNext(Tokens.Coma,null);
+            if(IDFirst()){
+                if(Error == null) ID();
+                if(Error == null) AlterTableDropC();
+            }else{
+                ResetPosition(i);
+            }
         }
     }
     //</editor-fold>

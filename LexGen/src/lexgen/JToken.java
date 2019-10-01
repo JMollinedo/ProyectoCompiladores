@@ -122,6 +122,7 @@ public class JToken {
             case "PYC": token = Tokens.PYC; break;
             //IDs
             case "Identificador": token = Tokens.Identificador; break;
+            case "OVERFLOWIDENTIFIER": token = Tokens.OVERFLOWIDENTIFIER; break;
             //Definicion de Datos
             case "Flotante": token = Tokens.Flotante; break;
             case "Entero": token = Tokens.Entero; break;
