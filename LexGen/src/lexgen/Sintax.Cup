@@ -1,1 +1,106 @@
+package code;
+
+import java_cup.runtime.Symbol;
+import java.util.List;
+import java.util.ArrayList;
+import java_cup.runtime.virtual_parse_stack;
+import java.lang.reflect.Field;
+
+parser code
+{:
+    
+    public List<CupError> SnxErrors = new ArrayList();
+    
+    private Symbol s;
+    public Symbol getS(){
+        return this.s;
+    }
+    
+    public String symbl_name_from_id(int id){
+        Field[] fields = getSymbolContainer().getFields();
+        for(Field f : fields){
+            try {
+                  if (f.getInt(null)==id)
+                    return f.getName();
+            } catch (IllegalArgumentException e) {
+            } catch (IllegalAccessException e) {
+            }
+        }
+        return "invalid symbol id";
+    }
+
+    public void syntax_error(Symbol s){
+        this.s=s; 
+        List<Integer> ids = expected_token_ids();
+        List<String> expVals = new ArrayList();
+        for (Integer expected : ids){
+            expVals.add(symbl_name_from_id(expected));
+        }
+        SnxErrors.add(new CupError(s.left,s.right,s.value,expVals);
+    }
+
+    public List<Integer> expected_token_ids() {
+        List<Integer> ret = new LinkedList<Integer>();
+        int parse_state = ((Symbol)stack.peek()).parse_state ;
+        short[] row = action_tab[parse_state];
+        for (int i = 0; i<row.length; i+=2){
+            if (row[i]==-1) continue;
+            if (!validate_expected_symbol(row[i])) continue;
+            ret.add(new Integer(row[i]));
+        }
+        return ret;
+    }
+
+    protected static final int _error_sync_size(){
+        return 1;
+    }
+
+    private boolean validate_expected_symbol(int id){
+        short lhs,rhs_size;
+        int act;
+        try {
+            virtual_parse_stack vstack = new virtual_parse_stack(stack);
+            /* parse until we fail or get past the lookahead input */
+            for (;;)
+            {
+                /* look up the action from the current state (on top of stack) */
+                act = get_action(vstack.top(), id);
+                /* if its an error, we fail */
+                if (act == 0) return false;
+                /* > 0 encodes a shift */
+                if (act > 0)
+                {
+                        /* push the new state on the stack */
+                        vstack.push(act-1);
+                        /* advance simulated input, if we run off the end, we are done */
+                        if (!advance_lookahead()) return true;
+                }
+                /* < 0 encodes a reduce */
+                else
+                {
+                        /* if this is a reduce with the start production we are done */
+                        if ((-act)-1 == start_production())  return true;
+                        /* get the lhs Symbol and the rhs size */
+                        lhs = production_tab[(-act)-1][0];
+                        rhs_size = production_tab[(-act)-1][1];
+                        /* pop handle off the stack */
+                        for (int i = 0; i < rhs_size; i++) vstack.pop();
+                        vstack.push(get_reduce(vstack.top(), lhs));
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        List<Integer> ids = expected_token_ids();
+        LinkedList<String> expVals = new LinkedList<String>();
+        for (Integer expected : ids){
+            expVals.add(symbl_name_from_id(expected));
+        }
+        SnxErrors.add(new CupError(s.left,s.right,s.value,expVals));
+    }
+:};
 
