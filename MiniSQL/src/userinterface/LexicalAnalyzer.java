@@ -252,15 +252,11 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
             fc.setMultiSelectionEnabled(false);
             int res = fc.showOpenDialog(fc);
             if(res == JFileChooser.APPROVE_OPTION){
-                try {
-                    txaAnalisisX.setText(lexgen.XATopDown.analizeCSVfile(fc.getSelectedFile().getAbsolutePath()));
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
-                }
+                //txaAnalisisX.setText(lexgen.XATopDown.analizeCSVfile(fc.getSelectedFile().getAbsolutePath()));
             }
         }else{
             if(CurrentLex != null){
-                txaAnalisisX.setText(lexgen.XATopDown.analizeCSVText(CurrentLex));
+                //txaAnalisisX.setText(lexgen.XATopDown.analizeCSVText(CurrentLex));
             }
             else{
                 JOptionPane.showMessageDialog(null, "No Lexical Results to Analize", "INFO", JOptionPane.INFORMATION_MESSAGE);
