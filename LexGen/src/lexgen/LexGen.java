@@ -6,7 +6,10 @@
 package lexgen;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,10 +33,26 @@ public class LexGen {
             }
         }while(input == null);
         if(input.toUpperCase().equals("Y")){
-            System.out.println(".lex file path:");
+            System.out.println("lexer.lex file path:");
             input = scan.nextLine();
             File archivo = new File(input);
             jflex.Main.generate(archivo);
+            
+            System.out.println("lexerCup.lex file path:");
+            input = scan.nextLine();
+            archivo = new File(input);
+            jflex.Main.generate(archivo);
+            
+            System.out.println("Sintax.cup file path:");
+            input = scan.nextLine();
+            String[] r = {"-parser","Sintax",input};
+            try {
+                java_cup.Main.main(r);
+            } catch (IOException ex) {
+                Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         System.out.println("To generate .jar, use Netbeans");
     }
