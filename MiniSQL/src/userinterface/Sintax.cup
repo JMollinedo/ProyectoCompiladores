@@ -3,33 +3,34 @@ package lexgen;
 import java_cup.runtime.Symbol;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
 import java_cup.runtime.virtual_parse_stack;
 import java.lang.reflect.Field;
 
 parser code
 {: 
 
-    public List<CupError> SyntacticErrors = new ArrayList<CupError>();
+    public LinkedList<String> SyntacticErrors = new LinkedList<String>();
     private Symbol s;
 
     public void syntax_error(Symbol cur_token){
         java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) cur_token);
         List<Integer> ids = expected_token_ids();
-        List<String> list = new ArrayList<String>();
-	    for (Integer expected : ids) {
-            list.add(symbl_name_from_id(expected));
+        StringBuilder sb = new StringBuilder();
+	for (Integer expected : ids) {
+            sb = sb.append(symbl_name_from_id(expected)).append(",");
         }
-        SyntacticErrors.add(new CupError(s.left,s.right,s.value.toString(),list));
+        SyntacticErrors.add("Error! Line " + s.right + ", Column " + s.left + ".Symbol " + s.value + ".expected " + sb.toString());
     }
 
     public void unrecovered_syntax_error(Symbol cur_token){
         java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) cur_token);
         List<Integer> ids = expected_token_ids();
-        List<String> list = new ArrayList<String>();
-	    for (Integer expected : ids) {
-            list.add(symbl_name_from_id(expected));
+        StringBuilder sb = new StringBuilder();
+	for (Integer expected : ids) {
+            sb = sb.append(symbl_name_from_id(expected)).append(",");
         }
-        SyntacticErrors.add(new CupError(s.left,s.right,s.value.toString(),list));
+        SyntacticErrors.add("Error! Line " + s.right + ", Column " + s.left + ".Symbol " + s.value + ".expected " + sb.toString());
     }
 
     public String symbl_name_from_id(int id) {

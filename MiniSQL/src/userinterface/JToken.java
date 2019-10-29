@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lexgen;
-import java.util.ArrayList;
+package userinterface;
 import java.util.List;
 /**
  *
@@ -16,6 +15,7 @@ public class JToken {
     protected int startColumn;
     protected int endColumn;
     protected int charNumber;
+    protected int length;
     protected Token token;
     protected String value;
     
@@ -33,6 +33,9 @@ public class JToken {
     }
     public void setCharNumber(int number){
         this.charNumber = number;
+    }
+    public void setLength(int length){
+        this.length = length;
     }
     public void setToken(Token token){
         this.token = token;
@@ -56,6 +59,9 @@ public class JToken {
     }
     public int getCharNumber(){
         return charNumber;
+    }
+    public int getLength(){
+        return length;
     }
     public Token getToken(){
         return token;
@@ -103,17 +109,11 @@ public class JToken {
         return jt;
     }
 
-    public boolean TNVMatch(Token token, String value){
-        if(value == null){
-            return this.token == token;
-        }
-        if(value.isEmpty()){
-            return this.token == token;
-        }
-        return this.token == token && this.value.toUpperCase().equals(value.toUpperCase());
+    public boolean TNVMatch(Token token){
+        return this.token == token;
     }
     
     public boolean TokenTypeNValueMatch(JToken token){
-        return TNVMatch(token.token, token.value);
+        return TNVMatch(token.token);
     }
 }

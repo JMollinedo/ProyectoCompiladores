@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lexgen;
+package userinterface;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +16,8 @@ import java.util.List;
 public class UseJFlex {
     public static String FileTest(String path) throws IOException{
         return JToken.toCSVtable(FileTest2(path));
-    }
-    private static List<JToken> FileTest2(String path) throws FileNotFoundException, IOException{
+    }    
+    public static List<JToken> FileTest2(String path) throws FileNotFoundException, IOException{
         Reader lector = new BufferedReader(new FileReader(path));
         Lexer lex = new Lexer(lector);
         List<JToken> tokens = new ArrayList();
@@ -29,6 +27,7 @@ public class UseJFlex {
             if(token == Token.Identificador && lex.lexeme.length() > 31){
                 jt.setJTID(tokens.size()+1);
                 jt.setCharNumber(lex.cha);
+                jt.setLength(31);
                 jt.setEndColumn(lex.col + 30);
                 jt.setLine(lex.lin);
                 jt.setStartColumn(lex.col);
@@ -38,6 +37,8 @@ public class UseJFlex {
                 
                 jt = new JToken();
                 jt.setJTID(tokens.size()+1);
+                jt.setCharNumber(lex.cha+30);
+                jt.setLength(lex.len - 31);
                 jt.setEndColumn(lex.len + lex.col - 1);
                 jt.setLine(lex.lin);
                 jt.setStartColumn(lex.col + 31);
@@ -46,6 +47,7 @@ public class UseJFlex {
             }else{
                 jt.setJTID(tokens.size()+1);
                 jt.setCharNumber(lex.cha);
+                jt.setLength(lex.len);
                 jt.setEndColumn(lex.len + lex.col - 1);
                 jt.setLine(lex.lin);
                 jt.setStartColumn(lex.col);
@@ -54,8 +56,10 @@ public class UseJFlex {
             }
             tokens.add(jt);
             token = lex.yylex();
+            
         }
         lector.close();
         return tokens;
     }
+    
 }

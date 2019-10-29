@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lexgen;
+package userinterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,19 +38,19 @@ public class JTError extends JToken {
     
     public static boolean HasErrors(List<JToken> list){
         for (JToken t : list) {
-            if(t.TNVMatch(Token.IdentificadorError, null)){
+            if(t.TNVMatch(Token.IdentificadorError)){
                 return true;
             }
-            if(t.TNVMatch(Token.FlotanteError, null)){
+            if(t.TNVMatch(Token.FlotanteError)){
                 return true;
             }
-            if(t.TNVMatch(Token.CadenaError, null)){
+            if(t.TNVMatch(Token.CadenaError)){
                 return true;
             }
-            if(t.TNVMatch(Token.MalComentario, null)){
+            if(t.TNVMatch(Token.MalComentario)){
                 return true;
             }
-            if(t.TNVMatch(Token.ERROR, null)){
+            if(t.TNVMatch(Token.ERROR)){
                 return true;
             }
         }
