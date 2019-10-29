@@ -12,10 +12,6 @@ parser code
     public List<CupError> SyntacticErrors = new ArrayList<CupError>();
     private Symbol s;
 
-    /*public final Class getSymbolContainer() {
-        return sym.class;
-    }*/
-
     public void syntax_error(Symbol cur_token){
         java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) cur_token);
         List<Integer> ids = expected_token_ids();
