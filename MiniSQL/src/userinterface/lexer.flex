@@ -69,6 +69,8 @@ Avg = "AVG"
 Backup = "BACKUP"
 Begin = "BEGIN"
 Between = "BETWEEN"
+Bigint = "BIGINT"
+Binary = "BINARY"
 Bit = "BIT"
 Bit_length = "BIT_LENGTH"
 Both = "BOTH"
@@ -117,6 +119,9 @@ Current_user = "CURRENT_USER"
 Cursor = "CURSOR"
 Database = "DATABASE"
 Date = "DATE"
+Datetime = "DATETIME"
+Datetime2 = "DATETIME2"
+Datetimeoffset = "DATETIMEOFFSET"
 Day = "DAY"
 Dbcc = "DBCC"
 Deallocate = "DEALLOCATE"
@@ -151,7 +156,6 @@ Except = "EXCEPT"
 Exception = "EXCEPTION"
 Exec = "EXEC"
 Execute = "EXECUTE"
-Execute_as_clause ="EXECUTE_AS_CLAUSE"
 Exists = "EXISTS"
 Exit = "EXIT"
 External = "EXTERNAL"
@@ -183,12 +187,14 @@ Goto = "GOTO"
 Grant = "GRANT"
 Group = "GROUP"
 Having = "HAVING"
+Hierarchyid = "HIERARCHYID"
 Holdlock = "HOLDLOCK"
 Hour = "HOUR"
 Identity = "IDENTITY"
 Identity_insert = "IDENTITY_INSERT"
 Identitycol = "IDENTITYCOL"
 If = "IF"
+Image = "IMAGE"
 Immediate = "IMMEDIATE"
 In = "IN"
 Include = "INCLUDE"
@@ -232,6 +238,7 @@ Min = "MIN"
 Minute = "MINUTE"
 Modular = "MODULAR"
 Module = "MODULE"
+Money = "MONEY"
 Month = "MONTH"
 Name = "NAME"
 Names = "NAMES"
@@ -246,7 +253,9 @@ None = "NONE"
 Not = "NOT"
 Null = "NULL"
 Nullif = "NULLIF"
+Ntext = "NTEXT"
 Numeric = "NUMERIC"
+Nvarchar = "NVARCHAR"
 Octet_length = "OCTET_LENGTH"
 Of = "OF"
 Off = "OFF"
@@ -306,6 +315,7 @@ Rollback = "ROLLBACK"
 Rowcount = "ROWCOUNT"
 Rowguidcol = "ROWGUIDCOL"
 Rows = "ROWS"
+Rowversion = "ROWVERSION"
 Rule = "RULE"
 Save = "SAVE"
 Schema = "SCHEMA"
@@ -326,7 +336,9 @@ Set = "SET"
 Setuser = "SETUSER"
 Shutdown = "SHUTDOWN"
 Size = "SIZE"
+Smalldatetime = "SMALLDATETIME"
 Smallint = "SMALLINT"
+Smallmoney = "SMALLMONEY"
 Some = "SOME"
 Space = "SPACE"
 Sql = "SQL"
@@ -334,6 +346,7 @@ Sqlca = "SQLCA"
 Sqlcode = "SQLCODE"
 Sqlerror = "SQLERROR"
 Sqlstate = "SQLSTATE"
+Sql_variant = "SQL_VARIANT"
 Sqlwarning = "SQLWARNING"
 Static = "STATIC"
 Statistics = "STATISTICS"
@@ -344,12 +357,14 @@ Table = "TABLE"
 Tablesample = "TABLESAMPLE"
 Tb = "TB"
 Temporary = "TEMPORARY"
+Text = "TEXT"
 Textsize = "TEXTSIZE"
 Then = "THEN"
 Time = "TIME"
 Timestamp = "TIMESTAMP"
 Timezone_hour = "TIMEZONE_HOUR"
 Timezone_minute = "TIMEZONE_MINUTE"
+Tinyint = "TINYINT"
 To = "TO"
 Top = "TOP"
 Trailing = "TRAILING"
@@ -366,6 +381,7 @@ Tsequal = "TSEQUAL"
 Type_warning = "TYPE_WARNING"
 Union = "UNION"
 Unique = "UNIQUE"
+Uniqueidentifier = "UNIQUEIDENTIFIER"
 Unknown = "UNKNOWN"
 Unlimited = "UNLIMITED"
 Unpivot = "UNPIVOT"
@@ -378,6 +394,7 @@ User = "USER"
 Using = "USING"
 Value = "VALUE"
 Values = "VALUES"
+Varbinary = "VARBINARY"
 Varchar = "VARCHAR"
 Varying = "VARYING"
 View = "VIEW"
@@ -391,6 +408,7 @@ Within_group = "WITHIN_GROUP"
 Work = "WORK"
 Write = "WRITE"
 Writetext = "WRITETEXT"
+Xml = "XML"
 Year = "YEAR"
 Zone = "ZONE"
 
@@ -408,6 +426,26 @@ cadenaErr = "'" [^\r\n\u0027]*
     public int cha;
 %}
 %%
+
+{Bigint} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Bigint;}
+{Binary} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Binary;}
+{Datetime} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Datetime;}
+{Datetime2} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Datetime2;}
+{Datetimeoffset} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Datetimeoffset;}
+{Hierarchyid} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Hierarchyid;}
+{Image} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Image;}
+{Money} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Money;}
+{Ntext} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Ntext;}
+{Nvarchar} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Nvarchar;}
+{Rowversion} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Rowversion;}
+{Smalldatetime} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Smalldatetime;}
+{Smallmoney} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Smallmoney;}
+{Sql_variant} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Sql_variant;}
+{Text} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Text;}
+{Tinyint} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Tinyint;}
+{Uniqueidentifier} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Uniqueidentifier;}
+{Varbinary} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Varbinary;}
+{Xml} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Xml;}
 
 {Igual} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Igual;}
 {Suma} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Suma;}
@@ -540,7 +578,6 @@ cadenaErr = "'" [^\r\n\u0027]*
 {Exception} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Exception;}
 {Exec} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Exec;}
 {Execute} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Execute;}
-{Execute_as_clause} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Execute_as_clause;}
 {Exists} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Exists;}
 {Exit} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Exit;}
 {External} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return External;}

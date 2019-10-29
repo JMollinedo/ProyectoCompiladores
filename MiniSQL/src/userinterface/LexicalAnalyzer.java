@@ -251,14 +251,17 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
         Sintax s = new Sintax(new LexerCup(new StringReader(data)));
         try {
             s.parse();
-            txaAnalisisX.setText("No Errors");
-        } catch (Exception ex) {
             LinkedList<String> es = s.SyntacticErrors;
-            StringBuilder sb = new StringBuilder();
-            for(String element: es){
-                sb = sb.append(element).append("\n");
+            if(es.isEmpty()){
+                txaAnalisisX.setText("No Errors");
+            }else{
+                StringBuilder sb = new StringBuilder();
+                for(String element: es){
+                    sb = sb.append(element).append("\n");
+                }
+                txaAnalisisX.setText(sb.toString());
             }
-            txaAnalisisX.setText(sb.toString());
+        } catch (Exception ex) {
             Logger.getLogger(LexicalAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAnalizarXActionPerformed

@@ -10,6 +10,25 @@ package userinterface;
  * @author jmoll
  */
 public enum Token {
+    Bigint,
+    Binary,
+    Datetime,
+    Datetime2,
+    Datetimeoffset,
+    Hierarchyid,
+    Image,
+    Money,
+    Ntext,
+    Nvarchar,
+    Rowversion,
+    Smalldatetime,
+    Smallmoney,
+    Sql_variant,
+    Text,
+    Tinyint,
+    Uniqueidentifier,
+    Varbinary,
+    Xml,
     //Fin de AnalisisSin
     FinSintaxis,
     Igual,

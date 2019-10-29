@@ -71,6 +71,8 @@ Avg = "AVG"
 Backup = "BACKUP"
 Begin = "BEGIN"
 Between = "BETWEEN"
+Bigint = "BIGINT"
+Binary = "BINARY"
 Bit = "BIT"
 Bit_length = "BIT_LENGTH"
 Both = "BOTH"
@@ -119,6 +121,9 @@ Current_user = "CURRENT_USER"
 Cursor = "CURSOR"
 Database = "DATABASE"
 Date = "DATE"
+Datetime = "DATETIME"
+Datetime2 = "DATETIME2"
+Datetimeoffset = "DATETIMEOFFSET"
 Day = "DAY"
 Dbcc = "DBCC"
 Deallocate = "DEALLOCATE"
@@ -153,7 +158,6 @@ Except = "EXCEPT"
 Exception = "EXCEPTION"
 Exec = "EXEC"
 Execute = "EXECUTE"
-Execute_as_clause ="EXECUTE_AS_CLAUSE"
 Exists = "EXISTS"
 Exit = "EXIT"
 External = "EXTERNAL"
@@ -185,12 +189,14 @@ Goto = "GOTO"
 Grant = "GRANT"
 Group = "GROUP"
 Having = "HAVING"
+Hierarchyid = "HIERARCHYID"
 Holdlock = "HOLDLOCK"
 Hour = "HOUR"
 Identity = "IDENTITY"
 Identity_insert = "IDENTITY_INSERT"
 Identitycol = "IDENTITYCOL"
 If = "IF"
+Image = "IMAGE"
 Immediate = "IMMEDIATE"
 In = "IN"
 Include = "INCLUDE"
@@ -234,6 +240,7 @@ Min = "MIN"
 Minute = "MINUTE"
 Modular = "MODULAR"
 Module = "MODULE"
+Money = "MONEY"
 Month = "MONTH"
 Name = "NAME"
 Names = "NAMES"
@@ -248,7 +255,9 @@ None = "NONE"
 Not = "NOT"
 Null = "NULL"
 Nullif = "NULLIF"
+Ntext = "NTEXT"
 Numeric = "NUMERIC"
+Nvarchar = "NVARCHAR"
 Octet_length = "OCTET_LENGTH"
 Of = "OF"
 Off = "OFF"
@@ -308,6 +317,7 @@ Rollback = "ROLLBACK"
 Rowcount = "ROWCOUNT"
 Rowguidcol = "ROWGUIDCOL"
 Rows = "ROWS"
+Rowversion = "ROWVERSION"
 Rule = "RULE"
 Save = "SAVE"
 Schema = "SCHEMA"
@@ -328,7 +338,9 @@ Set = "SET"
 Setuser = "SETUSER"
 Shutdown = "SHUTDOWN"
 Size = "SIZE"
+Smalldatetime = "SMALLDATETIME"
 Smallint = "SMALLINT"
+Smallmoney = "SMALLMONEY"
 Some = "SOME"
 Space = "SPACE"
 Sql = "SQL"
@@ -336,6 +348,7 @@ Sqlca = "SQLCA"
 Sqlcode = "SQLCODE"
 Sqlerror = "SQLERROR"
 Sqlstate = "SQLSTATE"
+Sql_variant = "SQL_VARIANT"
 Sqlwarning = "SQLWARNING"
 Static = "STATIC"
 Statistics = "STATISTICS"
@@ -346,12 +359,14 @@ Table = "TABLE"
 Tablesample = "TABLESAMPLE"
 Tb = "TB"
 Temporary = "TEMPORARY"
+Text = "TEXT"
 Textsize = "TEXTSIZE"
 Then = "THEN"
 Time = "TIME"
 Timestamp = "TIMESTAMP"
 Timezone_hour = "TIMEZONE_HOUR"
 Timezone_minute = "TIMEZONE_MINUTE"
+Tinyint = "TINYINT"
 To = "TO"
 Top = "TOP"
 Trailing = "TRAILING"
@@ -368,6 +383,7 @@ Tsequal = "TSEQUAL"
 Type_warning = "TYPE_WARNING"
 Union = "UNION"
 Unique = "UNIQUE"
+Uniqueidentifier = "UNIQUEIDENTIFIER"
 Unknown = "UNKNOWN"
 Unlimited = "UNLIMITED"
 Unpivot = "UNPIVOT"
@@ -380,6 +396,7 @@ User = "USER"
 Using = "USING"
 Value = "VALUE"
 Values = "VALUES"
+Varbinary = "VARBINARY"
 Varchar = "VARCHAR"
 Varying = "VARYING"
 View = "VIEW"
@@ -393,6 +410,7 @@ Within_group = "WITHIN_GROUP"
 Work = "WORK"
 Write = "WRITE"
 Writetext = "WRITETEXT"
+Xml = "XML"
 Year = "YEAR"
 Zone = "ZONE"
 
@@ -412,6 +430,26 @@ cadenaErr = "'" [^\r\n\u0027]*
 %}
 
 %%
+
+{Bigint} {return new Symbol(sym.BIGINT,yycolumn,yyline,yytext());}
+{Binary} {return new Symbol(sym.BINARY,yycolumn,yyline,yytext());}
+{Datetime} {return new Symbol(sym.DATETIME,yycolumn,yyline,yytext());}
+{Datetime2} {return new Symbol(sym.DATETIME2,yycolumn,yyline,yytext());}
+{Datetimeoffset} {return new Symbol(sym.DATETIMEOFFSET,yycolumn,yyline,yytext());}
+{Hierarchyid} {return new Symbol(sym.HIERARCHYID,yycolumn,yyline,yytext());}
+{Image} {return new Symbol(sym.IMAGE,yycolumn,yyline,yytext());}
+{Money} {return new Symbol(sym.MONEY,yycolumn,yyline,yytext());}
+{Ntext} {return new Symbol(sym.NTEXT,yycolumn,yyline,yytext());}
+{Nvarchar} {return new Symbol(sym.NVARCHAR,yycolumn,yyline,yytext());}
+{Rowversion} {return new Symbol(sym.ROWVERSION,yycolumn,yyline,yytext());}
+{Smalldatetime} {return new Symbol(sym.SMALLDATETIME,yycolumn,yyline,yytext());}
+{Smallmoney} {return new Symbol(sym.SMALLMONEY,yycolumn,yyline,yytext());}
+{Sql_variant} {return new Symbol(sym.SQL_VARIANT,yycolumn,yyline,yytext());}
+{Text} {return new Symbol(sym.TEXT,yycolumn,yyline,yytext());}
+{Tinyint} {return new Symbol(sym.TINYINT,yycolumn,yyline,yytext());}
+{Uniqueidentifier} {return new Symbol(sym.UNIQUEIDENTIFIER,yycolumn,yyline,yytext());}
+{Varbinary} {return new Symbol(sym.VARBINARY,yycolumn,yyline,yytext());}
+{Xml} {return new Symbol(sym.XML,yycolumn,yyline,yytext());}
 
 {Absolute} {return new Symbol(sym.ABSOLUTE,yycolumn,yyline,yytext());}
 {Action} {return new Symbol(sym.ACTION,yycolumn,yyline,yytext());}
@@ -514,7 +552,6 @@ cadenaErr = "'" [^\r\n\u0027]*
 {Exception} {return new Symbol(sym.EXCEPTION,yycolumn,yyline,yytext());}
 {Exec} {return new Symbol(sym.EXEC,yycolumn,yyline,yytext());}
 {Execute} {return new Symbol(sym.EXECUTE,yycolumn,yyline,yytext());}
-{Execute_as_clause} {return new Symbol(sym.EXECUTE_AS_CLAUSE,yycolumn,yyline,yytext());}
 {Exists} {return new Symbol(sym.EXISTS,yycolumn,yyline,yytext());}
 {Exit} {return new Symbol(sym.EXIT,yycolumn,yyline,yytext());}
 {External} {return new Symbol(sym.EXTERNAL,yycolumn,yyline,yytext());}
