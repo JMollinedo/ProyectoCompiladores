@@ -59,8 +59,6 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="chbLeerOut" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAnalizarX" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -92,7 +90,6 @@
                           <Component id="btnAnalizar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="chbGenerarArchivo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnAnalizarX" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="chbLeerOut" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -201,11 +198,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JCheckBox" name="chbLeerOut">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Leer Archivo Out"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btnBorrarContenidoL">
       <Properties>
         <Property name="text" type="java.lang.String" value="Borrar Contenido"/>

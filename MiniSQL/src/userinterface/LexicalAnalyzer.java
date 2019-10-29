@@ -5,9 +5,8 @@
  */
 package userinterface;
 
+import lexgen.ReadnWrite;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -49,7 +48,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
         btnAnalizarX = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         txaAnalisisX = new javax.swing.JTextArea();
-        chbLeerOut = new javax.swing.JCheckBox();
         btnBorrarContenidoL = new javax.swing.JButton();
         btnBorrarContenidoX = new javax.swing.JButton();
 
@@ -104,8 +102,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
         txaAnalisisX.setRows(5);
         jScrollPane3.setViewportView(txaAnalisisX);
 
-        chbLeerOut.setText("Leer Archivo Out");
-
         btnBorrarContenidoL.setText("Borrar Contenido");
         btnBorrarContenidoL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,8 +149,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                         .addComponent(btnBorrarContenidoX))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(chbLeerOut)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAnalizarX)))
                 .addContainerGap())
         );
@@ -178,8 +172,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAnalizar)
                             .addComponent(chbGenerarArchivo)
-                            .addComponent(btnAnalizarX)
-                            .addComponent(chbLeerOut))
+                            .addComponent(btnAnalizarX))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
@@ -245,22 +238,17 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAnalizarActionPerformed
 
     private void btnAnalizarXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarXActionPerformed
-        if(chbLeerOut.isSelected()){
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("OUT file", "out");
-            JFileChooser fc = new JFileChooser();
-            fc.setFileFilter(filter);
-            fc.setMultiSelectionEnabled(false);
-            int res = fc.showOpenDialog(fc);
-            if(res == JFileChooser.APPROVE_OPTION){
-                //txaAnalisisX.setText(lexgen.XATopDown.analizeCSVfile(fc.getSelectedFile().getAbsolutePath()));
-            }
-        }else{
-            if(CurrentLex != null){
-                //txaAnalisisX.setText(lexgen.XATopDown.analizeCSVText(CurrentLex));
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "No Lexical Results to Analize", "INFO", JOptionPane.INFORMATION_MESSAGE);
-            }
+        String content = new StringBuilder().append(txaContenido.getText()).toString();
+        String temporalFilePath = "C:\\Users\\Public\\Documents\\lexTemp.txt";
+        try {
+            ReadnWrite.writeAllText(temporalFilePath, content);
+            String res = lexgen.UseJFlex.CleanFileTest(temporalFilePath);
+            ReadnWrite.deleteFile(temporalFilePath);
+            txaAnalisisX.setText(lexgen.UseJFlex.SintaxAnalisis(res));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnAnalizarXActionPerformed
 
@@ -307,10 +295,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
             }
         });
     }
-    
-    private static void ExportResults(){
-        
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizar;
@@ -320,7 +304,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
     private javax.swing.JButton btnBorrarContenidoX;
     private javax.swing.JButton btnCargarArchivo;
     private javax.swing.JCheckBox chbGenerarArchivo;
-    private javax.swing.JCheckBox chbLeerOut;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
