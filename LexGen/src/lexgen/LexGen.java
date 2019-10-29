@@ -38,21 +38,21 @@ public class LexGen {
             File archivo = new File(input);
             jflex.Main.generate(archivo);
             
-            System.out.println("lexerCup.lex file path:");
-            input = scan.nextLine();
-            archivo = new File(input);
-            jflex.Main.generate(archivo);
-            
-            System.out.println("Sintax.cup file path:");
-            input = scan.nextLine();
-            String[] r = {"-parser","Sintax",input};
-            try {
-                java_cup.Main.main(r);
-            } catch (IOException ex) {
-                Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            System.out.println("lexerCup.lex file path:");
+//            input = scan.nextLine();
+//            archivo = new File(input);
+//            jflex.Main.generate(archivo);
+//            
+//            System.out.println("Sintax.cup file path:");
+//            input = scan.nextLine();
+//            String[] r = {"-parser","Sintax",input};
+//            try {
+//                java_cup.Main.main(r);
+//            } catch (IOException ex) {
+//                Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (Exception ex) {
+//                Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
         System.out.println("To generate .jar, use Netbeans");
     }
