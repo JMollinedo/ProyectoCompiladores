@@ -38,19 +38,19 @@ public class JTError extends JToken {
     
     public static boolean HasErrors(List<JToken> list){
         for (JToken t : list) {
-            if(t.TNVMatch(Tokens.IdentificadorError, null)){
+            if(t.TNVMatch(Token.IdentificadorError, null)){
                 return true;
             }
-            if(t.TNVMatch(Tokens.FlotanteError, null)){
+            if(t.TNVMatch(Token.FlotanteError, null)){
                 return true;
             }
-            if(t.TNVMatch(Tokens.VarcharError, null)){
+            if(t.TNVMatch(Token.CadenaError, null)){
                 return true;
             }
-            if(t.TNVMatch(Tokens.MalComentario, null)){
+            if(t.TNVMatch(Token.MalComentario, null)){
                 return true;
             }
-            if(t.TNVMatch(Tokens.ERROR, null)){
+            if(t.TNVMatch(Token.ERROR, null)){
                 return true;
             }
         }

@@ -20,10 +20,10 @@ public class UseJFlex {
         Reader lector = new BufferedReader(new FileReader(path));
         Lexer lex = new Lexer(lector);
         List<JToken> tokens = new ArrayList();
-        Tokens token = lex.yylex();
+        Token token = lex.yylex();
         while (token != null) {
             JToken jt = new JToken();
-            if(token == Tokens.Identificador && lex.lexeme.length() > 31){
+            if(token == Token.Identificador && lex.lexeme.length() > 31){
                 jt.setJTID(tokens.size()+1);
                 jt.setEndColumn(lex.col + 30);
                 jt.setLine(lex.lin);
@@ -37,7 +37,7 @@ public class UseJFlex {
                 jt.setEndColumn(lex.len + lex.col - 1);
                 jt.setLine(lex.lin);
                 jt.setStartColumn(lex.col + 31);
-                jt.setToken(Tokens.OVERFLOWIDENTIFIER);
+                jt.setToken(Token.OVERFLOWIDENTIFIER);
                 jt.setValue(lex.lexeme.substring(31));
             }else{
                 jt.setJTID(tokens.size()+1);
@@ -52,17 +52,5 @@ public class UseJFlex {
         }
         lector.close();
         return JToken.toCSVtable(tokens);
-    }
-    
-    public static List<JToken> GetTokensFromFile(String path) throws IOException{
-        return JToken.fromCSVtable(
-                Files.readAllLines(
-                        new File(path).toPath(),
-                        Charset.forName("UTF-8")
-                ));
-    }
-    
-    public static List<JToken> GetTokensFromText(String text){
-        return JToken.fromCSVtable(text);
     }
 }

@@ -15,7 +15,7 @@ public class JToken {
     protected int line;
     protected int startColumn;
     protected int endColumn;
-    protected Tokens token;
+    protected Token token;
     protected String value;
     
     public void setJTID(int id){
@@ -30,7 +30,7 @@ public class JToken {
     public void setEndColumn(int column){
         this.endColumn = column;
     }
-    public void setToken(Tokens token){
+    public void setToken(Token token){
         this.token = token;
     }
     public void setValue(String value){
@@ -50,7 +50,7 @@ public class JToken {
     public int getEndColumn(){
         return endColumn;
     }
-    public Tokens getToken(){
+    public Token getToken(){
         return token;
     }
     public String getValue(){
@@ -58,7 +58,7 @@ public class JToken {
     }
     
     public JToken(){};
-    public JToken(Tokens token, String value){
+    public JToken(Token token, String value){
         this();
         this.token = token;
         this.value = value;
@@ -92,70 +92,11 @@ public class JToken {
         jt.line = Integer.parseInt(data[1]);
         jt.startColumn = Integer.parseInt(data[2]);
         jt.endColumn = Integer.parseInt(data[3]);
-        jt.token = getTokenByName(data[4]);
         jt.value = data[5];
         return jt;
     }
-    
-    protected static Tokens getTokenByName(String name){
-        Tokens token;
-        switch(name){
-            //Tipo de Dato
-            case "TipoDatoOtro": token = Tokens.TipoDatoOtro; break;
-            case "TipoDatoEntero": token = Tokens.TipoDatoEntero; break;
-            case "TipoDatoBit": token = Tokens.TipoDatoBit; break;
-            case "TipoDatoDecimalExacto": token = Tokens.TipoDatoDecimalExacto; break;
-            case "TipoDatoDecimalAprox": token = Tokens.TipoDatoDecimalAprox; break;
-            case "TipoDatoFechaHora": token = Tokens.TipoDatoFechaHora; break;
-            case "TipoDatoChars": token = Tokens.TipoDatoChars; break;
-            case "TipoDatoUnicode": token = Tokens.TipoDatoUnicode; break;
-            case "TipoDatoBin": token = Tokens.TipoDatoBin; break;
-            //Palabras Reservadas
-            case "Reservada": token = Tokens.Reservada; break;
-            //Operadores
-            case "OperadorOtro": token = Tokens.OperadorOtro; break;
-            case "OperadorLogico": token = Tokens.OperadorLogico; break;
-            case "OperadorAritmetico": token = Tokens.OperadorAritmetico; break;
-            case "OperadorAgrupador": token = Tokens.OperadorAgrupador; break;
-            case "Punto": token = Tokens.Punto; break;
-            case "Coma": token = Tokens.Coma; break;
-            case "PYC": token = Tokens.PYC; break;
-            //IDs
-            case "Identificador": token = Tokens.Identificador; break;
-            case "OVERFLOWIDENTIFIER": token = Tokens.OVERFLOWIDENTIFIER; break;
-            //Definicion de Datos
-            case "Flotante": token = Tokens.Flotante; break;
-            case "Entero": token = Tokens.Entero; break;
-            case "Varchar": token = Tokens.Varchar; break;
-            //ERRORES
-            case "IdentificadorError": token = Tokens.IdentificadorError; break;
-            case "FlotanteError": token = Tokens.FlotanteError; break;
-            case "VarcharError": token = Tokens.VarcharError; break;
-            case "MalComentario": token = Tokens.MalComentario; break;
-            case "ERROR": token = Tokens.ERROR; break;
-            default: token = null; break;
-        }
-        return token; 
-    }
-    
-    protected static List<JToken> fromCSVtable(String table){
-        String[] lis = table.split("\n");
-        List<JToken> tk = new ArrayList();
-        for (int i = 1; i < lis.length; i++) {
-            tk.add(fromCSV(lis[i]));
-        }
-        return tk;
-    }
-    
-    protected static List<JToken> fromCSVtable(List<String> table){
-        List<JToken> tk = new ArrayList();
-        for (int i = 1; i < table.size(); i++) {
-            tk.add(fromCSV(table.get(i)));
-        }
-        return tk;
-    }
 
-    public boolean TNVMatch(Tokens token, String value){
+    public boolean TNVMatch(Token token, String value){
         if(value == null){
             return this.token == token;
         }
