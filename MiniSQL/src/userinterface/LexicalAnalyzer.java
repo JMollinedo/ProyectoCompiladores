@@ -8,6 +8,7 @@ package userinterface;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -251,7 +252,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
         Sintax s = new Sintax(new LexerCup(new StringReader(data)));
         try {
             s.parse();
-            LinkedList<String> es = s.SyntacticErrors;
+            List<String> es = s.SynErr;
             if(es.isEmpty()){
                 txaAnalisisX.setText("No Errors");
             }else{

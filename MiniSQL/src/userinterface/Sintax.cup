@@ -3,115 +3,97 @@ package userinterface;
 import java_cup.runtime.Symbol;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.LinkedList;
 import java_cup.runtime.virtual_parse_stack;
 import java.lang.reflect.Field;
 
 
 parser code
 {: 
-    public LinkedList<String> SyntacticErrors = new LinkedList<String>();
+    public List<String> SynErr = new ArrayList();
     private Symbol s;
 
     public final Class getSymbolContainer() {
         return sym.class;
     }
 
-
     public void syntax_error(Symbol cur_token){
         java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) cur_token);
-        String Auxiliar = "";
+        StringBuilder sb = new StringBuilder();
         List<Integer> ids = expected_token_ids();
-        LinkedList<String> list = new LinkedList<String>(); 
         for (Integer expected : ids) {
-                  Auxiliar = symbl_name_from_id(expected);
-                  Auxiliar = " " + Auxiliar + " ";
-                  list.add(Auxiliar);
+                String aux = symbl_name_from_id(expected);
+                sb = sb.append(aux).append(" ");
         }
-        SyntacticErrors.add("* Error Sintactico. Columna: " + (s.left+1) + " Linea: " + (s.right+1) + ". Simbolo:  \'" + s.value + "\'  * Se esperaba: " + list);
+        SynErr.add("Error! Line " + (s.right + 1) + ", Column " + (s.left+1) + ". Symbol Founded \'" + s.value + ". Expected: " + sb.toString());
     }
 
     public void unrecovered_syntax_error(Symbol cur_token){
-      java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) cur_token);
-        String Auxiliar = "";
+        java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) cur_token);
+        StringBuilder sb = new StringBuilder();
         List<Integer> ids = expected_token_ids();
-        LinkedList<String> list = new LinkedList<String>(); 
         for (Integer expected : ids) {
-                  Auxiliar = symbl_name_from_id(expected);
-                  Auxiliar = " " + Auxiliar + " ";
-                  list.add(Auxiliar);
+                String aux = symbl_name_from_id(expected);
+                sb = sb.append(aux).append(" ");
         }
-        SyntacticErrors.add("* Error Sintactico. Columna: " + (s.left+1) + " Linea: " + (s.right+1) + ". Simbolo:  \'" + s.value + "\'  * Se esperaba: " + list);
+        SynErr.add("Error! Line " + (s.right + 1) + ", Column " + (s.left+1) + ". Symbol Founded \'" + s.value + ". Expected: " + sb.toString());
     }
-
 
     public String symbl_name_from_id(int id) {
-	  Field[] fields = getSymbolContainer().getFields();
-	  for(Field f : fields){
-		  try {
-			if (f.getInt(null)==id)
-			  return f.getName();
-		} catch (IllegalArgumentException e) {
-			//e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			//e.printStackTrace();
-		}
-	  }
-	  return "Simbolo Invalido id";
+        Field[] fields = getSymbolContainer().getFields();
+        for(Field f : fields){
+            try {
+                  if (f.getInt(null)==id) return f.getName();
+            } catch (IllegalArgumentException e) {
+            } catch (IllegalAccessException e) {
+            }
+        }
+        return "Simbolo Invalido id";
     }
-   
 
-     public List<Integer> expected_token_ids() {
-        List<Integer> ret = new LinkedList<Integer>();
-	  int parse_state = ((Symbol)stack.peek()).parse_state ;
-	  short[] row = action_tab[parse_state];
-	  for (int i = 0; i<row.length; i+=2){
-		  if (row[i]==-1) continue;
-		  if (!validate_expected_symbol(row[i])) continue;
-		  ret.add(new Integer(row[i]));
-	  }
-	  return ret;
-
+    public List<Integer> expected_token_ids() {
+        List<Integer> ret = new ArrayList();
+        int parse_state = ((Symbol)stack.peek()).parse_state ;
+        short[] row = action_tab[parse_state];
+        for (int i = 0; i<row.length; i+=2){
+                if (row[i]==-1) continue;
+                if (!validate_expected_symbol(row[i])) continue;
+                ret.add(new Integer(row[i]));
+        }
+        return ret;
     }
 
     protected static final int _error_sync_size(){
-    return 1;
+        return 1;
     }
 
     private boolean validate_expected_symbol(int id){
-	  short lhs,rhs_size;
-	  int act;
-	  try {
-		  virtual_parse_stack vstack = new virtual_parse_stack(stack);
-		  for (;;)
-		  {
-			  act = get_action(vstack.top(), id);
-
-			  if (act == 0) return false;
-
-			  if (act > 0)
-			  {
-				  vstack.push(act-1);
-
-				  if (!advance_lookahead()) return true;
-			  }
-			  else
-			  {
-				  if ((-act)-1 == start_production())  return true;
-
-				  lhs = production_tab[(-act)-1][0];
-				  rhs_size = production_tab[(-act)-1][1];
-				  for (int i = 0; i < rhs_size; i++) vstack.pop();
-
-				  vstack.push(get_reduce(vstack.top(), lhs));
-			  }
-		  }
-
-	  } catch (Exception e) {
-		  e.printStackTrace();
-	  }
-	  return true;
-  }
+        short lhs,rhs_size;
+        int act;
+        try {
+            virtual_parse_stack vstack = new virtual_parse_stack(stack);
+            for (;;)
+            {
+                act = get_action(vstack.top(), id);
+                if (act == 0) return false;
+                if (act > 0)
+                {
+                        vstack.push(act-1);
+                        if (!advance_lookahead()) return true;
+                }
+                else
+                {
+                        if ((-act)-1 == start_production())  return true;
+                        lhs = production_tab[(-act)-1][0];
+                        rhs_size = production_tab[(-act)-1][1];
+                        for (int i = 0; i < rhs_size; i++) vstack.pop();
+                        vstack.push(get_reduce(vstack.top(), lhs));
+                }
+            }
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
+        return true;
+    }
 :};
 
 terminal Igual,Suma,Resta,Multiplicacion,Division,Identificador,Entero,
