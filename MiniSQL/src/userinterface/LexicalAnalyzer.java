@@ -6,6 +6,8 @@
 package userinterface;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -211,7 +213,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
             String temporalFilePath = "C:\\Users\\Public\\Documents\\lexTemp.txt";
             try {
                 ReadnWrite.writeAllText(temporalFilePath, content);
-                CurrentLex = lexgen.UseJFlex.FileTest(temporalFilePath);
+                CurrentLex = UseJFlex.FileTest(temporalFilePath);
                 ReadnWrite.deleteFile(temporalFilePath);
                 if(chbGenerarArchivo.isSelected()){
                     JFileChooser fc = new JFileChooser();
@@ -245,26 +247,19 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAnalizarActionPerformed
 
     private void btnAnalizarXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarXActionPerformed
-        if(chbLeerOut.isSelected()){
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("OUT file", "out");
-            JFileChooser fc = new JFileChooser();
-            fc.setFileFilter(filter);
-            fc.setMultiSelectionEnabled(false);
-            int res = fc.showOpenDialog(fc);
-            if(res == JFileChooser.APPROVE_OPTION){
-                try {
-                    txaAnalisisX.setText(lexgen.XATopDown.analizeCSVfile(fc.getSelectedFile().getAbsolutePath()));
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
-                }
+        String data = txaContenido.getText();
+        Sintax s = new Sintax(new LexerCup(new StringReader(data)));
+        try {
+            s.parse();
+            txaAnalisisX.setText("No Errors");
+        } catch (Exception ex) {
+            LinkedList<String> es = s.SyntacticErrors;
+            StringBuilder sb = new StringBuilder();
+            for(String element: es){
+                sb = sb.append(element).append("\n");
             }
-        }else{
-            if(CurrentLex != null){
-                txaAnalisisX.setText(lexgen.XATopDown.analizeCSVText(CurrentLex));
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "No Lexical Results to Analize", "INFO", JOptionPane.INFORMATION_MESSAGE);
-            }
+            txaAnalisisX.setText(sb.toString());
+            Logger.getLogger(LexicalAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAnalizarXActionPerformed
 
