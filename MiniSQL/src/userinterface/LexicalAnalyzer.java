@@ -5,6 +5,7 @@
  */
 package userinterface;
 
+import lexgen.ReadnWrite;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

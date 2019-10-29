@@ -16,7 +16,10 @@ import java.util.List;
  * @author jmoll
  */
 public class UseJFlex {
-    public static String FileTest(String path) throws FileNotFoundException, IOException{
+    public static String FileTest(String path) throws IOException{
+        return JToken.toCSVtable(FileTest2(path));
+    }
+    private static List<JToken> FileTest2(String path) throws FileNotFoundException, IOException{
         Reader lector = new BufferedReader(new FileReader(path));
         Lexer lex = new Lexer(lector);
         List<JToken> tokens = new ArrayList();
@@ -25,6 +28,7 @@ public class UseJFlex {
             JToken jt = new JToken();
             if(token == Token.Identificador && lex.lexeme.length() > 31){
                 jt.setJTID(tokens.size()+1);
+                jt.setCharNumber(lex.cha);
                 jt.setEndColumn(lex.col + 30);
                 jt.setLine(lex.lin);
                 jt.setStartColumn(lex.col);
@@ -41,6 +45,7 @@ public class UseJFlex {
                 jt.setValue(lex.lexeme.substring(31));
             }else{
                 jt.setJTID(tokens.size()+1);
+                jt.setCharNumber(lex.cha);
                 jt.setEndColumn(lex.len + lex.col - 1);
                 jt.setLine(lex.lin);
                 jt.setStartColumn(lex.col);
@@ -51,6 +56,6 @@ public class UseJFlex {
             token = lex.yylex();
         }
         lector.close();
-        return JToken.toCSVtable(tokens);
+        return tokens;
     }
 }

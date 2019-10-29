@@ -15,6 +15,7 @@ public class JToken {
     protected int line;
     protected int startColumn;
     protected int endColumn;
+    protected int charNumber;
     protected Token token;
     protected String value;
     
@@ -29,6 +30,9 @@ public class JToken {
     }
     public void setEndColumn(int column){
         this.endColumn = column;
+    }
+    public void setCharNumber(int number){
+        this.charNumber = number;
     }
     public void setToken(Token token){
         this.token = token;
@@ -49,6 +53,9 @@ public class JToken {
     }
     public int getEndColumn(){
         return endColumn;
+    }
+    public int getCharNumber(){
+        return charNumber;
     }
     public Token getToken(){
         return token;
