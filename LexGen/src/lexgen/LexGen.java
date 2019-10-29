@@ -7,9 +7,11 @@ package lexgen;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,7 +56,7 @@ public class LexGen {
                 input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\LexGen\\src\\lexgen\\Sintax.cup" ;
                 String[] r = {"-parser","Sintax",input};
                 try {
-                    java_cup.Main.main(r);
+                    java_cup.Main.main(r);                    
                     System.out.println("Syntax.java generated file path:");
                     input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\LexGen\\Sintax.java" ;
                     System.out.println("Syntax.java destiny file path:");

@@ -83,4 +83,7 @@ public class JToken {
                 .append('"').append(value).append('"')
                 .toString();
     }
+    public boolean TNVMatch(Token token){
+        return this.token == token;
+    }
 }
