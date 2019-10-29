@@ -35,7 +35,7 @@ public class UseCup {
         for(int i = errlex.size()-1; i >= 0; i--){
             content = erraseInString(content,errlex.get(i)[0],errlex.get(i)[1]);
         }
-        Sintax s = new Sintax(new userinterface.LexerCup(new StringReader(content)));
+        /*Sintax s = new Sintax(new userinterface.LexerCup(new StringReader(content)));
         s.parse();
         LinkedList<String> errs = s.SyntacticErrors;
         if(errs.isEmpty()){
@@ -46,7 +46,7 @@ public class UseCup {
             sb.append(err);
             sb.append("\n");
         }
-        return sb.toString();
+        return sb.toString();*/return null;
     }
     private static List<List<JToken>> splitedList(List<JToken> list){
         List<List<JToken>> res = new ArrayList();
