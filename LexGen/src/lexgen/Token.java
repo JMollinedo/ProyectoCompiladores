@@ -143,6 +143,7 @@ public enum Token {
     Exception,
     Exec,
     Execute,
+    Execute_as_clause,
     Exists,
     Exit,
     External,

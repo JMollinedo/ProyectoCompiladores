@@ -150,6 +150,7 @@ Except = "EXCEPT"
 Exception = "EXCEPTION"
 Exec = "EXEC"
 Execute = "EXECUTE"
+Execute_as_clause ="EXECUTE_AS_CLAUSE"
 Exists = "EXISTS"
 Exit = "EXIT"
 External = "EXTERNAL"
@@ -537,6 +538,7 @@ cadenaErr = "'" [^\r\n\u0027]*
 {Exception} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Exception;}
 {Exec} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Exec;}
 {Execute} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Execute;}
+{Execute_as_clause} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Execute_as_clause;}
 {Exists} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Exists;}
 {Exit} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Exit;}
 {External} {lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return External;}
