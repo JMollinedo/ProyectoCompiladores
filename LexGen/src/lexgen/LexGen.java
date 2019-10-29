@@ -7,6 +7,9 @@ package lexgen;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,35 +28,52 @@ public class LexGen {
         Scanner scan = new Scanner(System.in);
         String input;
         do{
-            System.out.println("Regenerate Lexer? (Y/N)");
+            System.out.println("1. Regenerate JFlex File");
+            System.out.println("2. Regenerate JCup File");
+            System.out.println("3. Close");
             input = scan.nextLine();
-            if(!input.toUpperCase().equals("Y") && !input.toUpperCase().equals("N") ){
+            if(!input.equals("1") && !input.equals("2") && !input.equals("3")){
                 System.out.println("ERROR");
                 input = null;
             }
         }while(input == null);
-        if(input.toUpperCase().equals("Y")){
-            System.out.println("lexer.lex file path:");
-            input = scan.nextLine();
-            File archivo = new File(input);
-            jflex.Main.generate(archivo);
-            
-//            System.out.println("lexerCup.lex file path:");
-//            input = scan.nextLine();
-//            archivo = new File(input);
-//            jflex.Main.generate(archivo);
-//            
-//            System.out.println("Sintax.cup file path:");
-//            input = scan.nextLine();
-//            String[] r = {"-parser","Sintax",input};
-//            try {
-//                java_cup.Main.main(r);
-//            } catch (IOException ex) {
-//                Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (Exception ex) {
-//                Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+        File archivo;
+        switch(input){
+            case "1":
+                System.out.println(".lex file path:");
+                input = scan.nextLine();
+                archivo = new File(input);
+                jflex.Main.generate(archivo);
+                break;
+            case "2":
+                System.out.println(".lex file path:");
+                input = scan.nextLine();
+                archivo = new File(input);
+                jflex.Main.generate(archivo);
+                System.out.println(".cup file path:");
+                input = scan.nextLine();
+                String[] r = {"-parser","Sintax",input};
+                try {
+                    java_cup.Main.main(r);
+                    System.out.println("Syntax.java generated file path:");
+                    input = scan.nextLine();
+                    System.out.println("Syntax.java destiny file path:");
+                    Files.copy(Paths.get(input),Paths.get(scan.nextLine()),StandardCopyOption.REPLACE_EXISTING);
+                    Files.delete(Paths.get(input));
+                    System.out.println("Sym.java generated file path:");
+                    input = scan.nextLine();
+                    System.out.println("Sym.java destiny file path:");
+                    Files.copy(Paths.get(input),Paths.get(scan.nextLine()),StandardCopyOption.REPLACE_EXISTING);
+                    Files.delete(Paths.get(input));
+                } catch (IOException ex) {
+                    Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            case "3":
+                System.out.println("To generate .jar, use Netbeans");
+                break;
         }
-        System.out.println("To generate .jar, use Netbeans");
     }
 }
