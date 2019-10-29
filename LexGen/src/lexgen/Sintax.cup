@@ -12,9 +12,9 @@ parser code
     public List<CupError> SyntacticErrors = new ArrayList<CupError>();
     private Symbol s;
 
-    public final Class getSymbolContainer() {
+    /*public final Class getSymbolContainer() {
         return sym.class;
-    }
+    }*/
 
     public void syntax_error(Symbol cur_token){
         java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) cur_token);
@@ -23,7 +23,7 @@ parser code
 	    for (Integer expected : ids) {
             list.add(symbl_name_from_id(expected));
         }
-        SyntacticErrors.add(new CupError(s.left,s.right,s.value,list));
+        SyntacticErrors.add(new CupError(s.left,s.right,s.value.toString(),list));
     }
 
     public void unrecovered_syntax_error(Symbol cur_token){
@@ -33,7 +33,7 @@ parser code
 	    for (Integer expected : ids) {
             list.add(symbl_name_from_id(expected));
         }
-        SyntacticErrors.add(new CupError(s.left,s.right,s.value,list));
+        SyntacticErrors.add(new CupError(s.left,s.right,s.value.toString(),list));
     }
 
     public String symbl_name_from_id(int id) {
@@ -49,7 +49,7 @@ parser code
     }
 
     public List<Integer> expected_token_ids() {
-        List<Integer> ret = new LinkedList<Integer>();
+        List<Integer> ret = new ArrayList<Integer>();
         int parse_state = ((Symbol)stack.peek()).parse_state ;
         short[] row = action_tab[parse_state];
         for (int i = 0; i<row.length; i+=2){
@@ -93,9 +93,10 @@ parser code
     }
 :};
 
-terminal Igual,Suma,Resta,Multiplicacion,Division,identificador,entero,cadena,
-         flotan,Porcentaje,Menor,MenorIgual,Mayor,MayorIgual,NoIgual,PyC,Coma,Punto,Arroba,
+terminal Igual,Suma,Resta,Multiplicacion,Division,Identificador,Entero,
+         Flotan,Porcentaje,Menor,MenorIgual,Mayor,MayorIgual,NoIgual,PyC,Coma,Punto,Arroba,
          Numeral,Corchetes,Llaves,Parentesis,AbreCorchetes,AbreParentesis,
+         AbreLlaves,CierraLlaves,IdentificadorError,CadenaError,Flotante,MalComentario,Igual2,Numeral2,Cadena,FlotanteError,Not2,EXECUTE_AS_CLAUSE,
          CierraCorchetes,CierraParentesis,ERROR,ADD,AND,OR,EXTERNAL,FETCH,PUBLIC,ALTER,FILE,RAISERROR,
          FILLFACTOR,READ,ANY,FOR,READTEXT,AS,FOREIGN,RECONFIGURE,FREETEXT,REFERENCES,AUTHORIZATION,FREETEXTTABLE,REPLICATION,BACKUP,FROM,
          RESTORE,BEGIN,FULL,RESTRICT,BETWEEN,FUNCTION,RETURN,BREAK,GOTO,REVERT,BROWSE,GRANT,REVOKE,BULK,GROUP,RIGHT,BY,HAVING,ROLLBACK,
@@ -110,7 +111,7 @@ terminal Igual,Suma,Resta,Multiplicacion,Division,identificador,entero,cadena,
          EXEC,PRECISION,WITH,EXECUTE,PRIMARY,WITHIN_GROUP,EXISTS,PRINT,WRITETEXT,EXIT,PROC,ABSOLUTE,OVERLAPS,ACTION,PAD,ADA,PARTIAL,PASCAL,
          ALL,EXTRACT,POSITION,ALLOCATE,FALSE,PREPARE,FIRST,PRESERVE,FLOAT,ARE,PRIOR,PRIVILEGES,ASC,FORTRAN,PROCEDURE,ASSERTION,FOUND,AT,REAL,
          AVG,GET,GLOBAL,RELATIVE,GO,BIT,BIT_LENGTH,BOTH,ROWS,HOUR,CASCADED,SCROLL,IMMEDIATE,SECOND,CAST,SECTION,CATALOG,INCLUDE,CHAR,SESSION,
-         CHAR_LENGTH,INDICATOR,CHARACTER,INITIALLY,CHARACTER_LENGTH,SIZE,INPUT,SMALLINT,INSENSITIVE,SPACE,INT,SQL,COLLATION,INTEGER,SQLCA,SQLCODE,
+         CHAR_LENGTH,INDICATOR,CHARACT,INITIALLY,CHARACTER_LENGTH,SIZE,INPUT,SMALLINT,INSENSITIVE,SPACE,INT,SQL,COLLATION,INTEGER,SQLCA,SQLCODE,
          INTERVAL,SQLERROR,CONNECT,SQLSTATE,CONNECTION,SQLWARNING,ISOLATION,SUBSTRING,CONSTRAINTS,SUM,LANGUAGE,CORRESPONDING,LAST,TEMPORARY,COUNT,
          LEADING,TIME,LEVEL,TIMESTAMP,TIMEZONE_HOUR,LOCAL,TIMEZONE_MINUTE,LOWER,MATCH,TRAILING,MAX,MIN,TRANSLATE,DATE,MINUTE,TRANSLATION,DAY,MODULE,
          TRIM,MONTH,TRUE,DEC,NAMES,DECIMAL,NATURAL,UNKNOWN,NCHAR,DEFERRABLE,NEXT,UPPER,DEFERRED,NO,USAGE,NONE,USING,DESCRIBE,VALUE,DESCRIPTOR,DIAGNOSTICS,
@@ -153,7 +154,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     Final ::= PyC | GO;
 
-    ID ::= identificador | AbreCorchetes identificador CierraCorchetes;
+    ID ::= Identificador | AbreCorchetes Identificador CierraCorchetes;
 
     Object2 ::= ID Object2A;
 
@@ -169,7 +170,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     IFE ::= IF EXISTS |;
 
-    Variable ::= Arroba identificador;
+    Variable ::= Arroba Identificador;
 
     Tipo_dato ::= Tipo_datoD Tipo_datoB;
 
@@ -177,9 +178,9 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     Tipo_datoA ::= VARCHAR | INTEGER | FLOAT | DATE | BIT | DOUBLE | CHAR | CURSOR | NCHAR | REAL | TIME | INT | DECIMAL | SMALLINT | NUMERIC;
 
-    Tipo_datoB ::= AbreParentesis entero Tipo_datoC CierraParentesis |;
+    Tipo_datoB ::= AbreParentesis Entero Tipo_datoC CierraParentesis |;
 
-    Tipo_datoC ::= Coma entero |;
+    Tipo_datoC ::= Coma Entero |;
 
     Drop ::= DROP DropA;
     
@@ -209,7 +210,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     Alias ::= AS AliasA | AliasA |;
 
-    AliasA ::= ID | cadena;
+    AliasA ::= ID | Cadena;
 
     Expresion ::= ExpresionB ExpresionA;
 
@@ -221,7 +222,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     ExpresionD ::= AbreParentesis Expresion PredicadoC CierraParentesis | ExpresionE;
 
-    ExpresionE ::= Object4 | entero | flotan | cadena | NULL 
+    ExpresionE ::= Object4 | Entero | Flotan | Cadena | NULL 
         | SUM AbreParentesis ExpresionF
 	| AVG AbreParentesis ExpresionF
 	| MIN AbreParentesis ExpresionF
@@ -229,12 +230,12 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 	| COUNT AbreParentesis ExpresionF;
 
     ExpresionF ::= Object4 CierraParentesis
-	| entero CierraParentesis
+	| Entero CierraParentesis
 	| Multiplicacion CierraParentesis;
 
     Not ::= NOT |;
 
-    Top ::= TOP AbreParentesis entero CierraParentesis TopA |;
+    Top ::= TOP AbreParentesis Entero CierraParentesis TopA |;
 
     TopA ::= PERCENT |;
 
@@ -294,7 +295,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     InsertExpresion ::= InsertExpresionA InsertExpresionB;
 
-    InsertExpresionA ::= DEFAULT | entero | flotan | cadena;
+    InsertExpresionA ::= DEFAULT | Entero | Flotan | Cadena;
 
     InsertExpresionB ::= Coma InsertExpresionA InsertExpresionB |;
 
@@ -312,7 +313,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     DeleteC ::= Coma Object3 DeleteC |;
 
-    Server ::= AbreParentesis ID Coma entero CierraParentesis;
+    Server ::= AbreParentesis ID Coma Entero CierraParentesis;
 
     Update ::= UPDATE Top Object3 SET UpdateA FromUpdate Where;
 
@@ -338,7 +339,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     CreateA ::= CreateTable | CreateDB | CreateIndex | CreateUser | CreateView | Procedure | Function;
 
-    CreateUser ::= USER identificador;
+    CreateUser ::= USER Identificador;
 
     CreateDB ::= DATABASE ID CreateDBA;
 
@@ -350,7 +351,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     FileSpecs ::= FileSpec Coma FileSpecs | FileSpec;
 
-    FileSpec ::= AbreParentesis NAME Igual cadena Coma FILENAME Igual cadena Optionals CierraParentesis;
+    FileSpec ::= AbreParentesis NAME Igual Cadena Coma FILENAME Igual Cadena Optionals CierraParentesis;
 
     COLLATEDB ::= COLLATE ID |;
 
@@ -359,15 +360,15 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     Optional ::= Size | Maxsize | Filegrowth;
 
-    Size ::= SIZE Igual entero Size_A;
+    Size ::= SIZE Igual Entero Size_A;
 
     Size_A ::= KB| MB | GB | TB;
 
     Maxsize ::= MAXSIZE Igual Maxsize_A;
 
-    Maxsize_A ::= entero Size_A | UNLIMITED;
+    Maxsize_A ::= Entero Size_A | UNLIMITED;
 
-    Filegrowth ::= FILEGROWTH Igual entero Filegrowth_A;
+    Filegrowth ::= FILEGROWTH Igual Entero Filegrowth_A;
 
     Filegrowth_A ::= Size_A | MODULAR |;
 
@@ -417,11 +418,11 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     ColumnDefA ::= COLLATE ID |;
 
-    ColumnDefD ::= entero | flotan | cadena | NULL;
+    ColumnDefD ::= Entero | Flotan | Cadena | NULL;
 
     ColumnDefE ::= IDENTITY ColumnDefF |;
 
-    ColumnDefF ::= AbreParentesis entero Coma entero CierraParentesis |;
+    ColumnDefF ::= AbreParentesis Entero Coma Entero CierraParentesis |;
 
     ColumnDefG ::= NULL|;
 
@@ -511,7 +512,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     BeginTranB ::= WITH MARK BeginTranC |;
 
-    BeginTranC ::= cadena |;
+    BeginTranC ::= Cadena |;
 
     SavePoint ::= SAVE TranName Name;
 
@@ -533,7 +534,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     SP_Reservada ::=  PROC | PROCEDURE;
 
-    NumSP ::= PyC entero |;
+    NumSP ::= PyC Entero |;
 
     ParamsSP ::= ParamsA_SP |;
 

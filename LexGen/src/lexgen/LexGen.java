@@ -47,23 +47,23 @@ public class LexGen {
                 break;
             case "2":
                 System.out.println(".lex file path:");
-                input = scan.nextLine();
+                input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\LexGen\\src\\lexgen\\LexerCup.flex" ;
                 archivo = new File(input);
                 jflex.Main.generate(archivo);
                 System.out.println(".cup file path:");
-                input = scan.nextLine();
+                input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\LexGen\\src\\lexgen\\Sintax.cup" ;
                 String[] r = {"-parser","Sintax",input};
                 try {
                     java_cup.Main.main(r);
                     System.out.println("Syntax.java generated file path:");
-                    input = scan.nextLine();
+                    input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\LexGen\\Sintax.java" ;
                     System.out.println("Syntax.java destiny file path:");
-                    Files.copy(Paths.get(input),Paths.get(scan.nextLine()),StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(Paths.get(input),Paths.get(/*scan.nextLine()*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\LexGen\\src\\lexgen\\Sintax.java"),StandardCopyOption.REPLACE_EXISTING);
                     Files.delete(Paths.get(input));
                     System.out.println("Sym.java generated file path:");
-                    input = scan.nextLine();
+                    input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\LexGen\\sym.java" ;
                     System.out.println("Sym.java destiny file path:");
-                    Files.copy(Paths.get(input),Paths.get(scan.nextLine()),StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(Paths.get(input),Paths.get(/*scan.nextLine()*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\LexGen\\src\\lexgen\\sym.java"),StandardCopyOption.REPLACE_EXISTING);
                     Files.delete(Paths.get(input));
                 } catch (IOException ex) {
                     Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
