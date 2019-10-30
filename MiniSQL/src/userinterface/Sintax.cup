@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 parser code
 {: 
     public List<String> SynErr = new ArrayList();
+    public List<CupError> Errs = new ArrayList();
     private Symbol s;
 
     public final Class getSymbolContainer() {
@@ -18,24 +19,24 @@ parser code
 
     public void syntax_error(Symbol cur_token){
         java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) cur_token);
-        StringBuilder sb = new StringBuilder();
         List<Integer> ids = expected_token_ids();
+        CupError cupError = new CupError(s.right + 1, s.left + 1, s.value);
         for (Integer expected : ids) {
                 String aux = symbl_name_from_id(expected);
-                sb = sb.append(aux).append(" ");
+                cupError.addExpected(aux);
         }
-        SynErr.add("Error! Line " + (s.right + 1) + ", Column " + (s.left+1) + ". Symbol Founded \'" + s.value + ". Expected: " + sb.toString());
+        Errs.add(cupError);
     }
 
     public void unrecovered_syntax_error(Symbol cur_token){
         java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) cur_token);
-        StringBuilder sb = new StringBuilder();
         List<Integer> ids = expected_token_ids();
+        CupError cupError = new CupError(s.right + 1, s.left + 1, s.value);
         for (Integer expected : ids) {
                 String aux = symbl_name_from_id(expected);
-                sb = sb.append(aux).append(" ");
+                cupError.addExpected(aux);
         }
-        SynErr.add("Error! Line " + (s.right + 1) + ", Column " + (s.left+1) + ". Symbol Founded \'" + s.value + ". Expected: " + sb.toString());
+        Errs.add(cupError);
     }
 
     public String symbl_name_from_id(int id) {
