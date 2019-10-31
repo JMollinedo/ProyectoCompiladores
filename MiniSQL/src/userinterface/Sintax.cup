@@ -158,11 +158,11 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     InicialA ::= DML Inicial | DDL Inicial | TCL Inicial | TSQL Final Inicial | USE Object4 Final Inicial;
 
-    InicialB ::= DML Inicial | DDL Inicial | TCL Inicial | TSQL Final Inicial | USE Object4 Final Inicial| SavePoint Final InicialB;
+    InicialB ::= DML Inicial | DDL Inicial | TCL Inicial | TSQL Final Inicial | USE Object4 Final Inicial | SavePoint Final InicialB;
 
     DML ::= Select Final | Insert Final | Delete Final | Update Final | error Final;
 
-    DDL ::= Create Final| Alter Final | Drop Final | Truncate Final;
+    DDL ::= Create Final| Alter Final | Drop Final | Truncate Final | error;
 
     TCL ::= BeginTran Final InicialB FinalTran;
 
@@ -204,7 +204,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     Drop ::= DROP DropA;
     
-    DropA ::= DropTable | DropUser | DropDatabase | DropView | DropIndex |DropProcedure | DropFunction;
+    DropA ::= DropTable | DropUser | DropDatabase | DropView | DropIndex | DropProcedure | DropFunction;
 
     DropTable ::= TABLE IFE Object3 DropTableA;
 
@@ -653,7 +653,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     Type_Return ::= Data | Table;
 
-    Data ::= Tipo_datoA With As BEGIN DML RETURN DTypes END;
+    Data ::= Tipo_datoA With As BEGIN DML RETURN Expresion END;
 
     Table ::= TABLE With As RETURN SCT;
 
