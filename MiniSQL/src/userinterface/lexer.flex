@@ -411,7 +411,7 @@ Writetext = "WRITETEXT"
 Xml = "XML"
 Year = "YEAR"
 Zone = "ZONE"
-
+Delayed_Durability = "DELAYED_DURABILITY"
 
 identificador = [:letter:] (([:letter:] | [:digit:] | "_")*)
 identificadorErr = ([:digit:] | "_") (([:letter:] | [:digit:] | "_")*)
@@ -819,6 +819,7 @@ cadenaErr = "'" [^\r\n\u0027]*
 {Writetext} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Writetext;}
 {Year} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Year;}
 {Zone} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Zone;}
+{Delayed_Durability} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Delayed_Durability;}
 
 {identificador} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Identificador;}
 {flotan} {cha=yychar; lin=yyline; col=yycolumn; len=yylength(); lexeme=yytext(); return Flotante;}

@@ -404,6 +404,7 @@ public enum Token {
     Writetext,
     Year,
     Zone,
+    Delayed_Durability,
     //IDs
     Identificador,
     //Definicion de Datos

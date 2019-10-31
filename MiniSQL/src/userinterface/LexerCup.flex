@@ -413,6 +413,7 @@ Writetext = "WRITETEXT"
 Xml = "XML"
 Year = "YEAR"
 Zone = "ZONE"
+Delayed_Durability = "DELAYED_DURABILITY"
 
 identificador = [:letter:] (([:letter:] | [:digit:] | "_")*)
 identificadorErr = ([:digit:] | "_") (([:letter:] | [:digit:] | "_")*)
@@ -795,6 +796,7 @@ cadenaErr = "'" [^\r\n\u0027]*
 {Writetext} {return new Symbol(sym.WRITETEXT,yycolumn,yyline,yytext());}
 {Year} {return new Symbol(sym.YEAR,yycolumn,yyline,yytext());}
 {Zone} {return new Symbol(sym.ZONE,yycolumn,yyline,yytext());}
+{Delayed_Durability} {return new Symbol(sym.DELAYED_DURABILITY,yycolumn,yyline,yytext());}
 
 {coment} {/*Ignore*/}
 {espacio} {/*Ignore*/}
