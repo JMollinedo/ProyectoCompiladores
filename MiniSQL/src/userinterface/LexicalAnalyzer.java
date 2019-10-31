@@ -52,7 +52,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
         btnAnalizarX = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         txaAnalisisX = new javax.swing.JTextArea();
-        chbLeerOut = new javax.swing.JCheckBox();
         btnBorrarContenidoL = new javax.swing.JButton();
         btnBorrarContenidoX = new javax.swing.JButton();
 
@@ -107,8 +106,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
         txaAnalisisX.setRows(5);
         jScrollPane3.setViewportView(txaAnalisisX);
 
-        chbLeerOut.setText("Leer Archivo Out");
-
         btnBorrarContenidoL.setText("Borrar Contenido");
         btnBorrarContenidoL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,8 +153,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                         .addComponent(btnBorrarContenidoX))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(chbLeerOut)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAnalizarX)))
                 .addContainerGap())
         );
@@ -181,8 +176,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAnalizar)
                             .addComponent(chbGenerarArchivo)
-                            .addComponent(btnAnalizarX)
-                            .addComponent(chbLeerOut))
+                            .addComponent(btnAnalizarX))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
@@ -248,18 +242,27 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAnalizarActionPerformed
 
     private void btnAnalizarXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarXActionPerformed
-        String data = txaContenido.getText();
-        Sintax s = new Sintax(new LexerCup(new StringReader(data)));
-        try {
-            s.parse();
-            List<CupError> ce = s.Errs;
-            if(ce.isEmpty()){
-                txaAnalisisX.setText("No Errors");
-            }else{
-                txaAnalisisX.setText(CupError.errorsFromList(ce));
+        if(!txaContenido.getText().isEmpty()){
+            String content = new StringBuilder().append(txaContenido.getText()).toString();
+            String temporalFilePath = "C:\\Users\\Public\\Documents\\cupTemp.txt";
+            try {
+                ReadnWrite.writeAllText(temporalFilePath, content);
+                String data = UseJFlex.stringForCup(temporalFilePath, content);
+                ReadnWrite.deleteFile(temporalFilePath);
+                System.out.println(content.length() == data.length()?"GOOD":"WRONG");
+                Sintax s = new Sintax(new LexerCup(new StringReader(data)));
+                s.parse();
+                List<CupError> ce = s.Errs;
+                if(ce.isEmpty()){
+                    txaAnalisisX.setText("No Errors");
+                }else{
+                    txaAnalisisX.setText(CupError.errorsFromList(ce));
+                }
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (Exception ex) {
-            Logger.getLogger(LexicalAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAnalizarXActionPerformed
 
@@ -319,7 +322,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
     private javax.swing.JButton btnBorrarContenidoX;
     private javax.swing.JButton btnCargarArchivo;
     private javax.swing.JCheckBox chbGenerarArchivo;
-    private javax.swing.JCheckBox chbLeerOut;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -582,11 +582,11 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     StartSP ::= BEGIN StmtSP END;
 
-    StmtSP ::= DML Final StmtSP1;
+    StmtSP ::= DML StmtSP1;
 
-    StmtSP1 ::= DML Final StmtSP2 |;
+    StmtSP1 ::= DML StmtSP2 |;
 
-    StmtSP2 ::= DML Final |;
+    StmtSP2 ::= DML |;
 
     CursorDeclare ::= DECLARE ID CURSOR CursorDeclarea CursorDeclareb CursorDeclarec CursorDeclared CursorDeclaree FOR Select CursorDeclaref;
     

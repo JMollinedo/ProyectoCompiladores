@@ -17,6 +17,7 @@ public class JToken {
     protected int endColumn;
     protected Token token;
     protected String value;
+    protected int chrnum;
     
     public void setJTID(int id){
         this.jTID = id;
@@ -36,11 +37,13 @@ public class JToken {
     public void setValue(String value){
         this.value = value;
     }
+    public void setChrnum(int chrnum){
+        this.chrnum = chrnum;
+    }
     
     public int getJTID(){
         return jTID;
     }
-    
     public int getLine(){
         return line;
     }
@@ -55,6 +58,9 @@ public class JToken {
     }
     public String getValue(){
         return value;
+    }
+    public int getChrnum(){
+        return chrnum;
     }
     
     public JToken(){};

@@ -16,7 +16,14 @@ import java.util.List;
  * @author jmoll
  */
 public class UseJFlex {
-    public static String FileTest(String path) throws FileNotFoundException, IOException{
+    public static String stringForCup(String path, String text) throws IOException{;
+        List<JToken> tokens = FileTest2(path);
+        return ContentFilter.filter(tokens, text);
+    }
+    public static String FileTest(String path) throws IOException{
+        return JToken.toCSVtable(FileTest2(path));   
+    }
+    private static List<JToken> FileTest2(String path) throws FileNotFoundException, IOException{
         Reader lector = new BufferedReader(new FileReader(path));
         Lexer lex = new Lexer(lector);
         List<JToken> tokens = new ArrayList();
@@ -30,6 +37,7 @@ public class UseJFlex {
                 jt.setStartColumn(lex.col);
                 jt.setToken(token);
                 jt.setValue(lex.lexeme.substring(0, 31));
+                jt.setChrnum(lex.cha);
                 tokens.add(jt);
                 
                 jt = new JToken();
@@ -39,6 +47,7 @@ public class UseJFlex {
                 jt.setStartColumn(lex.col + 31);
                 jt.setToken(Token.OVERFLOWIDENTIFIER);
                 jt.setValue(lex.lexeme.substring(31));
+                jt.setChrnum(lex.cha + 31);
             }else{
                 jt.setJTID(tokens.size()+1);
                 jt.setEndColumn(lex.len + lex.col - 1);
@@ -46,12 +55,13 @@ public class UseJFlex {
                 jt.setStartColumn(lex.col);
                 jt.setToken(token);
                 jt.setValue(lex.lexeme);
+                jt.setChrnum(lex.cha);
             }
             tokens.add(jt);
             token = lex.yylex();
         }
         lector.close();
-        return JToken.toCSVtable(tokens);
+        return tokens;
     }
     
     public static List<JToken> GetTokensFromFile(String path) throws IOException{
