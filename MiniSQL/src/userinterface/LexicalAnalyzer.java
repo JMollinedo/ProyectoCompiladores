@@ -7,10 +7,7 @@ package userinterface;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -27,8 +24,9 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
     public LexicalAnalyzer() {
         initComponents();
         CurrentLex = null;
+        btnAnalizarX.setEnabled(false);
     }
-    String CurrentLex;
+    private String CurrentLex;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -200,6 +198,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
 
     private void btnBorrarContenidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarContenidoActionPerformed
         txaContenido.setText(null);
+        btnAnalizarX.setEnabled(false);
     }//GEN-LAST:event_btnBorrarContenidoActionPerformed
 
     private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
@@ -233,6 +232,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 res = res.replaceAll(s, "\n" );
                 res = res.substring(0,res.length()- 1);
                 txaAnalisis.setText(res);
+                btnAnalizarX.setEnabled(true);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {
@@ -249,7 +249,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 ReadnWrite.writeAllText(temporalFilePath, content);
                 String data = UseJFlex.stringForCup(temporalFilePath, content);
                 ReadnWrite.deleteFile(temporalFilePath);
-                System.out.println(content.length() == data.length()?"GOOD":"WRONG");
+                System.out.println(data.length() == content.length()?"GOOD":"WRONG");
                 Sintax s = new Sintax(new LexerCup(new StringReader(data)));
                 s.parse();
                 List<CupError> ce = s.Errs;
@@ -263,12 +263,16 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede procesar un texto vacio", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+            btnAnalizarX.setEnabled(false);
         }
     }//GEN-LAST:event_btnAnalizarXActionPerformed
 
     private void btnBorrarContenidoLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarContenidoLActionPerformed
         txaAnalisis.setText(null);
         CurrentLex = null;
+        btnAnalizarX.setEnabled(false);
     }//GEN-LAST:event_btnBorrarContenidoLActionPerformed
 
     private void btnBorrarContenidoXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarContenidoXActionPerformed

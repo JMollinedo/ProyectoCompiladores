@@ -31,10 +31,11 @@ public class UseJFlex {
         while (token != null) {
             JToken jt = new JToken();
             if(token == Token.Identificador && lex.lexeme.length() > 31){
+                int aux = lex.col + 31;
                 jt.setJTID(tokens.size()+1);
-                jt.setEndColumn(lex.col + 30);
-                jt.setLine(lex.lin);
-                jt.setStartColumn(lex.col);
+                jt.setEndColumn(aux);
+                jt.setLine(lex.lin+1);
+                jt.setStartColumn(lex.col+1);
                 jt.setToken(token);
                 jt.setValue(lex.lexeme.substring(0, 31));
                 jt.setChrnum(lex.cha);
@@ -42,17 +43,17 @@ public class UseJFlex {
                 
                 jt = new JToken();
                 jt.setJTID(tokens.size()+1);
-                jt.setEndColumn(lex.len + lex.col - 1);
-                jt.setLine(lex.lin);
-                jt.setStartColumn(lex.col + 31);
+                jt.setEndColumn(aux + lex.lexeme.substring(31).length());
+                jt.setLine(lex.lin+1);
+                jt.setStartColumn(aux + 1);
                 jt.setToken(Token.OVERFLOWIDENTIFIER);
                 jt.setValue(lex.lexeme.substring(31));
                 jt.setChrnum(lex.cha + 31);
             }else{
                 jt.setJTID(tokens.size()+1);
-                jt.setEndColumn(lex.len + lex.col - 1);
-                jt.setLine(lex.lin);
-                jt.setStartColumn(lex.col);
+                jt.setEndColumn(lex.len + lex.col + 1);
+                jt.setLine(lex.lin+1);
+                jt.setStartColumn(lex.col+1);
                 jt.setToken(token);
                 jt.setValue(lex.lexeme);
                 jt.setChrnum(lex.cha);

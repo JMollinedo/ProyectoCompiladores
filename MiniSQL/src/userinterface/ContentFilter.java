@@ -19,8 +19,19 @@ public class ContentFilter {
         List<Integer> batchend = new ArrayList();
         int cbachestart = 0;
         for(JToken t : tokens){
+            if(t.TNVMatch(Token.OVERFLOWIDENTIFIER, null)){
+                StringBuilder nv = new StringBuilder();
+                nv = nv.append(text.substring(0, t.getChrnum()));
+                for(int j = 0; j < t.getValue().length();j++){
+                    nv = nv.append(" ");
+                }
+                while(nv.length()!= text.length()){
+                    nv = nv.append(text.charAt(nv.length()));
+                }
+                text = nv.toString();
+            }
             if(t.TNVMatch(Token.PyC, null) || t.TNVMatch(Token.Go, null)){
-                int a = t.endColumn - t.startColumn + 1;
+                int a = t.endColumn - t.startColumn;
                 String aux = text.substring(cbachestart, t.chrnum + a);
                 batches.add(aux);
                 batchend.add(t.jTID-1);
