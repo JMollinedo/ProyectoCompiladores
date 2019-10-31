@@ -158,7 +158,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     InicialA ::= DML Inicial | DDL Inicial | TCL Inicial | TSQL Final Inicial | USE Object4 Final Inicial;
 
-    InicialB ::= DML Inicial | DDL Inicial | TCL Inicial | TSQL Final Inicial | USE Object4 Final Inicial| SavePoint Final;
+    InicialB ::= DML Inicial | DDL Inicial | TCL Inicial | TSQL Final Inicial | USE Object4 Final Inicial| SavePoint Final InicialB;
 
     DML ::= Select Final | Insert Final | Delete Final | Update Final | error Final;
 
