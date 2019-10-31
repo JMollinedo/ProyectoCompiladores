@@ -249,7 +249,6 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 ReadnWrite.writeAllText(temporalFilePath, content);
                 String data = UseJFlex.stringForCup(temporalFilePath, content);
                 ReadnWrite.deleteFile(temporalFilePath);
-                System.out.println(data.length() == content.length()?"GOOD":"WRONG");
                 Sintax s = new Sintax(new LexerCup(new StringReader(data)));
                 s.parse();
                 List<CupError> ce = s.Errs;
