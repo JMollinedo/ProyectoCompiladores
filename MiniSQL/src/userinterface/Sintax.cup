@@ -98,7 +98,7 @@ parser code
 :};
 
 terminal Igual,Suma,Resta,Multiplicacion,Division,Identificador,Entero,
-         Flotan,Porcentaje,Menor,MenorIgual,Mayor,MayorIgual,NoIgual,PyC,Coma,Punto,Arroba,
+         Porcentaje,Menor,MenorIgual,Mayor,MayorIgual,NoIgual,PyC,Coma,Punto,Arroba,
          Numeral,Corchetes,Llaves,Parentesis,AbreCorchetes,AbreParentesis,
          AbreLlaves,CierraLlaves,IdentificadorError,CadenaError,Flotante,MalComentario,Igual2,Numeral2,Cadena,FlotanteError,Not2,
          CierraCorchetes,CierraParentesis,
@@ -147,6 +147,8 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
     Sizew,Sizenw,ExecProcedure,RepeatProcedure,RepeatProcedureA,Data_Type,EXECUTE_AS_CLAUSE;
 
     precedence right NOT;
+    precedence left Igual,NoIgual,Mayor,MayorIgual,Menor,MenorIgual;
+    precedence left Suma,Resta,Multiplicacion,Division;
     precedence left AbreParentesis;
  
     start with Inicial;
@@ -235,9 +237,9 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     ExpresionC ::= Multiplicacion ExpresionD ExpresionC | Division ExpresionD ExpresionC |;
 
-    ExpresionD ::= AbreParentesis Expresion PredicadoC CierraParentesis | ExpresionE;
+    ExpresionD ::= AbreParentesis Expresion CierraParentesis | ExpresionE;
 
-    ExpresionE ::= Object4 | Entero | Flotan | Cadena | NULL | Variable
+    ExpresionE ::= Object4 | Entero | Flotante | Cadena | NULL | Variable
         | SUM AbreParentesis ExpresionF
 	| AVG AbreParentesis ExpresionF
 	| MIN AbreParentesis ExpresionF
@@ -258,7 +260,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     SearchCondition ::= Not Predicado SearchConditionA | AbreParentesis SearchCondition CierraParentesis SearchConditionA;
 
-    SearchConditionA ::= AND SearchCondition|OR SearchCondition|;
+    SearchConditionA ::= AND SearchCondition | OR SearchCondition|;
 
     Predicado ::= Expresion PredicadoA;
 
@@ -308,7 +310,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     InsertExpresion ::= InsertExpresionA InsertExpresionB;
 
-    InsertExpresionA ::= DEFAULT | Entero | Flotan | Cadena;
+    InsertExpresionA ::= DEFAULT | Entero | Flotante | Cadena;
 
     InsertExpresionB ::= Coma InsertExpresionA InsertExpresionB |;
 
@@ -422,7 +424,11 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     ColumnDefZ ::= CONSTRAINT ID ColumnDefY|ColumnDefY|;
 
-    ColumnDefY ::= DEFAULT ColumnDefD ColumnDefE NFR ColumnDefH ColumnConstr|IDENTITY ColumnDefF NFR ColumnDefH ColumnConstr|ColumnDefX ColumnDefW ColumnDefH ColumnConstr|ROWGUIDCOL ColumnConstr|ColumnConstrB ColumnConstr;
+    ColumnDefY ::= DEFAULT ColumnDefD ColumnDefE NFR ColumnDefH ColumnConstr
+                    |IDENTITY ColumnDefF NFR ColumnDefH ColumnConstr
+                    |ColumnDefX ColumnDefW ColumnDefH ColumnConstr
+                    |ROWGUIDCOL ColumnConstr
+                    |ColumnConstrB ColumnConstr;
     
     ColumnDefX ::= NOT|;
 
@@ -432,7 +438,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     ColumnDefA ::= COLLATE ID |;
 
-    ColumnDefD ::= Entero | Flotan | Cadena | NULL;
+    ColumnDefD ::= Entero | Flotante | Cadena | NULL;
 
     ColumnDefE ::= IDENTITY ColumnDefF |;
 
