@@ -41,29 +41,29 @@ public class LexGen {
         switch(input){
             case "1":
                 System.out.println(".lex file path:");
-                input = scan.nextLine();
+                input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\MiniSQL\\src\\userinterface\\lexer.flex" ;
                 archivo = new File(input);
                 jflex.Main.generate(archivo);
                 break;
             case "2":
                 System.out.println(".lex file path:");
-                input = scan.nextLine();
+                input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\MiniSQL\\src\\userinterface\\LexerCup.flex" ;
                 archivo = new File(input);
                 jflex.Main.generate(archivo);
                 System.out.println(".cup file path:");
-                input = scan.nextLine();
+                input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\MiniSQL\\src\\userinterface\\Sintax.cup" ;
                 String[] r = {"-parser","Sintax",input};
                 try {
                     java_cup.Main.main(r);                    
                     System.out.println("Syntax.java generated file path:");
-                    input = scan.nextLine();
+                    input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\MiniSQL\\Sintax.java" ;
                     System.out.println("Syntax.java destiny file path:");
-                    Files.copy(Paths.get(input),Paths.get(scan.nextLine()),StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(Paths.get(input),Paths.get(/*scan.nextLine()*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\MiniSQL\\src\\userinterface\\Sintax.java"),StandardCopyOption.REPLACE_EXISTING);
                     Files.delete(Paths.get(input));
                     System.out.println("Sym.java generated file path:");
-                    input = scan.nextLine();
+                    input = /*scan.nextLine();*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\MiniSQL\\sym.java" ;
                     System.out.println("Sym.java destiny file path:");
-                    Files.copy(Paths.get(input),Paths.get(scan.nextLine()),StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(Paths.get(input),Paths.get(/*scan.nextLine()*/ "C:\\Users\\jmoll\\Documents\\URL\\201902\\Compis\\ProyectoCompiladores\\MiniSQL\\src\\userinterface\\sym.java"),StandardCopyOption.REPLACE_EXISTING);
                     Files.delete(Paths.get(input));
                 } catch (IOException ex) {
                     Logger.getLogger(LexGen.class.getName()).log(Level.SEVERE, null, ex);
