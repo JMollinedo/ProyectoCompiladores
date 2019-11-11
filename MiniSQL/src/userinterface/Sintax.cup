@@ -129,7 +129,7 @@ terminal Igual,Suma,Resta,Multiplicacion,Division,Identificador,Entero,
 non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final, ID, Object2, Object2A, Object3, Object3A, Object4, Object4A, IFE, Variable, Tipo_dato, 
     Tipo_datoD, Tipo_datoA, Tipo_datoB, Tipo_datoC, Drop, DropA, DropTable, DropTableA, DropUser, DropDatabase, DropDatabaseA, DropView, DropViewA,
     DropIndex, DropIndexA, DropIndexB, Truncate, Alias, AliasA, Expresion, ExpresionA, ExpresionB, ExpresionC, ExpresionD, ExpresionE, ExpresionF,
-    Not, Top, TopA, Expresiones, SearchCondition, SearchConditionA, Predicado, PredicadoA, PredicadoC, Where, SelectColumns, SelectColumnsA, ColumnList,
+    Not, Top, TopA, Expresiones, NSC, NSCA, Predicado, PredicadoA, NPredC, Where, SelectColumns, SelectColumnsA, ColumnList,
     ColumnListA, ColumnListB, Select, SelectA, Having, Order, OrderA, OrderB, OrderC, Group, GroupA, Insert, InsertInto , InsertColumnList , InsertExpresion,
     InsertExpresionA, InsertExpresionB , InsertValores , InsertValoresA , Delete, FromDelete, DeleteA, DeleteB, DeleteC, Server, Update, UpdateA, UpdateB,
     UpdateC, FromUpdate, FromSelect, FromSelectA, Join, Type, Outer, Create, CreateA,CreateUser, CreateDB, CreateDBA, CreateDBB, Primary, FileSpecs,
@@ -273,7 +273,56 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     OperadoresBooleanos ::= Igual | NoIgual | Mayor | MayorIgual | Menor | MenorIgual;
 
-    Where ::= WHERE SearchCondition |;
+    NSC ::= Not NPred NSCA
+
+    NSCA    ::= AND NSC
+            | OR NSC
+            |;
+
+    NPred   ::= NSEarit NPredA
+
+    NPredA  ::= OperadoresBooleanos NSEarit
+            | IS Not NULL
+            | Not NPredC
+
+    NPredC  ::= IN AbreParentesis NSEarit NSEarits CierraParentesis
+            | BETWEEN NSEarit AND NSEarit
+            | LIKE NSEarit
+
+    NSEarits    ::= Coma NSEarit NSEarits
+                |;
+
+    NSEarit     ::= NSEaritB NSEaritA
+
+    NSEaritA    ::= Suma NSEaritB NSEaritA
+                | Resta NSEaritB NSEaritA
+                |;
+
+    NSEaritB    ::= NSEaritD NSEaritC
+
+    NSEaritC    ::= Multiplicacion NSEaritD NSEaritC
+                        | Division NSEaritD NSEaritC
+                        |;
+
+    NSEaritD    ::= AbreParentesis NSC CierraParentesis
+                | NSEaritE
+
+    NSEaritE    ::= Object2 CallFunction
+                | Entero
+                | Flotante
+                | Cadena
+                | Variable
+                | SUM AbreParentesis NSEaritF
+                | AVG AbreParentesis NSEaritF
+                | MIN AbreParentesis NSEaritF
+                | MAX AbreParentesis NSEaritF
+                | COUNT AbreParentesis NSEaritF;
+
+    NSEaritF    ::= Object2 CierraParentesis
+                | Entero CierraParentesis
+                | Multiplicacion CierraParentesis;
+
+    Where ::= WHERE NSC|;
 
     SelectColumns ::= Expresion Alias SelectColumnsA| Multiplicacion SelectColumnsA;
 
@@ -289,7 +338,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     SelectA ::= ALL | DISTINCT |;
 
-    Having ::= HAVING SearchCondition |;
+    Having ::= HAVING NSC |;
 
     Order ::= ORDER BY Expresion OrderA OrderB OrderC |;
 
@@ -345,7 +394,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     FromSelectA ::= Coma Object3 Alias Join |;
 
-    Join ::= Type JOIN Object3 Alias ON SearchCondition Join |;
+    Join ::= Type JOIN Object3 Alias ON NSC Join |;
 
     Type ::= INNER | RIGHT Outer | LEFT Outer | FULL Outer |;
 
@@ -460,7 +509,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
     ColumnConstrB ::= PRIMARY KEY ColumnConstrC 
         | UNIQUE ColumnConstrC
 	| ColumnConstrD REFERENCES Object2 ColumnConstrE ColumnConstrF NFR
-	| CHECK NFR AbreParentesis SearchCondition CierraParentesis;
+	| CHECK NFR AbreParentesis NSC CierraParentesis;
 
     ColumnConstrC ::= CLUSTERED | NONCLUSTERED |;
 
@@ -481,7 +530,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
     TableConstrA ::= PRIMARY KEY ColumnConstrC TableConstrB
 	| UNIQUE ColumnConstrC TableConstrB
 	| FOREIGN KEY TableConstrD REFERENCES Object2 ColumnConstrE ColumnConstrF NFR
-	| CHECK NFR AbreParentesis SearchCondition CierraParentesis;
+	| CHECK NFR AbreParentesis NSC CierraParentesis;
 
     TableConstrB ::= AbreParentesis ID OrderB TableConstrC CierraParentesis;
 
