@@ -271,21 +271,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     TopA ::= PERCENT |;
 
-    Expresiones ::= Coma Expresion Expresiones |;
-
-    SearchCondition ::= Not Predicado SearchConditionA | AbreParentesis SearchCondition CierraParentesis SearchConditionA;
-
-    SearchConditionA ::= AND SearchCondition | OR SearchCondition|;
-
-    Predicado ::= Expresion PredicadoA;
-
     OperadoresBooleanos ::= Igual | NoIgual | Mayor | MayorIgual | Menor | MenorIgual;
-
-    PredicadoA ::= OperadoresBooleanos Expresion| IS Not NULL | Not PredicadoC;
-
-    PredicadoC ::= IN AbreParentesis Expresion Expresiones CierraParentesis
-	| BETWEEN Expresion AND Expresion
-	| LIKE Expresion;
 
     Where ::= WHERE SearchCondition |;
 
