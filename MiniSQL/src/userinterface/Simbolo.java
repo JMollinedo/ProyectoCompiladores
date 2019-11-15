@@ -5,6 +5,7 @@
  */
 package userinterface;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +35,12 @@ public class Simbolo {
         this(id);
         for(String s : atributos){
             String[] spl = s.split("=");
+            if(spl[0].isEmpty()){
+                throw new Error("Nombre de Atributo Invalido");
+            }
+            if(spl[1].isEmpty()){
+                spl[1] = null;
+            }
             setAtributo(spl[0],spl[1]);
         }
     }
@@ -96,5 +103,21 @@ public class Simbolo {
     }
     public boolean existsAtributo(String nombre){
         return atributos.containsKey(nombre);
+    }
+    
+    public static Simbolo encontrar(List<Simbolo> simbolos, String...condiciones){
+        Map<String,String> busqueda = new HashMap();
+        for(String s : condiciones){
+            String[] spl = s.split("=");
+            busqueda.put(spl[0],spl[1]);
+        }
+        for(Simbolo s : simbolos){
+            for(String k : busqueda.keySet()){
+                if(s.getAtributo(k) == null ? busqueda.get(k) == null : s.getAtributo(k).equals(busqueda.get(k))){
+                    return s;
+                }
+            }
+        }
+        return null;
     }
 }

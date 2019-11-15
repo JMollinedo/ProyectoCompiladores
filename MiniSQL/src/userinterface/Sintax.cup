@@ -12,6 +12,7 @@ parser code
     public List<String> SynErr = new ArrayList();
     public List<CupError> Errs = new ArrayList();
     private Symbol s;
+    public List<Simbolo> Simbolos = new ArrayList();
 
     public final Class getSymbolContainer() {
         return sym.class;
