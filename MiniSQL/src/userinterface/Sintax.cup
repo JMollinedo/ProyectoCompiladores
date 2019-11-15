@@ -13,6 +13,9 @@ parser code
     public List<CupError> Errs = new ArrayList();
     private Symbol s;
     public List<Simbolo> Simbolos = new ArrayList();
+    public List<TSError> TSerrores = new ArrayList();
+
+    public 
 
     public final Class getSymbolContainer() {
         return sym.class;
@@ -207,9 +210,10 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
     
     DropA ::= DropTable | DropUser | DropDatabase | DropView | DropIndex | DropProcedure | DropFunction;
 
-    DropTable ::= TABLE IFE Object3 DropTableA;
+    DropTable:dt ::= TABLE IFE:ife Object3:tabla DropTableA {::}
 
-    DropTableA ::= Coma Object3 DropTableA |;
+    DropTableA:dta ::=  Coma Object3:tabla DropTableA {::}
+                        |;
 
     DropUser ::= USER IFE ID;
 
