@@ -379,7 +379,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     DeleteC ::= Coma Object3 DeleteC |;
 
-    Server ::= AbreParentesis ID Coma Entero CierraParentesis;
+    Server ::= AbreParentesis ID Coma Cadena CierraParentesis;
 
     Update ::= UPDATE Top Object3 SET UpdateA FromUpdate Where;
 
@@ -677,7 +677,7 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     OrAlter ::= OR ALTER|;
 
-    Param ::= Variable As Tipo_datoA ReadOnly;
+    Param ::= Variable As Tipo_dato ReadOnly;
 
     Param_A ::= Param Param_B;
 
