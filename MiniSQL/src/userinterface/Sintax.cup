@@ -589,206 +589,125 @@ action code {:
         simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Producto","tipoDato=NUMERIC","largoMax=10","decimal=2","nulable=False");
         Simbolos.add(simb);
 
+        simb = new Simbolo("Proveedor");
+        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
 
+        simb = new Simbolo("NIT");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Proveedor","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
 
+        simb = new Simbolo("Nombre");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Proveedor","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("Direccion");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Proveedor","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("SuministraFarmacia");
+        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NITLaboratorio");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraFarmacia","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s111 = new Simbolo();
-        s111.SetId("Codigo");
-        s111.SetAtributos("tipo=int","ambito=veterinaria.dbo.Producto");
-        Simbolos.add(s111);
+        simb = new Simbolo("CodigoMedicina");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraFarmacia","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s112 = new Simbolo();
-        s112.SetId("Nombre");
-        s112.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Producto");
-        Simbolos.add(s112);
+        simb = new Simbolo("SuministraTienda");
+        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NITProveedor");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraTienda","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);        
+        
+        simb = new Simbolo("CodigoProducto");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraTienda","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s113 = new Simbolo();
-        s113.SetId("PrecioUnitario");
-        s113.SetAtributos("tipo=numeric(10,2)","ambito=veterinaria.dbo.Producto");
-        Simbolos.add(s113);
+        simb = new Simbolo("Tratamiento");
+        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo"); 
+        Simbolos.add(simb);
 
-        //TABLA
-        Simbolo s114 = new Simbolo();
-        s114.SetId("Proveedor");
-        s114.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
-        Simbolos.add(s114);
+        simb = new Simbolo("Medicamento");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("Dosificacion");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s115 = new Simbolo();
-        s115.SetId("NIT");
-        s115.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.Proveedor");
-        Simbolos.add(s115);
+        simb = new Simbolo("Duracion");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s116 = new Simbolo();
-        s116.SetId("Nombre");
-        s116.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Proveedor");
-        Simbolos.add(s116);
+        simb = new Simbolo("Resultado");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s117 = new Simbolo();
-        s117.SetId("Direccion");
-        s117.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Proveedor");
-        Simbolos.add(s117);
+        simb = new Simbolo("CodigoPaciente");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=8","nulable=False");
+        Simbolos.add(simb);
 
-        //TABLA
-        Simbolo s118 = new Simbolo();
-        s118.SetId("SuministraFarmacia");
-        s118.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
-        Simbolos.add(s118);
+        simb = new Simbolo("VentaFarmacia");
+        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NITCliente");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("CodigoMedicina");
+        simb.SetAtributos("tipo=campo","base=Vetarinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("Fecha");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("CodigoClinica");
+        simb.SetAtributos("tipo=campo","base=Vetarinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s119 = new Simbolo();
-        s119.SetId("NITLaboratorio");
-        s119.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.SuministraFarmacia");
-        Simbolos.add(s119);
+        simb = new Simbolo("VentaTienda");
+        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo")
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NITCliente");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s120 = new Simbolo();
-        s120.SetId("CodigoMedicina");
-        s120.SetAtributos("tipo=int","ambito=veterinaria.dbo.SuministraFarmacia");
-        Simbolos.add(s120);
+        simb = new Simbolo("CodigoProducto");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("Fecha");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
 
-        //TABLA
-        Simbolo s121 = new Simbolo();
-        s121.SetId("SuministraTienda");
-        s121.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
-        Simbolos.add(s121);
+        simb = new Simbolo("CodigoClinica");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s122 = new Simbolo();
-        s122.SetId("NITProveedor");
-        s122.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.SuministraTienda");
-        Simbolos.add(s122);
+        simb = new Simbolo("Veterinario");
+        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
 
-       //CAMPO
-        Simbolo s123 = new Simbolo();
-        s123.SetId("CodigoProducto");
-        s123.SetAtributos("tipo=int","ambito=veterinaria.dbo.SuministraFarmacia");
-        Simbolos.add(s123);
+        simb = new Simbolo("Nombre");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Venterinario","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
 
-        //TABLA
-        Simbolo s124 = new Simbolo();
-        s124.SetId("Tratamiento");
-        s124.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
-        Simbolos.add(s124);
+        simb = new Simbolo("SalarioBase");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Venterinario","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
+        Simbolos.add(simb);
 
-        //CAMPO
-        Simbolo s125 = new Simbolo();
-        s125.SetId("Medicamento");
-        s125.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.Tratamiento");
-        Simbolos.add(s125);
-
-        //CAMPO
-        Simbolo s126 = new Simbolo();
-        s126.SetId("Dosificacion");
-        s126.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Tratamiento");
-        Simbolos.add(s126);
-
-        //CAMPO
-        Simbolo s127 = new Simbolo();
-        s127.SetId("Duracion");
-        s127.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.Tratamiento");
-        Simbolos.add(s127);
-
-        //CAMPO
-        Simbolo s128 = new Simbolo();
-        s128.SetId("Resultado");
-        s128.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.Tratamiento");
-        Simbolos.add(s128);
-
-        //CAMPO
-        Simbolo s129 = new Simbolo();
-        s129.SetId("CodigoPaciente");
-        s129.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.Tratamiento");
-        Simbolos.add(s129);
-
-        //TABLA
-        Simbolo s130 = new Simbolo();
-        s130.SetId("VentaFarmacia");
-        s130.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
-        Simbolos.add(s130);
-
-        //CAMPO
-        Simbolo s131 = new Simbolo();
-        s131.SetId("NITCliente");
-        s131.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.VentaFarmacia");
-        Simbolos.add(s131);
-
-        //CAMPO
-        Simbolo s132 = new Simbolo();
-        s132.SetId("CodigoMedicina");
-        s132.SetAtributos("tipo=int","ambito=veterinaria.dbo.VentaFarmacia");
-        Simbolos.add(s132);
-
-        //CAMPO
-        Simbolo s133 = new Simbolo();
-        s133.SetId("CodigoMedicina");
-        s133.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.VentaFarmacia");
-        Simbolos.add(s133);
-
-        //CAMPO
-        Simbolo s134 = new Simbolo();
-        s134.SetId("CodigoClinica");
-        s134.SetAtributos("tipo=int","ambito=veterinaria.dbo.VentaFarmacia");
-        Simbolos.add(s134);
-
-        //TABLA
-        Simbolo s135 = new Simbolo();
-        s135.SetId("VentaTienda");
-        s135.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
-        Simbolos.add(s135);
-
-        //CAMPO
-        Simbolo s136 = new Simbolo();
-        s136.SetId("NITCliente");
-        s136.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.VentaTienda");
-        Simbolos.add(s136);
-
-        //CAMPO
-        Simbolo s137 = new Simbolo();
-        s137.SetId("CodigoProducto");
-        s137.SetAtributos("tipo=int","ambito=veterinaria.dbo.VentaTienda");
-        Simbolos.add(s137);
-
-        //CAMPO
-        Simbolo s138 = new Simbolo();
-        s138.SetId("Fecha");
-        s138.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.VentaTienda");
-        Simbolos.add(s138);
-
-        //CAMPO
-        Simbolo s139 = new Simbolo();
-        s139.SetId("CodigoClinica");
-        s139.SetAtributos("tipo=int","ambito=veterinaria.dbo.VentaTienda");
-        Simbolos.add(s139);
-
-       //TABLA
-        Simbolo s140 = new Simbolo();
-        s140.SetId("Veterinario");
-        s140.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
-        Simbolos.add(s140);
-
-        //CAMPO
-        Simbolo s141 = new Simbolo();
-        s141.SetId("Nombre");
-        s141.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Veterinario");
-        Simbolos.add(s141);
-
-        //CAMPO
-        Simbolo s142 = new Simbolo();
-        s142.SetId("SalarioBase");
-        s142.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Veterinario");
-        Simbolos.add(s142);
-
-        //CAMPO
-        Simbolo s143 = new Simbolo();
-        s143.SetId("Salario");
-        s143.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Veterinario");
-        Simbolos.add(s143);
+        simb = new Simbolo("Salario");
+        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Ventario","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
+        Simbolos.add(simb);
     }
 :};
 
