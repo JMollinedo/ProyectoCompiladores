@@ -103,35 +103,35 @@ action code {:
     public List<Simbolo> Simbolos = new ArrayList();
     public List<TSError> TSerrores = new ArrayList();
 
-    //MASTER
+    //BDD
     Simbolo s1 = new Simbolo();
     s1.SetId("master");
     s1.SetAtributos("tipo=bdd");
     Simbolos.add(s1);
     
-    //MOTOCICLISMO
+    //BDD
     Simbolo s2 = new Simbolo();
     s2.SetId("motociclismo");
     s2.SetAtributos("tipo=bdd","ambito=master");
     Simbolos.add(s2);
 
-    //MOTOCICLISMO
+    //ESQUEMA
     Simbolo s8 = new Simbolo();
     s8.SetId("NASCAR");
     s8.SetAtributos("tipo=esquema","ambito=motociclismo");
     Simbolos.add(s8);
-
-    //------------TABLA CARRERA---------------
+   
+ //------------------------------------REVISAR AMBITO--------------------------------
+    //TABLA
     Simbolo s3 = new Simbolo();
     s3.SetId("carrera");
     s3.SetAtributos("tipo=tabla","ambito=motociclismo.NASCAR");
     Simbolos.add(s3);
 
-    //CAMPO
     Simbolo s4 = new Simbolo();
     s4.SetId("NombreGP");
     s4.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.carrera");
-    Simbolos.add(s5);
+    Simbolos.add(s4);
 
     //CAMPO
     Simbolo s5 = new Simbolo();
@@ -156,6 +156,8 @@ action code {:
     s9.SetId("NombreCircuito");
     s9.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.carrera");
     Simbolos.add(s9);
+
+//----------------------------------FIN-----------------------------------
 
     //TABLA
     Simbolo s10 = new Simbolo();
@@ -193,7 +195,7 @@ action code {:
     s15.SetAtributos("tipo=varchar(20)","ambito=motociclismo.NASCAR.circuito");
     Simbolos.add(s15);
 
-    //TABLA
+    //ESQUEMA
     Simbolo s16 = new Simbolo();
     s16.SetId("dbo");
     s16.SetAtributos("tipo=esquema","ambito=motociclismo");
@@ -204,6 +206,771 @@ action code {:
     s17.SetId("CONSULTAS_SQL");
     s17.SetAtributos("tipo=tabla","ambito=motociclismo.dbo");
     Simbolos.add(s17);
+    
+
+    //CAMPO
+    Simbolo s18 = new Simbolo();
+    s18.SetId("ID_CONSULTA");
+    s18.SetAtributos("tipo=int","ambito=motociclismo.dbo.CONSULTAS_SQL");
+    Simbolos.add(s18);
+
+    //CAMPO
+    Simbolo s19 = new Simbolo();
+    s19.SetId("CONSULTA");
+    s19.SetAtributos("tipo=varchar(800)","ambito=motociclismo.dbo.CONSULTAS_SQL");
+    Simbolos.add(s19);
+
+    //TABLA
+    Simbolo s20 = new Simbolo();
+    s20.SetId("Escuderia");
+    s20.SetAtributos("tipo=tabla","ambito=motociclismo.NASCAR");
+    Simbolos.add(s20);
+
+    //CAMPO
+    Simbolo s21 = new Simbolo();
+    s21.SetId("Nombre");
+    s21.SetAtributos("tipo=varchar(20)","ambito=motociclismo.NASCAR.Escuderia");
+    Simbolos.add(s21);
+
+    //CAMPO
+    Simbolo s22 = new Simbolo();
+    s22.SetId("Manager");
+    s22.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.Escuderia");
+    Simbolos.add(s22);
+
+    //CAMPO
+    Simbolo s23 = new Simbolo();
+    s23.SetId("FabricanteMotor");
+    s23.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.Escuderia");
+    Simbolos.add(s23);
+
+    //CAMPO
+    Simbolo s24 = new Simbolo();
+    s24.SetId("Sede");
+    s24.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.Escuderia");
+    Simbolos.add(s24);
+
+    //TABLA
+    Simbolo s25 = new Simbolo();
+    s25.SetId("Piloto");
+    s25.SetAtributos("tipo=tabla","ambito=motociclismo.NASCAR");
+    Simbolos.add(s25);
+
+    //CAMPO
+    Simbolo s26 = new Simbolo();
+    s26.SetId("Codigo");
+    s26.SetAtributos("tipo=int","ambito=motociclismo.NASCAR.Piloto");
+    Simbolos.add(s26);
+
+    //CAMPO
+    Simbolo s27 = new Simbolo();
+    s27.SetId("Nombre");
+    s27.SetAtributos("tipo=varchar(50)","ambito=motociclismo.NASCAR.Piloto");
+    Simbolos.add(s27);
+
+    //CAMPO
+    Simbolo s28 = new Simbolo();
+    s28.SetId("Nacionalidad");
+    s28.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.Piloto");
+    Simbolos.add(s28);
+
+    //CAMPO
+    Simbolo s29 = new Simbolo();
+    s29.SetId("FechaNacimiento");
+    s29.SetAtributos("tipo=varchar(25)","ambito=motociclismo.NASCAR.Piloto");
+    Simbolos.add(s29);
+
+    //CAMPO
+    Simbolo s30 = new Simbolo();
+    s30.SetId("CarreraDebut");
+    s30.SetAtributos("tipo=varchar(20)","ambito=motociclismo.NASCAR.Piloto");
+    Simbolos.add(s30);
+
+    //CAMPO
+    Simbolo s31 = new Simbolo();
+    s31.SetId("NombreEscuderia");
+    s31.SetAtributos("tipo=varchar(20)","ambito=motociclismo.NASCAR.Piloto");
+    Simbolos.add(s31);
+
+    //TABLA
+    Simbolo s32 = new Simbolo();
+    s32.SetId("Resultado");
+    s32.SetAtributos("tipo=tabla","ambito=motociclismo.NASCAR");
+    Simbolos.add(s32);
+
+    //CAMPO
+    Simbolo s33 = new Simbolo();
+    s33.SetId("NombreGP");
+    s33.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.Resultado");
+    Simbolos.add(s33);
+
+    //CAMPO
+    Simbolo s34 = new Simbolo();
+    s34.SetId("Año");
+    s34.SetAtributos("tipo=varchar(4)","ambito=motociclismo.NASCAR.Resultado");
+    Simbolos.add(s34);
+
+    //CAMPO
+    Simbolo s35 = new Simbolo();
+    s35.SetId("CodPiloto");
+    s35.SetAtributos("tipo=int","ambito=motociclismo.NASCAR.Resultado");
+    Simbolos.add(s35);
+
+    //CAMPO
+    Simbolo s36 = new Simbolo();
+    s36.SetId("Puesto");
+    s36.SetAtributos("tipo=int","ambito=motociclismo.NASCAR.Resultado");
+    Simbolos.add(s36);
+
+    //CAMPO
+    Simbolo s37 = new Simbolo();
+    s37.SetId("DistanciaGanador");
+    s37.SetAtributos("tipo=varchar(25)","ambito=motociclismo.NASCAR.Resultado");
+    Simbolos.add(s37);
+
+    //BDD
+    Simbolo s38 = new Simbolo();
+    s38.SetId("Veterinaria");
+    s38.SetAtributos("tipo=bdd");
+    Simbolos.add(s38);
+
+    //ESQUEMA
+    Simbolo s39 = new Simbolo();
+    s39.SetId("dbo");
+    s39.SetAtributos("tipo=esquema","ambito=veterinaria");
+    Simbolos.add(s39);
+
+//------------------REVISAR AMBITO-----------------------------------
+    //TABLA
+    Simbolo s40 = new Simbolo();
+    s40.SetId("CalendarioVacunacion");
+    s40.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s40);
+
+    //CAMPO
+    Simbolo s41 = new Simbolo();
+    s41.SetId("Fecha");
+    s41.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.CalendarioVacunacion");
+    Simbolos.add(s41);
+
+    //CAMPO
+    Simbolo s42 = new Simbolo();
+    s42.SetId("Enfermedad");
+    s42.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.CalendarioVacunacion");
+    Simbolos.add(s42);
+
+    //CAMPO
+    Simbolo s43 = new Simbolo();
+    s43.SetId("CodigoPaciente");
+    s43.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.CalendarioVacunacion");
+    Simbolos.add(s43);
+
+//----------------------------------FIN-----------------------------------
+    
+
+    //TABLA
+    Simbolo s44 = new Simbolo();
+    s44.SetId("Cliente");
+    s44.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s44);
+
+    //CAMPO
+    Simbolo s45 = new Simbolo();
+    s45.SetId("DPI");
+    s45.SetAtributos("tipo=varchar(13)","ambito=veterinaria.dbo.Cliente");
+    Simbolos.add(s45);
+
+    //CAMPO
+    Simbolo s46 = new Simbolo();
+    s46.SetId("NIT");
+    s46.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.Cliente");
+    Simbolos.add(s46);
+
+    //CAMPO
+    Simbolo s47 = new Simbolo();
+    s47.SetId("Nombre");
+    s47.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Cliente");
+    Simbolos.add(s47);
+
+    //CAMPO
+    Simbolo s48 = new Simbolo();
+    s48.SetId("Numero");
+    s48.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.Cliente");
+    Simbolos.add(s48);
+
+    //CAMPO
+    Simbolo s49 = new Simbolo();
+    s49.SetId("Direccion");
+    s49.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Cliente");
+    Simbolos.add(s49);
+
+    //CAMPO
+    Simbolo s50 = new Simbolo();
+    s50.SetId("Correo");
+    s50.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Cliente");
+    Simbolos.add(s50);
+
+    //TABLA
+    Simbolo s51 = new Simbolo();
+    s51.SetId("Clinica");
+    s51.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s51);
+
+    //CAMPO
+    Simbolo s52 = new Simbolo();
+    s52.SetId("Codigo");
+    s52.SetAtributos("tipo=int","ambito=veterinaria.dbo.Clinica");
+    Simbolos.add(s52);
+
+    //CAMPO
+    Simbolo s53 = new Simbolo();
+    s53.SetId("Nombre");
+    s53.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Clinica");
+    Simbolos.add(s53);
+
+    //CAMPO
+    Simbolo s54 = new Simbolo();
+    s54.SetId("Direccion");
+    s54.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Clinica");
+    Simbolos.add(s54);
+
+    //TABLA
+    Simbolo s55 = new Simbolo();
+    s55.SetId("Consulta");
+    s55.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s55);
+
+    //CAMPO
+    Simbolo s56 = new Simbolo();
+    s56.SetId("Sala");
+    s56.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s56);
+
+    //CAMPO
+    Simbolo s57 = new Simbolo();
+    s57.SetId("PrecioFijo");
+    s57.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s57);
+
+    //CAMPO
+    Simbolo s58 = new Simbolo();
+    s58.SetId("NumeroOperaciones");
+    s58.SetAtributos("tipo=int","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s58);
+
+    //CAMPO
+    Simbolo s59 = new Simbolo();
+    s59.SetId("NumeroVacunas");
+    s59.SetAtributos("tipo=int","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s59);
+
+    //CAMPO
+    Simbolo s60 = new Simbolo();
+    s60.SetId("NumeroPruebasEspecificas");
+    s60.SetAtributos("tipo=int","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s60);
+
+    //CAMPO
+    Simbolo s61 = new Simbolo();
+    s61.SetId("PrecioOperaciones");
+    s61.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s61);
+
+    //CAMPO
+    Simbolo s62 = new Simbolo();
+    s62.SetId("PrecioVacunas");
+    s62.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s62);
+
+    //CAMPO
+    Simbolo s63 = new Simbolo();
+    s63.SetId("PrecioPruebasEspecificas");
+    s63.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s63);
+
+    //CAMPO
+    Simbolo s64 = new Simbolo();
+    s64.SetId("CodigoPaciente");
+    s64.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s64);
+
+    //CAMPO
+    Simbolo s65 = new Simbolo();
+    s65.SetId("NombreVeterinario");
+    s65.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s65);
+
+    //CAMPO
+    Simbolo s66 = new Simbolo();
+    s66.SetId("FECHA");
+    s66.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.Consulta");
+    Simbolos.add(s66);
+
+    //TABLA
+    Simbolo s67 = new Simbolo();
+    s67.SetId("Diagnostico");
+    s67.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s67);
+
+    //CAMPO
+    Simbolo s68 = new Simbolo();
+    s68.SetId("Resultado");
+    s68.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.Diagnostico");
+    Simbolos.add(s68);
+
+    //CAMPO
+    Simbolo s69 = new Simbolo();
+    s69.SetId("PruebaEspecifica");
+    s69.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.Diagnostico");
+    Simbolos.add(s69);
+
+    //CAMPO
+    Simbolo s70 = new Simbolo();
+    s70.SetId("Lugar");
+    s70.SetAtributos("tipo=varchar(15)","ambito=veterinaria.dbo.Diagnostico");
+    Simbolos.add(s70);
+
+    //CAMPO
+    Simbolo s71 = new Simbolo();
+    s71.SetId("FechaPrueba");
+    s71.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Diagnostico");
+    Simbolos.add(s71);
+
+    //CAMPO
+    Simbolo s72 = new Simbolo();
+    s72.SetId("CodigoPaciente");
+    s72.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.Diagnostico");
+    Simbolos.add(s72);
+
+    //TABLA
+    Simbolo s73 = new Simbolo();
+    s73.SetId("Factura");
+    s73.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s73);
+
+    //CAMPO
+    Simbolo s74 = new Simbolo();
+    s74.SetId("Numero");
+    s74.SetAtributos("tipo=varchar(10)","ambito=veterinaria.dbo.Factura");
+    Simbolos.add(s74);
+
+    //CAMPO
+    Simbolo s75 = new Simbolo();
+    s75.SetId("Detalle");
+    s75.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Factura");
+    Simbolos.add(s75);
+
+    //CAMPO
+    Simbolo s76 = new Simbolo();
+    s76.SetId("Importe");
+    s76.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Factura");
+    Simbolos.add(s76);
+
+    //CAMPO
+    Simbolo s77 = new Simbolo();
+    s77.SetId("TOTAL");
+    s77.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Factura");
+    Simbolos.add(s77);
+
+    //CAMPO
+    Simbolo s78 = new Simbolo();
+    s78.SetId("CodigoClinica");
+    s78.SetAtributos("tipo=int","ambito=veterinaria.dbo.Factura");
+    Simbolos.add(s78);
+
+    //CAMPO
+    Simbolo s79 = new Simbolo();
+    s79.SetId("NITCliente");
+    s79.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.Factura");
+    Simbolos.add(s79);
+
+    //TABLA
+    Simbolo s80 = new Simbolo();
+    s80.SetId("HistorialMedico");
+    s80.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s80);
+
+    //CAMPO
+    Simbolo s81 = new Simbolo();
+    s81.SetId("MotivoVisita");
+    s81.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.HistorialMedico");
+    Simbolos.add(s81);
+
+    //CAMPO
+    Simbolo s82 = new Simbolo();
+    s82.SetId("FechaVisita");
+    s82.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.HistorialMedico");
+    Simbolos.add(s82);
+
+
+    //CAMPO
+    Simbolo s83 = new Simbolo();
+    s83.SetId("CodigoPaciente");
+    s83.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.HistorialMedico");
+    Simbolos.add(s83);
+
+    //CAMPO
+    Simbolo s84 = new Simbolo();
+    s84.SetId("ResultadoDiagnostico");
+    s84.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.HistorialMedico");
+    Simbolos.add(s84);
+
+    //TABLA
+    Simbolo s85 = new Simbolo();
+    s85.SetId("Laboratorio");
+    s85.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s85);
+
+    //CAMPO
+    Simbolo s86 = new Simbolo();
+    s86.SetId("NIT");
+    s86.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.Laboratorio");
+    Simbolos.add(s86);
+
+    //CAMPO
+    Simbolo s87 = new Simbolo();
+    s87.SetId("Nombre");
+    s87.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Laboratorio");
+    Simbolos.add(s87);
+
+    //CAMPO
+    Simbolo s88 = new Simbolo();
+    s88.SetId("Direccion");
+    s88.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Laboratorio");
+    Simbolos.add(s88);
+
+    //TABLA
+    Simbolo s89 = new Simbolo();
+    s89.SetId("Medicina");
+    s89.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s89);
+
+    //CAMPO
+    Simbolo s90 = new Simbolo();
+    s90.SetId("Codigo");
+    s90.SetAtributos("tipo=int","ambito=veterinaria.dbo.Medicina");
+    Simbolos.add(s90);
+
+    //CAMPO
+    Simbolo s91 = new Simbolo();
+    s91.SetId("Nombre");
+    s91.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Medicina");
+    Simbolos.add(s91);
+
+    //CAMPO
+    Simbolo s92 = new Simbolo();
+    s92.SetId("PrecioUnitario");
+    s92.SetAtributos("tipo=numeric(10,2)","ambito=veterinaria.dbo.Medicina");
+    Simbolos.add(s92);
+
+    //TABLA
+    Simbolo s93 = new Simbolo();
+    s93.SetId("OperacionQuirurgica");
+    s93.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s93);
+
+    //CAMPO
+    Simbolo s94 = new Simbolo();
+    s94.SetId("CodigoClinica");
+    s94.SetAtributos("tipo=int","ambito=veterinaria.dbo.OperacionQuirurgica");
+    Simbolos.add(s94);
+
+    //CAMPO
+    Simbolo s95 = new Simbolo();
+    s95.SetId("Quirofano");
+    s95.SetAtributos("tipo=varchar(15)","ambito=veterinaria.dbo.OperacionQuirurgica");
+    Simbolos.add(s95);
+
+    //CAMPO
+    Simbolo s96 = new Simbolo();
+    s96.SetId("NombreVeterinario");
+    s96.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.OperacionQuirurgica");
+    Simbolos.add(s96);
+
+    //CAMPO
+    Simbolo s97 = new Simbolo();
+    s97.SetId("Fecha");
+    s97.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.OperacionQuirurgica");
+    Simbolos.add(s97);
+
+    //CAMPO
+    Simbolo s98 = new Simbolo();
+    s98.SetId("Duracion");
+    s98.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.OperacionQuirurgica");
+    Simbolos.add(s98);
+
+    //CAMPO
+    Simbolo s99 = new Simbolo();
+    s99.SetId("Obervaciones");
+    s99.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.OperacionQuirurgica");
+    Simbolos.add(s99);
+
+    //TABLA
+    Simbolo s100 = new Simbolo();
+    s100.SetId("Paciente");
+    s100.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s100);
+
+    //CAMPO
+    Simbolo s101 = new Simbolo();
+    s101.SetId("Codigo");
+    s101.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.Paciente");
+    Simbolos.add(s101);
+
+    //CAMPO
+    Simbolo s102 = new Simbolo();
+    s102.SetId("Nombre");
+    s102.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Paciente");
+    Simbolos.add(s102);
+
+    //CAMPO
+    Simbolo s103 = new Simbolo();
+    s103.SetId("Especie");
+    s103.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Paciente");
+    Simbolos.add(s103);
+
+    //CAMPO
+    Simbolo s104 = new Simbolo();
+    s104.SetId("Raza");
+    s104.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Paciente");
+    Simbolos.add(s104);
+
+    //CAMPO
+    Simbolo s105 = new Simbolo();
+    s105.SetId("ColorPelo");
+    s105.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Paciente");
+    Simbolos.add(s105);
+
+    //CAMPO
+    Simbolo s106 = new Simbolo();
+    s106.SetId("FechaNacimiento");
+    s106.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Paciente");
+    Simbolos.add(s106);
+
+    //CAMPO
+    Simbolo s107 = new Simbolo();
+    s107.SetId("PesoMedio");
+    s107.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Paciente");
+    Simbolos.add(s107);
+
+    //CAMPO
+    Simbolo s108 = new Simbolo();
+    s108.SetId("CodigoClinica");
+    s108.SetAtributos("tipo=int","ambito=veterinaria.dbo.Paciente");
+    Simbolos.add(s108);
+
+    //CAMPO
+    Simbolo s109 = new Simbolo();
+    s109.SetId("NITCliente");
+    s109.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.Paciente");
+    Simbolos.add(s109);
+
+    //TABLA
+    Simbolo s110 = new Simbolo();
+    s110.SetId("Producto");
+    s110.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s110);
+
+    //CAMPO
+    Simbolo s111 = new Simbolo();
+    s111.SetId("Codigo");
+    s111.SetAtributos("tipo=int","ambito=veterinaria.dbo.Producto");
+    Simbolos.add(s111);
+
+    //CAMPO
+    Simbolo s112 = new Simbolo();
+    s112.SetId("Nombre");
+    s112.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Producto");
+    Simbolos.add(s112);
+
+    //CAMPO
+    Simbolo s113 = new Simbolo();
+    s113.SetId("PrecioUnitario");
+    s113.SetAtributos("tipo=numeric(10,2)","ambito=veterinaria.dbo.Producto");
+    Simbolos.add(s113);
+
+    //TABLA
+    Simbolo s114 = new Simbolo();
+    s114.SetId("Proveedor");
+    s114.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s114);
+
+    //CAMPO
+    Simbolo s115 = new Simbolo();
+    s115.SetId("NIT");
+    s115.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.Proveedor");
+    Simbolos.add(s115);
+
+    //CAMPO
+    Simbolo s116 = new Simbolo();
+    s116.SetId("Nombre");
+    s116.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Proveedor");
+    Simbolos.add(s116);
+
+    //CAMPO
+    Simbolo s117 = new Simbolo();
+    s117.SetId("Direccion");
+    s117.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Proveedor");
+    Simbolos.add(s117);
+
+    //TABLA
+    Simbolo s118 = new Simbolo();
+    s118.SetId("SuministraFarmacia");
+    s118.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s118);
+
+    //CAMPO
+    Simbolo s119 = new Simbolo();
+    s119.SetId("NITLaboratorio");
+    s119.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.SuministraFarmacia");
+    Simbolos.add(s119);
+
+    //CAMPO
+    Simbolo s120 = new Simbolo();
+    s120.SetId("CodigoMedicina");
+    s120.SetAtributos("tipo=int","ambito=veterinaria.dbo.SuministraFarmacia");
+    Simbolos.add(s120);
+
+    //TABLA
+    Simbolo s121 = new Simbolo();
+    s121.SetId("SuministraTienda");
+    s121.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s121);
+
+    //CAMPO
+    Simbolo s122 = new Simbolo();
+    s122.SetId("NITProveedor");
+    s122.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.SuministraTienda");
+    Simbolos.add(s122);
+
+   //CAMPO
+    Simbolo s123 = new Simbolo();
+    s123.SetId("CodigoProducto");
+    s123.SetAtributos("tipo=int","ambito=veterinaria.dbo.SuministraFarmacia");
+    Simbolos.add(s123);
+
+    //TABLA
+    Simbolo s124 = new Simbolo();
+    s124.SetId("Tratamiento");
+    s124.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s124);
+
+    //CAMPO
+    Simbolo s125 = new Simbolo();
+    s125.SetId("Medicamento");
+    s125.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.Tratamiento");
+    Simbolos.add(s125);
+
+    //CAMPO
+    Simbolo s126 = new Simbolo();
+    s126.SetId("Dosificacion");
+    s126.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.Tratamiento");
+    Simbolos.add(s126);
+
+    //CAMPO
+    Simbolo s127 = new Simbolo();
+    s127.SetId("Duracion");
+    s127.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.Tratamiento");
+    Simbolos.add(s127);
+
+    //CAMPO
+    Simbolo s128 = new Simbolo();
+    s128.SetId("Resultado");
+    s128.SetAtributos("tipo=varchar(20)","ambito=veterinaria.dbo.Tratamiento");
+    Simbolos.add(s128);
+
+    //CAMPO
+    Simbolo s129 = new Simbolo();
+    s129.SetId("CodigoPaciente");
+    s129.SetAtributos("tipo=varchar(8)","ambito=veterinaria.dbo.Tratamiento");
+    Simbolos.add(s129);
+
+    //TABLA
+    Simbolo s130 = new Simbolo();
+    s130.SetId("VentaFarmacia");
+    s130.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s130);
+
+    //CAMPO
+    Simbolo s131 = new Simbolo();
+    s131.SetId("NITCliente");
+    s131.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.VentaFarmacia");
+    Simbolos.add(s131);
+
+    //CAMPO
+    Simbolo s132 = new Simbolo();
+    s132.SetId("CodigoMedicina");
+    s132.SetAtributos("tipo=int","ambito=veterinaria.dbo.VentaFarmacia");
+    Simbolos.add(s132);
+
+    //CAMPO
+    Simbolo s133 = new Simbolo();
+    s133.SetId("CodigoMedicina");
+    s133.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.VentaFarmacia");
+    Simbolos.add(s133);
+
+    //CAMPO
+    Simbolo s134 = new Simbolo();
+    s134.SetId("CodigoClinica");
+    s134.SetAtributos("tipo=int","ambito=veterinaria.dbo.VentaFarmacia");
+    Simbolos.add(s134);
+
+    //TABLA
+    Simbolo s135 = new Simbolo();
+    s135.SetId("VentaTienda");
+    s135.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s135);
+
+    //CAMPO
+    Simbolo s136 = new Simbolo();
+    s136.SetId("NITCliente");
+    s136.SetAtributos("tipo=varchar(12)","ambito=veterinaria.dbo.VentaTienda");
+    Simbolos.add(s136);
+
+    //CAMPO
+    Simbolo s137 = new Simbolo();
+    s137.SetId("CodigoProducto");
+    s137.SetAtributos("tipo=int","ambito=veterinaria.dbo.VentaTienda");
+    Simbolos.add(s137);
+
+    //CAMPO
+    Simbolo s138 = new Simbolo();
+    s138.SetId("Fecha");
+    s138.SetAtributos("tipo=varchar(800)","ambito=veterinaria.dbo.VentaTienda");
+    Simbolos.add(s138);
+
+    //CAMPO
+    Simbolo s139 = new Simbolo();
+    s139.SetId("CodigoClinica");
+    s139.SetAtributos("tipo=int","ambito=veterinaria.dbo.VentaTienda");
+    Simbolos.add(s139);
+
+   //TABLA
+    Simbolo s140 = new Simbolo();
+    s140.SetId("Veterinario");
+    s140.SetAtributos("tipo=tabla","ambito=veterinaria.dbo");
+    Simbolos.add(s140);
+
+    //CAMPO
+    Simbolo s141 = new Simbolo();
+    s141.SetId("Nombre");
+    s141.SetAtributos("tipo=varchar(50)","ambito=veterinaria.dbo.Veterinario");
+    Simbolos.add(s141);
+
+    //CAMPO
+    Simbolo s142 = new Simbolo();
+    s142.SetId("SalarioBase");
+    s142.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Veterinario");
+    Simbolos.add(s142);
+
+    //CAMPO
+    Simbolo s143 = new Simbolo();
+    s143.SetId("Salario");
+    s143.SetAtributos("tipo=float(4,2)","ambito=veterinaria.dbo.Veterinario");
+    Simbolos.add(s143);
+
+
+
 
 :};
 
