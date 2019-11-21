@@ -12,10 +12,8 @@ parser code
     public List<String> SynErr = new ArrayList();
     public List<CupError> Errs = new ArrayList();
     private Symbol s;
-    public List<Simbolo> Simbolos = new ArrayList();
-    public List<TSError> TSerrores = new ArrayList();
 
-    public 
+    
 
     public final Class getSymbolContainer() {
         return sym.class;
@@ -99,6 +97,114 @@ parser code
         }
         return true;
     }
+:};
+action code {:
+    
+    public List<Simbolo> Simbolos = new ArrayList();
+    public List<TSError> TSerrores = new ArrayList();
+
+    //MASTER
+    Simbolo s1 = new Simbolo();
+    s1.SetId("master");
+    s1.SetAtributos("tipo=bdd");
+    Simbolos.add(s1);
+    
+    //MOTOCICLISMO
+    Simbolo s2 = new Simbolo();
+    s2.SetId("motociclismo");
+    s2.SetAtributos("tipo=bdd","ambito=master");
+    Simbolos.add(s2);
+
+    //MOTOCICLISMO
+    Simbolo s8 = new Simbolo();
+    s8.SetId("NASCAR");
+    s8.SetAtributos("tipo=esquema","ambito=motociclismo");
+    Simbolos.add(s8);
+
+    //------------TABLA CARRERA---------------
+    Simbolo s3 = new Simbolo();
+    s3.SetId("carrera");
+    s3.SetAtributos("tipo=tabla","ambito=motociclismo.NASCAR");
+    Simbolos.add(s3);
+
+    //CAMPO
+    Simbolo s4 = new Simbolo();
+    s4.SetId("NombreGP");
+    s4.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.carrera");
+    Simbolos.add(s5);
+
+    //CAMPO
+    Simbolo s5 = new Simbolo();
+    s5.SetId("Año");
+    s5.SetAtributos("tipo=varchar(4)","ambito=motociclismo.NASCAR.carrera");
+    Simbolos.add(s5);
+
+    //CAMPO
+    Simbolo s6 = new Simbolo();
+    s6.SetId("FechaHoraInicio");
+    s6.SetAtributos("tipo=varchar(25)","ambito=motociclismo.NASCAR.carrera");
+    Simbolos.add(s6);
+
+    //CAMPO
+    Simbolo s7 = new Simbolo();
+    s7.SetId("NumVueltas");
+    s7.SetAtributos("tipo=int","ambito=motociclismo.NASCAR.carrera");
+    Simbolos.add(s7);
+
+    //CAMPO
+    Simbolo s9 = new Simbolo();
+    s9.SetId("NombreCircuito");
+    s9.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.carrera");
+    Simbolos.add(s9);
+
+    //TABLA
+    Simbolo s10 = new Simbolo();
+    s10.SetId("circuito");
+    s10.SetAtributos("tipo=tabla","ambito=motociclismo.NASCAR");
+    Simbolos.add(s10);
+
+    //CAMPO
+    Simbolo s11 = new Simbolo();
+    s11.SetId("Nombre");
+    s11.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.circuito");
+    Simbolos.add(s11);
+
+    //CAMPO
+    Simbolo s12 = new Simbolo();
+    s12.SetId("Pais");
+    s12.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.circuito");
+    Simbolos.add(s12);
+
+    //CAMPO
+    Simbolo s13 = new Simbolo();
+    s13.SetId("Tipo");
+    s13.SetAtributos("tipo=varchar(15)","ambito=motociclismo.NASCAR.circuito");
+    Simbolos.add(s13);
+
+    //CAMPO
+    Simbolo s14 = new Simbolo();
+    s14.SetId("Longitud");
+    s14.SetAtributos("tipo=float(4,1)","ambito=motociclismo.NASCAR.circuito");
+    Simbolos.add(s14);
+
+    //CAMPO
+    Simbolo s15 = new Simbolo();
+    s15.SetId("Diseñador");
+    s15.SetAtributos("tipo=varchar(20)","ambito=motociclismo.NASCAR.circuito");
+    Simbolos.add(s15);
+
+    //TABLA
+    Simbolo s16 = new Simbolo();
+    s16.SetId("dbo");
+    s16.SetAtributos("tipo=esquema","ambito=motociclismo");
+    Simbolos.add(s16);
+
+    //TABLA
+    Simbolo s17 = new Simbolo();
+    s17.SetId("CONSULTAS_SQL");
+    s17.SetAtributos("tipo=tabla","ambito=motociclismo.dbo");
+    Simbolos.add(s17);
+
 :};
 
 terminal Igual,Suma,Resta,Multiplicacion,Division,Identificador,Entero,
