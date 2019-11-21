@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package userinterface;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,5 +120,47 @@ public class Simbolo {
             }
         }
         return null;
+    }
+    
+    public static String toText(List<Simbolo> simbolos){
+        StringBuilder sb = new StringBuilder();
+        Map<String,Integer> atrib = atributos(simbolos);
+        for(String a : atrib.keySet()){
+            StringBuilder bui = new StringBuilder();
+            bui = bui.append(a);
+            while(bui.length()<atrib.get(a)+1){
+                bui = bui.append(' ');
+            }
+            sb.append(bui.toString());
+        }
+        for(Simbolo s : simbolos){
+            sb = sb.append("\n");
+            for(String a : atrib.keySet()){
+                StringBuilder bui = new StringBuilder();
+                if(s.getAtributo(a)!=null){
+                    bui = bui.append(s.getAtributo(a));
+                }
+                while(bui.length()<atrib.get(a)+1){
+                    bui = bui.append(' ');
+                }
+                sb = sb.append(bui.toString());
+            }
+        }
+        return sb.toString();
+    }
+    
+    private static Map<String,Integer> atributos(List<Simbolo> simbolos){
+        Map<String,Integer> lista = new HashMap();
+        for(Simbolo s : simbolos){
+            for(String a : s.atributos.keySet()){
+                if(!lista.containsKey(a)){
+                    lista.put(a, s.getAtributo(a).length());
+                }
+                if(lista.get(a)<s.getAtributo(a).length()){
+                    lista.put(a, s.getAtributo(a).length());
+                }
+            }
+        }
+        return lista;
     }
 }
