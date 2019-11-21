@@ -186,10 +186,11 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAnalizar)
-                            .addComponent(chbGenerarArchivo)
-                            .addComponent(btnAnalizarX))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAnalizarX)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnAnalizar)
+                                .addComponent(chbGenerarArchivo)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
@@ -274,7 +275,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 }else{
                     txaAnalisisX.setText(CupError.errorsFromList(ce));
                 }
-                //txaTabla.setText(Simbolo.toText(s.TablaSimbolos));
+                txaTabla.setText(Simbolo.toText(s.TablaSimbolos()));
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {

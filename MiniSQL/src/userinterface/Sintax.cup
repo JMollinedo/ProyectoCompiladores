@@ -5,8 +5,620 @@ import java.util.ArrayList;
 import java.util.List;
 import java_cup.runtime.virtual_parse_stack;
 import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.Queue;
+action code {:
 
+    public List<Simbolo> Simbolos = new ArrayList();
+    public List<TSError> TSerrores = new ArrayList();
+    public Queue<String> Ambito = new LinkedList();
 
+    private void DefaultVals()
+    {
+        //BDD master
+        Simbolo simb = new Simbolo("master");
+        simb.setAtributos("tipo=bdd");
+        Simbolos.add(simb);
+
+        //ESQUEMA dbo
+        simb = new Simbolo("dbo");
+        simb.setAtributos("tipo=esquema","base=master");
+        Simbolos.add(simb);
+
+        //BDD Motociclismo
+        simb = new Simbolo("Motociclismo");
+        simb.setAtributos("tipo=bdd");
+        Simbolos.add(simb);
+
+        //ESQUEMA dbo
+        simb = new Simbolo("dbo");
+        simb.setAtributos("tipo=esquema","base=Motociclismo");
+        Simbolos.add(simb);
+
+        //ESQUEMA NASCAR
+        simb = new Simbolo("NASCAR");
+        simb.setAtributos("tipo=esquema","base=Motociclismo");
+        Simbolos.add(simb);
+
+        //TABLA Carrera
+        simb = new Simbolo("Carrera");
+        simb.setAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NombreGP");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("Año");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=VARCHAR","largoMax=4","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("FechaHoraInicio");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=VARCHAR","largoMax=25","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NumVueltas");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NombreCircuito");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA Circuito
+        simb = new Simbolo("Circuito");
+        simb.setAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Pais");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Tipo");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Longitud");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=FLOAT","largoMax=4","decimal=1","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Diseñador");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA CONSULTAS_SQL
+        simb = new Simbolo("CONSULTAS_SQL");
+        simb.setAtributos("tipo=tabla","base=Motociclismo","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("ID_CONSULTA");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=dbo","tabla=CONSULTAS_SQL","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CONSULTA");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=dbo","tabla=CONSULTAS_SQL","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA Escuderia
+        simb = new Simbolo("Escuderia");
+        simb.setAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Escuderia","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Manager");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Escuderia","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("FabricanteMotor");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Escuderia","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Sede");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Escuderia","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA Piloto
+        simb = new Simbolo("Piloto");
+        simb.setAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Codigo");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=INT","nulable=False","identidad=True","inicial=1","salto=1");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nacionalidad");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("FechaNacimiento");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=25","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CarreraDebut");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NombreEscuderia");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA Resultado
+        simb = new Simbolo("Resultado");
+        simb.setAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NombreGP");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Año");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=VARCHAR","largoMax=4","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodPiloto");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Puesto");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("DistanciaGanador");
+        simb.setAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=VARCHAR","largoMax=25","nulable=False");
+        Simbolos.add(simb);
+
+        //Veterinaria
+
+        //BDD Veterinaria
+        simb = new Simbolo("Veterinaria");
+        simb.setAtributos("tipo=bdd");
+        Simbolos.add(simb);
+
+        //ESQUEMA dbo
+        simb = new Simbolo("dbo");
+        simb.setAtributos("tipo=esquema","base=Veterinaria");
+        Simbolos.add(simb);
+
+        //TABLA Calendario Vacunacion
+        simb = new Simbolo("CalendarioVacunacion");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Fecha");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=CalendarioVacunacion","tipoDato=VARCHAR","largoMax=8","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Enfermedad");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=CalendarioVacunacion","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoPaciente");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=CalendarioVacunacion","tipoDato=VARCHAR","largoMax=8","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA Cliente
+        simb = new Simbolo("Cliente");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("DPI");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=13","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NIT");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Numero");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=8","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Direccion");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Correo");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        //TABLA Clinica
+        simb = new Simbolo("Clinica");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Codigo");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Clinica","tipoDato=INT","nulable=False","identidad=True","inicial=1","salto=1");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Clinica","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Direccion");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Clinica","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA Consulta
+        simb = new Simbolo("Consulta");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Sala");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("PrecioFijo");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NumerosOperaciones");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=INT","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NumerosVacunas");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=INT","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NumerosPruebasEspecificas");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=INT","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("PrecioOperaciones");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("PrecioVacunas");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("PrecioPruebasEspecificas");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoPaciente");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=VARCHAR","largoMax=8","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NombreVeterinario");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=VARCHAR","largoMax=50","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("FECHA");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=VARCHAR","largoMax=8","nulable=True");
+        Simbolos.add(simb);
+
+        //TABLA Diagnostico
+        simb = new Simbolo("Diagnostico");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Resultado");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("PruebaEspecifica");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=20","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Lugar");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=15","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("FechaPrueba");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);        
+
+        simb = new Simbolo("CodigoPaciente");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=8","nulable=True");
+        Simbolos.add(simb);
+
+        //TABLA Factura
+        simb = new Simbolo("Factura");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Numero");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=VARCHAR","largoMax=10","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Detalle");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Importe");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("TOTAL");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoClinica");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=INT","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NITCliente");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA Historial Medico
+        simb = new Simbolo("HistorialMedico");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("MotivoVisita");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=HistorialMedico","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("FechaVisita");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=HistorialMedico","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoPaciente");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=HistorialMedico","tipoDato=VARCHAR","largoMax=8","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("ResultadoDiagnostico");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=HistorialMedico","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA Laboratorio
+        simb = new Simbolo("Laboratorio");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NIT");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Laboratorio","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Laboratorio","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Direccion");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Laboratorio","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA Medicina
+        simb = new Simbolo("Medicina");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema.dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Codigo");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Medicina","tipoDato=INT","nulable=False","identidad=True","inicio=1","salto=1");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Medicina","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("PrecioUnitario");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Medicina","tipoDato=NUMERIC","largoMax=10","decimal=2","nulable=False");
+        Simbolos.add(simb);
+
+        //TABLA
+        simb = new Simbolo("OperacionQuirurgica");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoClinica");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=INT","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Quirofano");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=15","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NombreVeterinario");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=50","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Fecha");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Duracion");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Observaciones");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        //TABLA
+        simb = new Simbolo("Paciente");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Codigo");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=8","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Especie");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Raza");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("ColorPelo");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("FechaNacimiento");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("PesoMedio");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoClinica");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=INT","nulable=True");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NITCliente");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=12","nulable=True");
+        Simbolos.add(simb);
+
+        //TABLA Producto
+        simb = new Simbolo("Producto");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema.dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Codigo");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Producto","tipoDato=INT","identidad=True","inicio=1","salto=1","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Producto","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("PrecioUnitario");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Producto","tipoDato=NUMERIC","largoMax=10","decimal=2","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Proveedor");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("NIT");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Proveedor","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Proveedor","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("Direccion");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Proveedor","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("SuministraFarmacia");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NITLaboratorio");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraFarmacia","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoMedicina");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraFarmacia","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("SuministraTienda");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NITProveedor");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraTienda","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);        
+        
+        simb = new Simbolo("CodigoProducto");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraTienda","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Tratamiento");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo"); 
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Medicamento");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("Dosificacion");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Duracion");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Resultado");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=20","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoPaciente");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=8","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("VentaFarmacia");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NITCliente");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("CodigoMedicina");
+        simb.setAtributos("tipo=campo","base=Vetarinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("Fecha");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("CodigoClinica");
+        simb.setAtributos("tipo=campo","base=Vetarinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("VentaTienda");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("NITCliente");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=VARCHAR","largoMax=12","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoProducto");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+        
+        simb = new Simbolo("Fecha");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=VARCHAR","largoMax=800","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("CodigoClinica");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=INT","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Veterinario");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Nombre");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Venterinario","tipoDato=VARCHAR","largoMax=50","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("SalarioBase");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Venterinario","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
+        Simbolos.add(simb);
+
+        simb = new Simbolo("Salario");
+        simb.setAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Ventario","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
+        Simbolos.add(simb);
+    }
+:};
 parser code
 {: 
     public List<String> SynErr = new ArrayList();
@@ -97,617 +709,9 @@ parser code
         }
         return true;
     }
-:};
-action code {:
-    
-    public List<Simbolo> Simbolos = new ArrayList();
-    public List<TSError> TSerrores = new ArrayList();
-    public Queue<String> Ambito = new LinkedList();
 
-    public void DefaultVals()
-    {
-        //BDD master
-        Simbolo simb = new Simbolo("master");
-        simb.SetAtributos("tipo=bdd");
-        Simbolos.add(simb);
-
-        //ESQUEMA dbo
-        simb = new Simbolo("dbo");
-        simb.SetAtributos("tipo=esquema","base=master");
-        Simbolos.add(simb);
-
-        //BDD Motociclismo
-        simb = new Simbolo("Motociclismo");
-        simb.SetAtributos("tipo=bdd");
-        Simbolos.add(simb);
-
-        //ESQUEMA dbo
-        simb = new Simbolo("dbo");
-        simb.SetAtributos("tipo=esquema","base=Motociclismo");
-        Simbolos.add(simb);
-
-        //ESQUEMA NASCAR
-        simb = new Simbolo("NASCAR");
-        simb.SetAtributos("tipo=esquema","base=Motociclismo");
-        Simbolos.add(simb)
-
-        //TABLA Carrera
-        simb = new Simbolo("Carrera");
-        simb.SetAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NombreGP");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("Año");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=VARCHAR","largoMax=4","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("FechaHoraInicio");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=VARCHAR","largoMax=25","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("NumVueltas");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("NombreCircuito");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Carrera","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA Circuito
-        simb = new Simbolo("Circuito");
-        simb.SetAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Pais");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Tipo");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Longitud");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=FLOAT","largoMax=4","decimal=1","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Diseñador");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Circuito","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA CONSULTAS_SQL
-        simb = new Simbolo("CONSULTAS_SQL");
-        simb.SetAtributos("tipo=tabla","base=Motociclismo","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("ID_CONSULTA");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=dbo","tabla=CONSULTAS_SQL","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CONSULTA");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=dbo","tabla=CONSULTAS_SQL","tipoDato=VARCHAR",largoMax=800,"nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA Escuderia
-        simb = new Simbolo("Escuderia");
-        simb.SetAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Escuderia","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Manager");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Escuderia","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("FabricanteMotor");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Escuderia","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Sede");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Escuderia","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA Piloto
-        simb = new Simbolo("Piloto");
-        simb.SetAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Codigo");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=INT","nulable=False","identidad=True","inicial=1","salto=1");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nacionalidad");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("FechaNacimiento");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=25","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CarreraDebut");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("NombreEscuderia");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Piloto","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA Resultado
-        simb = new Simbolo("Resultado");
-        simb.SetAtributos("tipo=tabla","base=Motociclismo","esquema=NASCAR");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NombreGP");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Año");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=VARCHAR","largoMax=4","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodPiloto");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Puesto");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("DistanciaGanador");
-        simb.SetAtributos("tipo=campo","base=Motociclismo","esquema=NASCAR","tabla=Resultado","tipoDato=VARCHAR","largoMax=25","nulable=False");
-        Simbolos.add(simb);
-
-        //Veterinaria
-
-        //BDD Veterinaria
-        simb = new Simbolo("Veterinaria");
-        simb.SetAtributos("tipo=bdd");
-        Simbolos.add(simb);
-
-        //ESQUEMA dbo
-        simb = new Simbolo("dbo");
-        simb.SetAtributos("tipo=esquema","base=Veterinaria");
-        Simbolos.add(simb);
-
-        //TABLA Calendario Vacunacion
-        simb = new Simbolo("CalendarioVacunacion");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Fecha");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=CalendarioVacunacion","tipoDato=VARCHAR","largoMax=8","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Enfermedad");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=CalendarioVacunacion","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoPaciente");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=CalendarioVacunacion","tipoDato=VARCHAR","largoMax=8","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA Cliente
-        simb = new Simbolo("Cliente");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("DPI");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=13","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NIT");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=12","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Numero");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=8","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Direccion");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Correo");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Cliente","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        //TABLA Clinica
-        simb = new Simbolo("Clinica");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Codigo");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Clinica","tipoDato=INT","nulable=False","identidad=True","inicial=1","salto=1");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Clinica","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Direccion");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Clinica","tipoDato=VARCHAR","largoMax=800","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA Consulta
-        simb = new Simbolo("Consulta");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Sala");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("PrecioFijo");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NumerosOperaciones");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=INT","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NumerosVacunas");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=INT","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NumerosPruebasEspecificas");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=INT","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("PrecioOperaciones");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("PrecioVacunas");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("PrecioPruebasEspecificas");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoPaciente");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=VARCHAR","largoMax=8","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NombreVeterinario");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=VARCHAR","largoMax=50","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("FECHA");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Consulta","tipoDato=VARCHAR","largoMax=8","nulable=True");
-        Simbolos.add(simb);
-
-        //TABLA Diagnostico
-        simb = new Simbolo("Diagnostico");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Resultado");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("PruebaEspecifica");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=20","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Lugar");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=15","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("FechaPrueba");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);        
-
-        simb = new Simbolo("CodigoPaciente");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Diagnostico","tipoDato=VARCHAR","largoMax=8","nulable=True");
-        Simbolos.add(simb);
-
-        //TABLA Factura
-        simb = new Simbolo("Factura");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Numero");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=VARCHAR","largoMax=10","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Detalle");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Importe");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("TOTAL");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoClinica");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=INT","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NITCliente");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Factura","tipoDato=VARCHAR","largoMax=12","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA Historial Medico
-        simb = new Simbolo("HistorialMedico");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("MotivoVisita");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=HistorialMedico","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("FechaVisita");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=HistorialMedico","tipoDato=VARCHAR","largoMax=800","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoPaciente");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=HistorialMedico","tipoDato=VARCHAR","largoMax=8","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("ResultadoDiagnostico");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=HistorialMedico","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA Laboratorio
-        simb = new Simbolo("Laboratorio");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NIT");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Laboratorio","tipoDato=VARCHAR","largoMax=12","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Laboratorio","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Direccion");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Laboratorio","tipoDato=VARCHAR","largoMax=800","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA Medicina
-        simb = new Simbolo("Medicina");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema.dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Codigo");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Medicina","tipoDato=INT","nulable=False","identidad=True","inicio=1","salto=1");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Medicina","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("PrecioUnitario");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Medicina","tipoDato=NUMERIC","largoMax=10","decimal=2","nulable=False");
-        Simbolos.add(simb);
-
-        //TABLA
-        simb = new Simbolo("OperacionQuirurgica");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoClinica");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=INT","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Quirofano");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=15","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NombreVeterinario");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=50","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Fecha");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Duracion");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Observaciones");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=OperacionQuirurgica","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        //TABLA
-        simb = new Simbolo("Paciente");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Codigo");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=8","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Especie");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Raza");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("ColorPelo");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("FechaNacimiento");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("PesoMedio");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=800","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoClinica");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=INT","nulable=True");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NITCliente");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Paciente","tipoDato=VARCHAR","largoMax=12","nulable=True");
-        Simbolos.add(simb);
-
-        //TABLA Producto
-        simb = new Simbolo("Producto");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema.dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Codigo");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Producto","tipoDato=INT","identidad=True","inicio=1","salto=1","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Producto","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("PrecioUnitario");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Producto","tipoDato=NUMERIC","largoMax=10","decimal=2","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Proveedor");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("NIT");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Proveedor","tipoDato=VARCHAR","largoMax=12","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Proveedor","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("Direccion");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Proveedor","tipoDato=VARCHAR","largoMax=800","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("SuministraFarmacia");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("NITLaboratorio");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraFarmacia","tipoDato=VARCHAR","largoMax=12","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoMedicina");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraFarmacia","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("SuministraTienda");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("NITProveedor");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraTienda","tipoDato=VARCHAR","largoMax=12","nulable=False");
-        Simbolos.add(simb);        
-        
-        simb = new Simbolo("CodigoProducto");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=SuministraTienda","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Tratamiento");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo"); 
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Medicamento");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("Dosificacion");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=800","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Duracion");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Resultado");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=20","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoPaciente");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Tratamiento","tipoDato=VARCHAR","largoMax=8","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("VentaFarmacia");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("NITCliente");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=VARCHAR","largoMax=12","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("CodigoMedicina");
-        simb.SetAtributos("tipo=campo","base=Vetarinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("Fecha");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=VARCHAR","largoMax=800","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("CodigoClinica");
-        simb.SetAtributos("tipo=campo","base=Vetarinaria","esquema=dbo","tabla=VentaFarmacia","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("VentaTienda");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo")
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("NITCliente");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=VARCHAR","largoMax=12","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoProducto");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-        
-        simb = new Simbolo("Fecha");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=VARCHAR","largoMax=800","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("CodigoClinica");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=VentaTienda","tipoDato=INT","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Veterinario");
-        simb.SetAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Nombre");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Venterinario","tipoDato=VARCHAR","largoMax=50","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("SalarioBase");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Venterinario","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
-        Simbolos.add(simb);
-
-        simb = new Simbolo("Salario");
-        simb.SetAtributos("tipo=campo","base=Veterinaria","esquema=dbo","tabla=Ventario","tipoDato=FLOAT","largoMax=4","decimal=2","nulable=False");
-        Simbolos.add(simb);
+    public List<Simbolo> TablaSimbolos(){
+        return action_obj.Simbolos;
     }
 :};
 
@@ -739,9 +743,7 @@ terminal Igual,Suma,Resta,Multiplicacion,Division,Identificador,Entero,
          NUMERIC,VARCHAR,DISCONNECT,OCTET_LENGTH,VARYING,DOMAIN,ON,ONLY,WHENEVER,WORK,END_EXEC,WRITE,YEAR,OUTPUT,ZONE,EXCEPTION,OUT,READONLY,ENCRYPTION,
          RETURNS,SCHEMABINDING,CALLED,INLINE,CALLER,SELF,OWNER,RECOMPILE,MARK,FORWARD_ONLY,STATIC,KEYSET,DYNAMIC,FAST_FORWARD,READ_ONLY,SCROLL_LOCKS,OPTIMISTIC,
          TYPE_WARNING,NAME,FILENAME,KB,GB,TB,MB,MAXSIZE,UNLIMITED,FILEGROWTH,MODULAR,DELAYED_DURABILITY;
-
-non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final, ID, Object2, Object2A, Object3, Object3A, Object4, Object4A, IFE, Variable, Tipo_dato, 
-    Tipo_datoD, Tipo_datoA, Tipo_datoB, Tipo_datoC, Drop, DropA, DropTable, DropTableA, DropUser, DropDatabase, DropDatabaseA, DropView, DropViewA,
+non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final, Object2, Object2A, Object3, Object3A, Object4, Object4A, IFE, Drop, DropA, DropTable, DropTableA, DropUser, DropDatabase, DropDatabaseA, DropView, DropViewA,
     DropIndex, DropIndexA, DropIndexB, Truncate, Alias, AliasA, Expresion, ExpresionA, ExpresionB, ExpresionC, ExpresionD, ExpresionE, ExpresionF,
     Not, Top, TopA, Expresiones, NSC, NSCA, NPred, NPredA, NPredC, Where, SelectColumns, SelectColumnsA, ColumnList,NSEarit,NSEaritA,NSEaritB,NSEaritC,NSEaritD,NSEaritE,NSEaritF,NSEarits,
     ColumnListA, ColumnListB, Select, SelectA, Having, Order, OrderA, OrderB, OrderC, Group, GroupA, Insert, InsertInto , InsertColumnList , InsertExpresion,
@@ -758,9 +760,10 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
     ProcOptionRec, Clause, ReplicationSP, StartSP, StmtSP, StmtSP1, StmtSP2, Function, Params, OrAlter, Param, Param_A, Param_B, As, ReadOnly, Type_Return, 
     Data, Table, SCT, DType, With, FuncOpc, FuncOpcA, FuncOpcB, FuncOpcC, VariableList, VariableLista, CursorDeclare, CursorDeclarea, 
     CursorDeclareb, CursorDeclarec, CursorDeclared, CursorDeclaree, CursorDeclaref, CursorDeclareg, InicialB, NFR1, NFR2,ColumnDefV,ColumnDefX,ColumnDefW,
-    ColumnDefZ,ColumnDefY,Sizew,Sizenw,ExecProcedure,RepeatProcedure,RepeatProcedureA,Data_Type,EXECUTE_AS_CLAUSE,CallFunction,FunctionContent,FunctionContentA,
+    ColumnDefZ,ColumnDefY,Sizew,Sizenw,ExecProcedure,RepeatProcedure,RepeatProcedureA,EXECUTE_AS_CLAUSE,CallFunction,FunctionContent,FunctionContentA,
     DTypes,NameDB,FileDB,FinalTran,CommitB,OnOff,DropProcedure,DropProcedureA,DropFunction;
 
+non terminal Simbolo Tipo_dato,Tipo_datoA,Tipo_datoB,Tipo_datoC,Tipo_datoD,ID,DeclareVariable,ValorVariable,Data_Type,Variable;
     precedence right NOT;
     precedence left Igual,NoIgual,Mayor,MayorIgual,Menor,MenorIgual;
     precedence left Suma,Resta,Multiplicacion,Division;
@@ -780,11 +783,17 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     TCL ::= BeginTran Final InicialB FinalTran;
 
-    TSQL ::= CursorDeclare | ExecProcedure;
+    TSQL ::= CursorDeclare | ExecProcedure | DeclareVariable;
 
     Final ::= PyC | GO;
 
-    ID ::= Identificador | AbreCorchetes Identificador CierraCorchetes;
+    ID ::= Identificador :ID1 {:
+        RESULT = new Simbolo("Identificador");
+        RESULT.setAtributos("valor="+ID1.toString());                
+    :} | AbreCorchetes Identificador:ID1 CierraCorchetes{:
+        RESULT = new Simbolo("Identificador");
+        RESULT.setAtributos("valor="+ID1.toString());   
+    :};
 
     Object2 ::= ID Object2A;
 
@@ -800,29 +809,46 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     IFE ::= IF EXISTS |;
 
-    Variable ::= Arroba Identificador;
+    Variable ::= Arroba Identificador:ID{:
+        RESULT = new Simbolo(ID.toString());        
+    :};
 
-    Tipo_dato ::= Tipo_datoD Tipo_datoB;
+    Tipo_dato ::= Tipo_datoD:TD Tipo_datoB:TB {:
+        RESULT = new Simbolo("Tipo_Dato");
+        RESULT.setAtributos("tipoDato="+TD.getAtributo("tipoDato"),"largoMax="+TB.getAtributo("dimension"));
+        if(TB.existsAtributo("dimension2")){
+            RESULT.setAtributos("decimal="+TB.getAtributo("dimension2"));
+        }
+        :};
 
-    Tipo_datoD ::= Tipo_datoA | AbreCorchetes Tipo_datoA CierraCorchetes;
+    Tipo_datoD ::= Tipo_datoA:TA {:RESULT = new Simbolo("Tipo_datoD");
+        RESULT.setAtributos("tipoDato="+TA.getAtributo("tipoDato"));:} | AbreCorchetes Tipo_datoA:TA CierraCorchetes{:RESULT = new Simbolo("Tipo_datoD");
+        RESULT.setAtributos("tipoDato="+TA.getAtributo("tipoDato"));:};
 
-    Tipo_datoA ::= VARCHAR | INTEGER | FLOAT | DATE | BIT | DOUBLE | CHAR | CURSOR | NCHAR 
+    Tipo_datoA ::= VARCHAR {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=VARCHAR");:} | INTEGER | FLOAT | DATE | BIT | DOUBLE | CHAR | CURSOR | NCHAR 
                     | REAL | TIME | INT | DECIMAL | SMALLINT | NUMERIC | BIGINT 
                     | BINARY | DATETIME | DATETIME2 | DATETIMEOFFSET | HIERARCHYID | IMAGE 
                     | MONEY | NTEXT | NVARCHAR | ROWVERSION | SMALLDATETIME | SMALLMONEY 
                     | SQL_VARIANT | TEXT | TINYINT | UNIQUEIDENTIFIER | VARBINARY | XML ;
 
-    Tipo_datoB ::= AbreParentesis Entero Tipo_datoC CierraParentesis |;
+    Tipo_datoB ::= AbreParentesis Entero:num Tipo_datoC:TC CierraParentesis {:
+        RESULT = new Simbolo("Tipo_datoB");
+        RESULT.setAtributos("dimension="+num.toString());
+        if(!(TC == null)){
+             RESULT.setAtributos("dimension2="+TC.getAtributoAsInt("dimension"));                
+        }:} |{:RESULT=null;:};
 
-    Tipo_datoC ::= Coma Entero |;
+    Tipo_datoC ::= Coma Entero:num {:RESULT = new Simbolo("Tipo_datoC");
+                            RESULT.setAtributos("dimension="+num.toString(),"tipoDato=INT");:}|{:RESULT = null;:};
 
     Drop ::= DROP DropA;
     
     DropA ::= DropTable | DropUser | DropDatabase | DropView | DropIndex | DropProcedure | DropFunction;
 
-    DropTable:dt ::= TABLE IFE:ife Object3:tabla DropTableA {::}
+    DropTable ::= TABLE IFE:ife Object3:tabla DropTableA {::};
 
-    DropTableA:dta ::=  Coma Object3:tabla DropTableA {::}
+    DropTableA ::=  Coma Object3:tabla DropTableA {::}
                         |;
 
     DropUser ::= USER IFE ID;
@@ -1270,6 +1296,18 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     StmtSP2 ::= DML |;
 
+    DeclareVariable ::= DECLARE Variable:V As Tipo_dato:TD ValorVariable:VV{:
+        if(!(Simbolo.encontrar(Simbolos,"id="+V.getId())==null)){
+            System.out.println("*ERROR:Existe una variable con el nombre: "+ V.getId()+"*");            
+        }else{
+            RESULT = new Simbolo(V.getId());
+            RESULT.setAtributos("tipoDato="+TD.getAtributo("tipoDato"));
+        }
+    :};    
+
+    ValorVariable ::= Igual Data_Type:DT{:
+        RESULT = DT;        
+    :}|;
     CursorDeclare ::= DECLARE ID CURSOR CursorDeclarea CursorDeclareb CursorDeclarec CursorDeclared CursorDeclaree FOR Select CursorDeclaref;
     
     CursorDeclarea ::= LOCAL|GLOBAL|;
@@ -1332,4 +1370,13 @@ non terminal OperadoresBooleanos, Inicial, InicialA, DML, DDL, TCL, TSQL, Final,
 
     RepeatProcedureA ::= Coma RepeatProcedure|;
 
-    Data_Type ::=  Entero | Flotante | Cadena;
+    Data_Type ::=  Entero:Entero {:
+        RESULT = new Simbolo(Entero.toString());
+        RESULT.setAtributos("tipoDato=INT");        
+    :} | Flotante:flotante{:
+    RESULT = new Simbolo(flotante.toString());
+        RESULT.setAtributos("tipoDato=FLOAT");
+    :}| Cadena:cad{:
+    RESULT = new Simbolo(cad.toString());
+        RESULT.setAtributos("tipoDato=VARCHAR");
+    :};
