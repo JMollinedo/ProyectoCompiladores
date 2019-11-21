@@ -106,6 +106,16 @@ public class Simbolo {
         return atributos.containsKey(nombre);
     }
     
+    public static List<Simbolo> encontrarId(List<Simbolo> simbolos, String Id){
+        List<Simbolo> lista = new ArrayList();
+        for(Simbolo s : simbolos){
+            if(s.id.equals(Id)){
+                lista.add(s);
+            }
+        }
+        return lista;
+    }
+    
     public static Simbolo encontrar(List<Simbolo> simbolos, String...condiciones){
         Map<String,String> busqueda = new HashMap();
         for(String s : condiciones){
