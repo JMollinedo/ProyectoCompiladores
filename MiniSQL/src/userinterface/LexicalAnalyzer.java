@@ -275,7 +275,13 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 }else{
                     txaAnalisisX.setText(CupError.errorsFromList(ce));
                 }
-                txaTabla.setText(Simbolo.toText(s.TablaSimbolos()));                
+                txaTabla.setText(Simbolo.toText(s.TablaSimbolos()));
+                String desktopPath = System.getProperty("user.home") + "/Desktop";
+                desktopPath = desktopPath.replace("\\", "/");
+                desktopPath= desktopPath.concat("/TablaSimbolos.csv");
+                ReadnWrite.writeAllText(desktopPath,Simbolo.toText(s.TablaSimbolos()));
+                 
+                 
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {

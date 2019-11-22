@@ -138,7 +138,7 @@ public class Simbolo {
         sb = sb.append("Simbolo");
         for(String a : atrib.keySet()){
             StringBuilder bui = new StringBuilder();
-            bui = bui.append("\t").append(a);
+            bui = bui.append(",").append(a);
             sb = sb.append(bui.toString());
         }
         for(Simbolo s : simbolos){
@@ -146,13 +146,13 @@ public class Simbolo {
             sb = sb.append(s.id);
             for(String a : atrib.keySet()){
                 StringBuilder bui = new StringBuilder();
-                bui = bui.append("\t");
+                bui = bui.append(",");
                 if(s.getAtributo(a)!=null){
                     bui = bui.append(s.getAtributo(a));
                 }
                 else
                 {
-                    bui = bui.append("\t");
+                    bui = bui.append("---");
                 }
                 sb = sb.append(bui.toString());
             }

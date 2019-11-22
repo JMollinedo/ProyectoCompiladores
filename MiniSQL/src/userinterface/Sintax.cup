@@ -1341,6 +1341,12 @@ non terminal Simbolo Tipo_dato,Tipo_datoA,Tipo_datoB,Tipo_datoC,Tipo_datoD,ID,De
         }else{
             RESULT = new Simbolo(V.getId());
             RESULT.setAtributos("tipo=variable","tipoDato="+TD.getAtributo("tipoDato"),"valor=default");
+            if(!(TD.getAtributo("largoMax")==null)){
+                RESULT.setAtributos("largoMax="+TD.getAtributo("largoMax"));
+                if(!(TD.getAtributo("decimal")==null)){
+                    RESULT.setAtributos("decimal="+TD.getAtributo("decimal"));
+                }        
+            }
             if(!(VV == null)){
                 if(VV.getAtributo("tipoDato").equals(TD.getAtributo("tipoDato"))){
                     RESULT.setAtributo("valor",VV.getId());
