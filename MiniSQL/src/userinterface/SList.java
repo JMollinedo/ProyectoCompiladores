@@ -395,7 +395,7 @@ public class SList extends ArrayList<Simbolo> {
 
         //TABLA Medicina
         simb = new Simbolo("Medicina");
-        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema.dbo");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
         this.add(simb);
 
         simb = new Simbolo("Codigo");
@@ -482,7 +482,7 @@ public class SList extends ArrayList<Simbolo> {
 
         //TABLA Producto
         simb = new Simbolo("Producto");
-        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema.dbo");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
         this.add(simb);
 
         simb = new Simbolo("Codigo");

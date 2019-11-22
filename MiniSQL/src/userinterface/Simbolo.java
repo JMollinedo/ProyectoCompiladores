@@ -135,23 +135,24 @@ public class Simbolo {
     public static String toText(List<Simbolo> simbolos){
         StringBuilder sb = new StringBuilder();
         Map<String,Integer> atrib = atributos(simbolos);
+        sb = sb.append("Simbolo");
         for(String a : atrib.keySet()){
             StringBuilder bui = new StringBuilder();
-            bui = bui.append(a);
-            while(bui.length()<atrib.get(a)+1){
-                bui = bui.append(' ');
-            }
-            sb.append(bui.toString());
+            bui = bui.append("\t").append(a);
+            sb = sb.append(bui.toString());
         }
         for(Simbolo s : simbolos){
             sb = sb.append("\n");
+            sb = sb.append(s.id);
             for(String a : atrib.keySet()){
                 StringBuilder bui = new StringBuilder();
+                bui = bui.append("\t");
                 if(s.getAtributo(a)!=null){
                     bui = bui.append(s.getAtributo(a));
                 }
-                while(bui.length()<atrib.get(a)+1){
-                    bui = bui.append(' ');
+                else
+                {
+                    bui = bui.append("\t");
                 }
                 sb = sb.append(bui.toString());
             }

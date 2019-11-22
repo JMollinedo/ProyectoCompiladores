@@ -396,7 +396,7 @@ action code {:
 
         //TABLA Medicina
         simb = new Simbolo("Medicina");
-        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema.dbo");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
         Simbolos.add(simb);
 
         simb = new Simbolo("Codigo");
@@ -483,7 +483,7 @@ action code {:
 
         //TABLA Producto
         simb = new Simbolo("Producto");
-        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema.dbo");
+        simb.setAtributos("tipo=tabla","base=Veterinaria","esquema=dbo");
         Simbolos.add(simb);
 
         simb = new Simbolo("Codigo");
@@ -815,28 +815,67 @@ non terminal Simbolo Tipo_dato,Tipo_datoA,Tipo_datoB,Tipo_datoC,Tipo_datoD,ID,De
 
     Tipo_dato ::= Tipo_datoD:TD Tipo_datoB:TB {:
         RESULT = new Simbolo("Tipo_Dato");
-        RESULT.setAtributos("tipoDato="+TD.getAtributo("tipoDato"),"largoMax="+TB.getAtributo("dimension"));
+        if(!(TB==null)){
+            RESULT.setAtributos("tipoDato="+TD.getAtributo("tipoDato"),"largoMax="+TB.getAtributo("dimension"));
         if(TB.existsAtributo("dimension2")){
             RESULT.setAtributos("decimal="+TB.getAtributo("dimension2"));
         }
+        }else{
+            RESULT.setAtributos("tipoDato="+TD.getAtributo("tipoDato"));
+        }
+        
         :};
 
     Tipo_datoD ::= Tipo_datoA:TA {:RESULT = new Simbolo("Tipo_datoD");
-        RESULT.setAtributos("tipoDato="+TA.getAtributo("tipoDato"));:} | AbreCorchetes Tipo_datoA:TA CierraCorchetes{:RESULT = new Simbolo("Tipo_datoD");
+        RESULT.setAtributos("tipoDato="+TA.getAtributo("tipoDato"));:} 
+        | AbreCorchetes Tipo_datoA:TA CierraCorchetes{:RESULT = new Simbolo("Tipo_datoD");
         RESULT.setAtributos("tipoDato="+TA.getAtributo("tipoDato"));:};
 
     Tipo_datoA ::= VARCHAR {:RESULT = new Simbolo("Tipo_datoA");
-        RESULT.setAtributos("tipoDato=VARCHAR");:} | INTEGER | FLOAT | DATE | BIT | DOUBLE | CHAR | CURSOR | NCHAR 
-                    | REAL | TIME | INT | DECIMAL | SMALLINT | NUMERIC | BIGINT 
-                    | BINARY | DATETIME | DATETIME2 | DATETIMEOFFSET | HIERARCHYID | IMAGE 
-                    | MONEY | NTEXT | NVARCHAR | ROWVERSION | SMALLDATETIME | SMALLMONEY 
-                    | SQL_VARIANT | TEXT | TINYINT | UNIQUEIDENTIFIER | VARBINARY | XML ;
+        RESULT.setAtributos("tipoDato=VARCHAR");:} | INTEGER {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=INTEGER");:} | FLOAT {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=FLOAT");:}  | DATE {{:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=DATE");:}} | BIT {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=BIT");:} | DOUBLE {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=DOUBLE");:} | CHAR {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=CHAR");:} | CURSOR {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=CURSOR");:} | NCHAR {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=NCHAR");:} 
+                    | REAL {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=REAL");:} | TIME {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=TIME");:} | INT {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=INT");:} | DECIMAL {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=DECIMAL");:} | SMALLINT {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=SMALLINT");:} | NUMERIC {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=NUMERIC");:} | BIGINT {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=BIGINT");:} 
+                    | BINARY {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=BINARY");:} | DATETIME {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=DATETIME");:} | DATETIME2 {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=DATETIME2");:} | DATETIMEOFFSET {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=DATETIMEOFFSET");:} | HIERARCHYID {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=HIERARCHYID");:} | IMAGE {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=IMAGE");:} 
+                    | MONEY {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=MONEY");:} | NTEXT {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=NTEXT");:} | NVARCHAR {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=NVARCHAR");:} | ROWVERSION {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=ROWVERSION");:} | SMALLDATETIME {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=SMALLDATETIME");:} | SMALLMONEY {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=SMALLMONEY");:} 
+                    | SQL_VARIANT {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=SQL_VARIANT");:} | TEXT {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=TEXT");:} | TINYINT {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=TINYINT");:} | UNIQUEIDENTIFIER {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=UNIQUEIDENTIFIER");:} | VARBINARY {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=VARBINARY");:} | XML {:RESULT = new Simbolo("Tipo_datoA");
+        RESULT.setAtributos("tipoDato=XML");:} ;
 
     Tipo_datoB ::= AbreParentesis Entero:num Tipo_datoC:TC CierraParentesis {:
         RESULT = new Simbolo("Tipo_datoB");
         RESULT.setAtributos("dimension="+num.toString());
         if(!(TC == null)){
-             RESULT.setAtributos("dimension2="+TC.getAtributoAsInt("dimension"));                
+             RESULT.setAtributos("dimension2="+TC.getAtributo("dimension"));                
         }:} |{:RESULT=null;:};
 
     Tipo_datoC ::= Coma Entero:num {:RESULT = new Simbolo("Tipo_datoC");
@@ -1297,17 +1336,27 @@ non terminal Simbolo Tipo_dato,Tipo_datoA,Tipo_datoB,Tipo_datoC,Tipo_datoD,ID,De
     StmtSP2 ::= DML |;
 
     DeclareVariable ::= DECLARE Variable:V As Tipo_dato:TD ValorVariable:VV{:
-        if(!(Simbolo.encontrar(Simbolos,"id="+V.getId())==null)){
-            System.out.println("*ERROR:Existe una variable con el nombre: "+ V.getId()+"*");            
+       if(!(Simbolo.encontrarId(Simbolos,V.getId()).size()==0)){
+            System.out.println("*ERROR:Existe una variable con el nombre: "+ V.getId()+"*");
         }else{
             RESULT = new Simbolo(V.getId());
-            RESULT.setAtributos("tipoDato="+TD.getAtributo("tipoDato"));
+            RESULT.setAtributos("tipo=variable","tipoDato="+TD.getAtributo("tipoDato"),"valor=default");
+            if(!(VV == null)){
+                if(VV.getAtributo("tipoDato").equals(TD.getAtributo("tipoDato"))){
+                    RESULT.setAtributo("valor",VV.getId());
+                    Simbolos.add(RESULT);
+                }else{
+                       System.out.println("*ERROR: LA VARIABLE " +  V.getId() +" NO ES DE TIPO :" + VV.getAtributo("tipoDato")+ "ES TIPO: " + TD.getAtributo("tipoDato")); 
+                }    
+            }else{
+                    Simbolos.add(RESULT);
+            }                                    
         }
     :};    
 
     ValorVariable ::= Igual Data_Type:DT{:
         RESULT = DT;        
-    :}|;
+    :}| {:RESULT =null;:};
     CursorDeclare ::= DECLARE ID CURSOR CursorDeclarea CursorDeclareb CursorDeclarec CursorDeclared CursorDeclaree FOR Select CursorDeclaref;
     
     CursorDeclarea ::= LOCAL|GLOBAL|;

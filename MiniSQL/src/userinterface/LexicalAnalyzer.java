@@ -267,7 +267,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 String data = UseJFlex.stringForCup(temporalFilePath, content);
                 ReadnWrite.deleteFile(temporalFilePath);
                 System.out.println(data.length() == content.length()?"GOOD":"WRONG");
-                Sintax s = new Sintax(new LexerCup(new StringReader(data)));
+                Sintax s = new Sintax(new LexerCup(new StringReader(data)));                
                 s.parse();
                 List<CupError> ce = s.Errs;
                 if(ce.isEmpty()){
@@ -275,7 +275,7 @@ public class LexicalAnalyzer extends javax.swing.JFrame {
                 }else{
                     txaAnalisisX.setText(CupError.errorsFromList(ce));
                 }
-                txaTabla.setText(Simbolo.toText(s.TablaSimbolos()));
+                txaTabla.setText(Simbolo.toText(s.TablaSimbolos()));                
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {
